@@ -1,0 +1,193 @@
+
+{% include 'maximBanner.j2' %}
+
+{# START MACRO STATEMENTS -#}
+
+{% macro underlined(data) %}{{data.replace(' ','_')}}{% endmacro -%}
+
+{% macro render_ble_data_struct_name(row_data) -%}
+s{{service_name}}Data_{{row_data["Group"]}}{% endmacro -%}
+
+{% macro render_ble_data(row_data) %}
+    {% if ble_util.is_array(row_data["Count"]) %}
+    {{ble_util.convert_ble_type_to_primitive_c(row_data["Type"])}} data_{{ underlined(row_data["Characteristic"]) }}[{{row_data["Count"]}}];
+    {% else %}
+    {{ble_util.convert_ble_type_to_primitive_c(row_data["Type"])}} data_{{ underlined(row_data["Characteristic"]) }};
+    {% endif %}
+{% endmacro -%}
+
+{% macro render_ble_characteristic_properties(row_data) -%}
+{% if ble_util.is_configurable(row_data["Permissions"]) -%}ATT_PROP_WRITE | ATT_PROP_READ{% else -%}ATT_PROP_READ{% endif -%}
+{% endmacro -%}
+
+{% macro render_ble_data_characteristic(row_data) -%}
+static const uint8_t ch_{{underlined(row_data["Characteristic"])}}[] = { {{render_ble_characteristic_properties(row_data)}}, UINT16_TO_BYTES(HDL_DAT_{{ underlined(row_data["Characteristic"]) }}), ATT_UUID_{{ underlined(row_data["Characteristic"]) }}};
+static const uint16_t ch_{{underlined(row_data["Characteristic"])}}_Len = sizeof(ch_{{underlined(row_data["Characteristic"])}});
+{% endmacro -%}
+
+{# END MACRO STATEMENTS -#}
+
+{# GLOBAL VARIABLES -#}
+{% set service_name= underlined(service_info["SheetName"]) -%}
+{# END GLOBAL VARIABLES -#}
+
+#include "{{include_path}}{{service_name}}.h"
+#include "svc_cfg.h"
+#include <stdint.h>
+
+/**************************************************************************************************
+ {{ service_name.upper() }}
+**************************************************************************************************/
+
+/**************************************************************************************************
+ Defines
+**************************************************************************************************/
+
+/*! Characteristic read permissions */
+#ifndef WP_SEC_PERMIT_READ
+#define WP_SEC_PERMIT_READ SVC_SEC_PERMIT_READ
+#endif
+
+/*! Characteristic write permissions */
+#ifndef WP_SEC_PERMIT_WRITE
+#define WP_SEC_PERMIT_WRITE SVC_SEC_PERMIT_WRITE
+#endif
+
+#define UINT16_TO_BYTES(n)        ((uint8_t) (n)), ((uint8_t)((n) >> 8))
+#define UUID_SIZE   6
+
+/* Max Len Defines */
+{% for index, row_data in df.iterrows() %}
+#define MAX_data_{{ underlined(row_data["Characteristic"]) }}_Len sizeof(s{{service_name}}Data.{{render_ble_data_struct_name(row_data)}}.data_{{ underlined(row_data["Characteristic"]) }})
+{% endfor %}
+
+/* UUID Defines */
+#define ATT_UUID_SERVICE_{{service_name.upper()}}   {{ble_util.convert_uuid_to_array_str(service_info["UUID"])}}
+
+{% for index, row_data in df.iterrows() %}
+#define ATT_UUID_{{ underlined(row_data["Characteristic"]) }} {{ble_util.convert_uuid_to_array_str(row_data["UUID"])}}
+{% endfor %}
+
+/**************************************************************************************************
+ Service UUID
+**************************************************************************************************/
+{% for index, row_data in df.iterrows() %}
+static const uint8_t svcDatUUID_{{ underlined(row_data["Characteristic"]) }}[] = {ATT_UUID_{{ underlined(row_data["Characteristic"]) }} };
+{% endfor %}
+
+/**************************************************************************************************
+ Proprietary data
+**************************************************************************************************/
+
+static ts{{service_name}}Data s{{service_name}}Data =
+{
+{% for group_id in df["Group"].unique() %}
+    {
+{% for index, row_data in df[df["Group"] == group_id].iterrows() %}
+    {% if row_data["Default"] != 0 %}
+        .data_{{ underlined(row_data["Characteristic"]) }} = {{row_data["Default"] }},
+    {% endif %}
+{% endfor %}
+    },
+{% endfor %}
+};
+
+/* Default Values
+{% for index, row_data in df[df["Default"] != 0].iterrows() %}
+    {% if ble_util.is_array(row_data["Count"]) %}
+const {{ble_util.convert_ble_type_to_primitive_c(row_data["Type"])}} default_{{ underlined(row_data["Characteristic"]) }}[] = {{ row_data["Default"] }};
+    {% else %}
+const {{ble_util.convert_ble_type_to_primitive_c(row_data["Type"])}} default_{{ underlined(row_data["Characteristic"]) }} = {{ row_data["Default"] }};
+    {% endif %}
+{% endfor %}
+ */
+
+/* Length data */
+{% for index, row_data in df.iterrows() %}
+static uint16_t data_{{ underlined(row_data["Characteristic"]) }}_Len = MAX_data_{{ underlined(row_data["Characteristic"]) }}_Len;
+{% endfor %}
+static uint16_t data_WpDatChCcc_Len = sizeof(s{{service_name}}Data.data_WpValDatChCcc);
+
+/**************************************************************************************************
+ Proprietary data characteristic
+**************************************************************************************************/
+
+static const uint8_t ch_Svc_{{service_name}}[] = {ATT_UUID_SERVICE_{{service_name.upper()}}};
+static const uint16_t ch_Svc_{{service_name}}_Len = sizeof(ch_Svc_{{service_name}});
+
+{% for index, row_data in df.iterrows() %}
+{{render_ble_data_characteristic(row_data)}}
+{% endfor %}
+
+/**************************************************************************************************
+ Attribute list for group
+**************************************************************************************************/
+static const attsAttr_t {{service_name}}_WPList[] =
+{
+
+    {
+        attPrimSvcUuid,
+        (uint8_t *) &ch_Svc_{{service_name}}[0],
+        (uint16_t *) &ch_Svc_{{service_name}}_Len,
+        sizeof(ch_Svc_{{service_name}}),
+        0,
+        ATTS_PERMIT_READ
+    },
+{% for index, row_data in df.iterrows() %}
+    /* UUID :: {{row_data["UUID"]}} */
+    {
+          attChUuid,
+         (uint8_t *) ch_{{underlined(row_data["Characteristic"])}},
+         (uint16_t *) &ch_{{underlined(row_data["Characteristic"])}}_Len,
+         sizeof(ch_{{underlined(row_data["Characteristic"])}}),
+         0,
+         ATTS_PERMIT_READ
+    },
+{% set atts_pval %}s{{service_name}}Data.{{render_ble_data_struct_name(row_data)}}.data_{{ underlined(row_data["Characteristic"]) }}{%if ble_util.is_array(row_data["Count"]) %}[0]{% endif %}{% endset %}
+{% set atts_settings %}(ATTS_SET_UUID_128 | ATTS_SET_VARIABLE_LEN | ATTS_SET_READ_CBACK{%if ble_util.is_configurable(row_data["Permissions"]) %} | ATTS_SET_WRITE_CBACK{% endif %}){% endset %}
+{% set atts_permission %}(ATTS_PERMIT_READ{%if ble_util.is_configurable(row_data["Permissions"]) %} | WP_SEC_PERMIT_WRITE{% endif %}){% endset %}
+    {
+         svcDatUUID_{{ underlined(row_data["Characteristic"]) }},
+         (uint8_t *) &{{atts_pval}},
+         (uint16_t *) &data_{{ underlined(row_data["Characteristic"]) }}_Len,
+         MAX_data_{{ underlined(row_data["Characteristic"]) }}_Len,
+         {{atts_settings}},
+         {{atts_permission}}
+    },
+{% endfor %}
+    {
+        attCliChCfgUuid,
+        (uint8_t *) s{{service_name}}Data.data_WpValDatChCcc,
+        (uint16_t *) &data_WpDatChCcc_Len,
+        sizeof(s{{service_name}}Data.data_WpValDatChCcc),
+        ATTS_SET_CCC,
+        (ATTS_PERMIT_READ | WP_SEC_PERMIT_WRITE)
+    }
+};
+
+/* {{service_name}} group structure */
+static attsGroup_t svcGroup{{service_name}} =
+{
+  NULL,
+  (attsAttr_t *) {{service_name}}_WPList,
+  NULL,
+  NULL,
+  {{service_name}}_START_HDL,
+  {{service_name}}_END_HDL
+};
+
+attsGroup_t* getGroupData_{{service_name}}()
+{
+    return &svcGroup{{service_name}};
+}
+
+ts{{service_name}}Data* getData_{{service_name}}()
+{
+    return &s{{service_name}}Data;
+}
+
+void registerCBack_{{service_name}}(attsReadCback_t readCback, attsWriteCback_t writeCback)
+{
+    svcGroup{{service_name}}.readCback = readCback;
+    svcGroup{{service_name}}.writeCback = writeCback;
+}

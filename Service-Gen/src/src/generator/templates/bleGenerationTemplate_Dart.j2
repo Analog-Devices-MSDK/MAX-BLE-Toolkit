@@ -1,0 +1,70 @@
+{% include 'maximBannerSimple.j2' %}
+
+{# START MACRO STATEMENTS -#}
+
+{% macro underlined(data) %}{{data.replace(' ','')}}{% endmacro -%}
+
+{% macro render_read_converter_function_name(row_data) %}
+convertCharBufferTo{{ ble_util.convert_ble_type_to_primitive_dart(row_data["Type"]) }}{%if ble_util.is_array(row_data["Count"]) %}Array{% endif %}
+{% endmacro -%}
+
+{% macro render_write_input_type(row_data) -%}
+    {% if ble_util.is_array(row_data["Count"]) %}List<int>{% else %}{% if row_data["Type"] == "bool" %}bool{% else %}int{% endif %}{% endif %}
+{% endmacro -%}
+
+{% macro render_write_converter_function_name(row_data) -%}convert{{ ble_util.convert_ble_type_to_primitive_dart(row_data["Type"]) }}{%if ble_util.is_array(row_data["Count"]) -%}Array{% endif -%}ToCharBuffer{% endmacro -%}
+{# END MACRO STATEMENTS -#}
+
+{# GLOBAL VARIABLES -#}
+{% set service_name= underlined(service_info["SheetName"]) -%}
+{# END GLOBAL VARIABLES -#}
+
+/* Includes */
+
+import './bleUtility.dart';
+
+/* UUID Definitions */
+
+const String uuid{{service_name}} = "{{service_info["UUID"]}}";
+{% for index, row_data in df.iterrows() %}
+const String uuid{{ underlined(row_data["Characteristic"]) }} = "{{row_data["UUID"]}}";
+{% endfor %}
+
+/* Service Characteristics */
+
+Map< dynamic,List<dynamic>> servAndChars{{service_name}} = {
+parseUUID(uuid{{service_name}}): [
+{% for index, row_data in df.iterrows() %}
+    parseUUID (uuid{{ underlined(row_data["Characteristic"]) }}),
+{% endfor %}
+],
+};
+
+/* Read Functions */
+
+{% for index, row_data in df.iterrows() %}
+Future<{{render_write_input_type(row_data)}}> read{{ underlined(row_data["Characteristic"]) }}(String id) async  {
+    return {{render_read_converter_function_name(row_data)}}(
+        await readCharacteristic(
+            id,
+            uuid{{service_name}},
+            uuid{{ underlined(row_data["Characteristic"]) }},
+        ),
+    );
+}
+
+{% endfor %}
+
+/* Write Functions */
+
+{% for index, row_data in df[df["Permissions"].str.contains("R/W")].iterrows() %}
+Future<void> write{{ underlined(row_data["Characteristic"]) }}(String id, {{render_write_input_type(row_data)}} data) {
+    return writeCharacteristic(
+        id,
+        "{{service_info["UUID"]}}",
+        "{{row_data["UUID"]}}",
+        {{render_write_converter_function_name(row_data)}}(data)
+    );
+}
+
+{% endfor %}

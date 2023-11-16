@@ -1,0 +1,86 @@
+{% include 'maximBanner.j2' %}
+
+{# START MACRO STATEMENTS -#}
+{% macro underlined(data) %}{{data.replace(' ','_')}}{% endmacro -%}
+
+{% macro render_ble_data(row_data) %}
+    {% if ble_util.is_array(row_data["Count"]) %}
+    {{ble_util.convert_ble_type_to_primitive_c(row_data["Type"])}} data_{{ underlined(row_data["Characteristic"]) }}[{{row_data["Count"]}}];
+    {% else %}
+    {{ble_util.convert_ble_type_to_primitive_c(row_data["Type"])}} data_{{ underlined(row_data["Characteristic"]) }};
+    {% endif %}
+{% endmacro -%}
+{# END MACRO STATEMENTS -#}
+
+{# GLOBAL VARIABLES -#}
+{% set service_name= underlined(service_info["SheetName"]) -%}
+{# END GLOBAL VARIABLES -#}
+
+#ifndef SVC_{{service_name.upper()}}_H
+#define SVC_{{service_name.upper()}}_H
+
+#include "att_api.h"
+#include "{{include_path}}BLE_Services_Common.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/**************************************************************************************************
+ Defines
+**************************************************************************************************/
+#define {{service_name}}_START_HDL               {{service_info["Start Handle"]}}
+#define {{service_name}}_END_HDL                 (HDL_{{service_name}}_MAX - 1)
+
+/**************************************************************************************************
+ Typedefs
+**************************************************************************************************/
+
+/**************************************************************************************************
+ Handles
+**************************************************************************************************/
+enum
+{
+    HDL_SRV_{{service_name}} = {{service_name}}_START_HDL,
+{% for index, row_data in df.iterrows() %}
+    HDL_CH_{{ underlined(row_data["Characteristic"]) }} ,
+    HDL_DAT_{{ underlined(row_data["Characteristic"]) }},
+{% endfor %}
+    HDL_{{service_name}}_CCC,
+    HDL_{{service_name}}_MAX,
+};
+
+/**************************************************************************************************
+ Proprietary data
+**************************************************************************************************/
+
+/* Data */
+
+{% for group_id in df["Group"].unique() %}
+typedef struct __attribute__((packed))
+{
+{% for index, row_data in df[df["Group"] == group_id].iterrows() %}{{ render_ble_data( row_data ) }}{% endfor %}
+}ts{{service_name}}Data_{{group_id}};
+{% endfor %}
+
+typedef struct __attribute__((packed))
+{
+{% for group_id in df["Group"].unique() %}
+    ts{{service_name}}Data_{{group_id}} s{{service_name}}Data_{{group_id}};
+{% endfor %}
+    uint8_t data_WpValDatChCcc[2];
+}ts{{service_name}}Data;
+
+
+/**************************************************************************************************
+ Functions
+**************************************************************************************************/
+attsGroup_t* getGroupData_{{service_name}}();
+void registerCBack_{{service_name}}(attsReadCback_t readCback, attsWriteCback_t writeCback);
+ts{{service_name}}Data* getData_{{service_name}}();
+
+#ifdef __cplusplus
+};
+#endif
+
+#endif /* SVC_{{service_name.upper()}}_H */
