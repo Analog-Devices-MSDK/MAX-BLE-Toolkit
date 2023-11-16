@@ -1,6 +1,8 @@
 import random
 import sys
 import time
+
+
 from PySide6.QtCharts import (
     QBarCategoryAxis,
     QBarSeries,
@@ -9,55 +11,46 @@ from PySide6.QtCharts import (
     QChart,
     QChartView,
 )
-from PySide6.QtCore import Qt,  QThread, Signal, QObject, Slot
+from PySide6.QtCore import QObject, Qt, QThread, Signal, Slot
 from PySide6.QtGui import QPainter
 from PySide6.QtWidgets import QApplication, QMainWindow
+
 from ui_mainwindow import Ui_MainWindow
+import hci_util
 
-# from ..common import hci_util
 BLE_CHANNELS = 40
-class RssiWorker(QObject):
-    finished = Signal()
-    data_ready = Signal(list)
-    early_exit = False
-    @Slot()
-    def process_data(self):
 
-        data_list = [self.get_rssi(x) for x in range(BLE_CHANNELS)]
-        self.data_ready.emit(data_list)
-
-    def get_rssi(self,channel):
-        return random.randint(-120, 8) + 120
 
 class RssiWorkerThread(QThread):
     early_exit = False
+    data_ready = Signal(list)
+
     def __init__(self):
         super().__init__()
-
-        # Create a worker object
-        self.worker = RssiWorker()
-
-        # Connect signals and slots
-        self.worker.finished.connect(self.finished)
-        self.worker.data_ready.connect(self.data_ready)
-
-        
+    
+    def get_rssi(self, channel):
+        _ = channel
+        return random.randint(-120, 8) + 120
 
     def run(self):
-        # Start the data processing in the worker thread
-        while True:
-            self.worker.process_data()
-            time.sleep(0.1)
-            if self.early_exit: 
-                return 
+        self.early_exit = False
 
-    def data_ready(self, data):
-        # This method is called when data is ready from the worker thread
-        pass
+        while not self.early_exit: 
+            data_list = [self.get_rssi(x) for x in range(BLE_CHANNELS)]
+            self.data_ready.emit(data_list)
+            time.sleep(0.1)
+    
+    def stop(self):
+        self.early_exit = True
+    def quit(self):
+        self.early_exit = True
+
+
+
+
+
 
 class MainWindow(QMainWindow):
-    
-
     def __init__(self):
         super(MainWindow, self).__init__()
         self.ui = Ui_MainWindow()
@@ -96,11 +89,22 @@ class MainWindow(QMainWindow):
         self._chart_view.setRenderHint(QPainter.Antialiasing)
 
         self.ui.gridLayout.addWidget(self._chart_view)
+        self.ui.port_selector.addItems(hci_util.get_serial_ports())
+        
+        self.ui.run_button.clicked.connect(self._run_button_clicked)
 
         self.rssi_capture = RssiWorkerThread()
-        self.rssi_capture.worker.data_ready.connect(self.update_rssis)
-        self.rssi_capture.start()
-        
+        self.rssi_capture.data_ready.connect(self.update_rssis)
+
+
+    def _run_button_clicked(self):
+        if self.ui.run_button.text() == 'Run':
+            self.rssi_capture.start()
+            self.ui.run_button.setText('Stop')
+        else:
+            self.rssi_capture.quit()
+            self.ui.run_button.setText('Run')
+
     def _make_channel_set(self, rssis):
         channel_sets = []
         for i, channel in enumerate(range(BLE_CHANNELS)):
@@ -114,6 +118,7 @@ class MainWindow(QMainWindow):
             self.rssi_set.replace(channel, rssi)
 
     def closeEvent(self, event) -> None:
+        _ = event
         self.rssi_capture.early_exit = True
         self.rssi_capture.quit()
         self.rssi_capture.wait()

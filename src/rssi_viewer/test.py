@@ -1,6 +1,15 @@
 import sys
-from PySide6.QtCore import Qt, QThread, Signal, QObject, Slot
-from PySide6.QtWidgets import QWidget,QApplication, QMainWindow, QVBoxLayout, QPushButton, QListWidget
+
+from PySide6.QtCore import QObject, Qt, QThread, Signal, Slot
+from PySide6.QtWidgets import (
+    QApplication,
+    QListWidget,
+    QMainWindow,
+    QPushButton,
+    QVBoxLayout,
+    QWidget,
+)
+
 
 class Worker(QObject):
     finished = Signal()
@@ -16,6 +25,7 @@ class Worker(QObject):
 
         # Notify that the task is finished
         self.finished.emit()
+
 
 class WorkerThread(QThread):
     def __init__(self):
@@ -35,6 +45,7 @@ class WorkerThread(QThread):
     def data_ready(self, data):
         # This method is called when data is ready from the worker thread
         print("Data ready in worker thread:", data)
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -69,6 +80,7 @@ class MainWindow(QMainWindow):
     def update_list_widget(self, data):
         # This method is called when data is received in the main thread
         self.list_widget.addItems([str(item) for item in data])
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
