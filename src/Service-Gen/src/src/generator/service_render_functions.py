@@ -1,13 +1,11 @@
-
 class UtilsBLE:
-
     @staticmethod
     def convert_uuid_to_array_str(uuid):
         n = 2
-        uuid = uuid.replace('-', '')
-        split_string = ["0x"+uuid[i:i + n] for i in range(0, len(uuid), n)]
+        uuid = uuid.replace("-", "")
+        split_string = ["0x" + uuid[i : i + n] for i in range(0, len(uuid), n)]
         split_string.reverse()
-        return ', '.join(split_string)
+        return ", ".join(split_string)
 
     @staticmethod
     def convert_ble_type_to_primitive_c(ble_type):
@@ -41,7 +39,7 @@ class UtilsBLE:
 
     @staticmethod
     def get_simple_permission(permission):
-        if 'R/W' in permission:
-            return 'R/W'
+        if "R/W" in permission:
+            return "R/W"
         else:
-            return 'R'
+            return "R"
