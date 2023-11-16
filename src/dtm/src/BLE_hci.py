@@ -38,19 +38,19 @@
 # HCI Tool used to control a Bluetooth Controller through a serial port.
 #
 
-import serial
-import sys
-import signal
-import codecs
 import argparse
+import codecs
+import datetime
+import readline
+import signal
+import struct
+import sys
+import threading
 from argparse import RawTextHelpFormatter
 from time import sleep
-import datetime
-import struct
-import threading
-from termcolor import colored
-import readline
 
+import serial
+from termcolor import colored
 
 # Setup the default serial port settings
 defaultBaud = 115200

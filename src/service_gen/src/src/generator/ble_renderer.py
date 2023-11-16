@@ -1,9 +1,11 @@
-from numpy import NaN
+from os import path
+
 from jinja2 import Environment, FileSystemLoader
+from numpy import NaN
 from pandas import ExcelFile
+
 from src.common.path_utils import convert_path_for_build
 from src.generator.service_render_functions import UtilsBLE
-from os import path
 
 
 def render_ble_service_common(

@@ -1,14 +1,14 @@
 from tkinter import (
+    ACTIVE,
+    DISABLED,
+    NORMAL,
     Button,
     Entry,
-    Label,
     Frame,
-    DISABLED,
-    filedialog,
-    ACTIVE,
-    NORMAL,
+    Label,
     StringVar,
     Toplevel,
+    filedialog,
 )
 from tkinter.tix import Balloon
 

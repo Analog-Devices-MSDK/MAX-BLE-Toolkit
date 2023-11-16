@@ -2,7 +2,7 @@ import random
 import sys
 import time
 
-
+import hci_util
 from PySide6.QtCharts import (
     QBarCategoryAxis,
     QBarSeries,
@@ -11,12 +11,10 @@ from PySide6.QtCharts import (
     QChart,
     QChartView,
 )
-from PySide6.QtCore import QObject, Qt, QThread, Signal, Slot
+from PySide6.QtCore import Qt, QThread, Signal
 from PySide6.QtGui import QPainter
 from PySide6.QtWidgets import QApplication, QMainWindow
-
 from ui_mainwindow import Ui_MainWindow
-import hci_util
 
 BLE_CHANNELS = 40
 
@@ -27,7 +25,7 @@ class RssiWorkerThread(QThread):
 
     def __init__(self):
         super().__init__()
-    
+
     def get_rssi(self, channel):
         _ = channel
         return random.randint(-120, 8) + 120
@@ -35,19 +33,16 @@ class RssiWorkerThread(QThread):
     def run(self):
         self.early_exit = False
 
-        while not self.early_exit: 
+        while not self.early_exit:
             data_list = [self.get_rssi(x) for x in range(BLE_CHANNELS)]
             self.data_ready.emit(data_list)
             time.sleep(0.1)
-    
+
     def stop(self):
         self.early_exit = True
+
     def quit(self):
         self.early_exit = True
-
-
-
-
 
 
 class MainWindow(QMainWindow):
@@ -90,20 +85,19 @@ class MainWindow(QMainWindow):
 
         self.ui.gridLayout.addWidget(self._chart_view)
         self.ui.port_selector.addItems(hci_util.get_serial_ports())
-        
+
         self.ui.run_button.clicked.connect(self._run_button_clicked)
 
         self.rssi_capture = RssiWorkerThread()
         self.rssi_capture.data_ready.connect(self.update_rssis)
 
-
     def _run_button_clicked(self):
-        if self.ui.run_button.text() == 'Run':
+        if self.ui.run_button.text() == "Run":
             self.rssi_capture.start()
-            self.ui.run_button.setText('Stop')
+            self.ui.run_button.setText("Stop")
         else:
             self.rssi_capture.quit()
-            self.ui.run_button.setText('Run')
+            self.ui.run_button.setText("Run")
 
     def _make_channel_set(self, rssis):
         channel_sets = []

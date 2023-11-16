@@ -1,14 +1,14 @@
-from tkinter import Tk, LabelFrame
+from tkinter import LabelFrame, Tk
 
-from src.common.look_and_feel import MXM_ICON, APP_TITLE, MXM_GREEN
+from src.common.look_and_feel import APP_TITLE, MXM_GREEN, MXM_ICON
 from src.common.path_utils import convert_path_for_build
 from src.generator.ble_renderer import execute_ble_renderer
 from src.gui.mxm_widgets import (
+    CreateToolTip,
     MXMBrowseWidget,
     MXMButton,
     MXMEntry,
     MXMLabeledEntry,
-    CreateToolTip,
 )
 
 

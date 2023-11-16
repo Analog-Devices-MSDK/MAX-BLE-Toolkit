@@ -3,13 +3,12 @@ Main Application for DTM Testsing
 """
 
 import sys
-from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
-from ui_mainwindow import Ui_MainWindow
 
-
-import hci_util
 import BLE_hci
 import BLE_util
+import hci_util
+from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
+from ui_mainwindow import Ui_MainWindow
 
 
 class MainWindow(QMainWindow):

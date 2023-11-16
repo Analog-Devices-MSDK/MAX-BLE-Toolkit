@@ -1,8 +1,8 @@
+import glob
 import os
 import sys
-import glob
-import serial
 
+import serial
 
 DEFAULT_BAUDRATE = 115200
 
