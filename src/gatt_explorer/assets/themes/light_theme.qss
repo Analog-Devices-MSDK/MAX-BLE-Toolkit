@@ -122,7 +122,7 @@ QTableWidget::item{
     color: #464E69;
 }
 QTableWidget::item:selected{
-	background-color: rgb(189, 147, 249);
+	background-color: rgb(153, 193, 241);
 }
 QHeaderView::section{
 	background-color: rgb(33, 37, 43);

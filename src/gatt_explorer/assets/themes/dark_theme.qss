@@ -28,7 +28,7 @@ QPushButton:pressed{
 QListWidget {
     border: 2px solid rgb(53, 93, 101);
     border-radius: 5px;
-    color: #464E69;
+    color: rgb(222, 221, 218);
 }
 QChartView{
     border: 2px solid rgb(53, 93, 101);
@@ -58,7 +58,7 @@ QLineEdit {
     background-color: rgb(33, 37, 43);
 }
 #frame_main_right {
-    background-color: rgb(43, 47, 53);
+    background-color: rgb(33, 37, 43);
 }
 
 #frame_main_middle_2{
@@ -129,7 +129,7 @@ QTableWidget::item{
     color: rgb(222, 221, 218);
 }
 QTableWidget::item:selected{
-	background-color: rgb(189, 147, 249);
+	background-color: #464E69;
 }
 QHeaderView::section{
 	background-color: rgb(33, 37, 43);
