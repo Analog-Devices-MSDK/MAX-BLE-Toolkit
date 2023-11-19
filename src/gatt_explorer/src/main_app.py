@@ -8,6 +8,7 @@ import sys
 class MainWindow(QMainWindow):
     light_themefile = "../assets/themes/light_theme.qss"
     dark_themefile = "../assets/themes/dark_theme.qss"
+    ble_scanner = None
     logger = None
     def __init__(self):
         # instantiate the QMainWindow
@@ -28,9 +29,24 @@ class MainWindow(QMainWindow):
         console_log.init_logging(self)
         self.logger = logging.getLogger("gattLogger")
         self.logger.info("Application started")
+
+        #BLE scanner
+        self.ble_scanner = ble.BleScanner(self)
+        
+        # Slots
+        slots.init_signals_and_slots(self)
         
     def logToTextbox(self, data):
         self.ui.console.append(data)
+    def closeEvent(self, event):
+        self.stop_scanner()
+
+    def stop_scanner(self):
+        self.ui.btn_scan.setText("Scan")
+        self.ble_scanner.is_scanning = False
+        self.ble_scanner.quit()
+        self.ble_scanner.wait()
+        #self.stop_graphing()
 
 if __name__ == "__main__":
     light_themefile = "../assets/themes/light_theme.qss"

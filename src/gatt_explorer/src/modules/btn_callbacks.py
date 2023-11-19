@@ -5,7 +5,17 @@ from . import ui_methods
 
 
 def btn_scan_callback(main_window):
-    pass
+    if main_window.ble_scanner.is_scanning:
+        main_window.ble_scanner.is_scanning = False
+        main_window.ble_scanner.quit()
+        main_window.ble_scanner.wait()
+        main_window.ui.btn_scan.setText("Scan")
+        return
+    else:
+        main_window.ui.btn_scan.setText("Scanning...")
+        main_window.ble_scanner.scan_timeout = 0
+        main_window.ble_scanner.start()
+
 
 def btn_connect_callback(main_window):
     pass
