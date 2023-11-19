@@ -151,12 +151,6 @@ def start_box_animation(main_window, left_box_width, right_box_width, direction)
         main_window.right_box.setStartValue(right_box_width)
         main_window.right_box.setEndValue(right_width)
         main_window.right_box.setEasingCurve(QEasingCurve.InOutQuart)
-        print("right box width: ", right_box_width)
-        print("right width: ", right_width)
-        print(app_settings.TIME_ANIMATION)
-        print(app_settings.RIGHT_BOX_WIDTH)
-
-
 
         # GROUP ANIMATION
         main_window.group = QParallelAnimationGroup()
