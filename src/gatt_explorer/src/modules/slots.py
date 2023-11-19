@@ -40,11 +40,9 @@ def update_discovered_devices(main_window, device):
     elif main_window.ui.txt_scan_filter.text() in device_name:
         add_device_to_list()
 
-    
     if main_window.ui.logAll.isChecked():
         add_device_to_table()
-        update_rssi_graph()
-        
+        update_rssi_graph()   
     elif main_window.ui.logSelection.isChecked():
         try:
             # check if the device_name is the same as the selected item in list_widget_discovered
@@ -96,6 +94,35 @@ def add_table_item(main_window, data):
         if main_window.ui.check_scroll_to_bottom.isChecked():
             main_window.ui.table_adv_data.scrollToBottom()
 
+def txt_scan_filter_changed(main_window):
+    logger = logging.getLogger("PDexLogger")
+    # filter QListwidget list_widget_discovered based on txt_scan_filter text
+    # keeping in mind the list_widget_discovered is not directly iterable 
+    # and you can maybe use findItems(device_name, Qt.MatchExactly)
+    try:
+        # get the text from txt_scan_filter
+        filter_text = main_window.ui.txt_scan_filter.text()
+        # get the QListWidget list_widget_discovered
+        list_widget = main_window.ui.list_widget_discovered
+        # get the number of items in the list_widget_discovered
+        list_widget_count = list_widget.count()
+        # iterate through the list_widget_discovered
+        for i in range(list_widget_count):
+            # get the item at index i
+            item = list_widget.item(i)
+            # get the text of the item
+            item_text = item.text()
+            # check if the filter_text is in the item_text
+            if filter_text in item_text:
+                # if it is, set the item to visible
+                item.setHidden(False)
+            else:
+                # if it is not, set the item to hidden
+                item.setHidden(True)
+    except Exception as e:
+        main_window.logger.warning(e)
+        main_window.logger.warning("txt_scan_filter_changed failed")
+
 def init_signals_and_slots(main_window):
     main_window.ble_scanner.discovered_devices.connect(lambda device : update_discovered_devices(main_window,device))
-    
+    main_window.ui.txt_scan_filter.textChanged.connect(lambda: txt_scan_filter_changed(main_window))

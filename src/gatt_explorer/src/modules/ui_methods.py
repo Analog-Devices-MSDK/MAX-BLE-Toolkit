@@ -27,9 +27,6 @@ def set_theme(main_window):
         set_adv_data_table_theme(main_window)
         # remove horizontal header from table_adv_data
         main_window.ui.table_adv_data.horizontalHeader().setVisible(False)
-    
-
-        
 
 def set_theme_button_icon(main_window):
     icon = QIcon()
