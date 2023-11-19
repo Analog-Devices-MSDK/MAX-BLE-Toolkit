@@ -8,7 +8,6 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCharts import QChartView
 from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
     QMetaObject, QObject, QPoint, QRect,
     QSize, QTime, QUrl, Qt)
@@ -16,19 +15,22 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QAbstractItemView, QApplication, QFrame, QHBoxLayout,
-    QHeaderView, QLabel, QLineEdit, QListWidget,
-    QListWidgetItem, QMainWindow, QPushButton, QScrollArea,
-    QSizePolicy, QSpacerItem, QSplitter, QStackedWidget,
-    QTableWidget, QTableWidgetItem, QTextEdit, QTreeWidget,
-    QTreeWidgetItem, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox, QFrame,
+    QHBoxLayout, QHeaderView, QLabel, QLineEdit,
+    QListWidget, QListWidgetItem, QMainWindow, QPushButton,
+    QRadioButton, QScrollArea, QSizePolicy, QSlider,
+    QSpacerItem, QSplitter, QStackedWidget, QTableWidget,
+    QTableWidgetItem, QTextEdit, QTreeWidget, QTreeWidgetItem,
+    QVBoxLayout, QWidget)
+
+from toggle import AnimatedToggle
 import resources_rc
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1274, 687)
+        MainWindow.resize(1302, 743)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout = QVBoxLayout(self.centralwidget)
@@ -110,7 +112,7 @@ class Ui_MainWindow(object):
         self.frame_main_middle.setFrameShape(QFrame.StyledPanel)
         self.frame_main_middle.setFrameShadow(QFrame.Raised)
         self.horizontalLayout = QHBoxLayout(self.frame_main_middle)
-        self.horizontalLayout.setSpacing(6)
+        self.horizontalLayout.setSpacing(9)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setContentsMargins(0, 3, 0, 0)
         self.frame_main_left = QFrame(self.frame_main_middle)
@@ -137,8 +139,13 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.console_splitter.sizePolicy().hasHeightForWidth())
         self.console_splitter.setSizePolicy(sizePolicy)
         self.console_splitter.setBaseSize(QSize(0, 0))
+        self.console_splitter.setFrameShape(QFrame.NoFrame)
+        self.console_splitter.setLineWidth(1)
+        self.console_splitter.setMidLineWidth(0)
         self.console_splitter.setOrientation(Qt.Vertical)
-        self.console_splitter.setHandleWidth(6)
+        self.console_splitter.setOpaqueResize(True)
+        self.console_splitter.setHandleWidth(10)
+        self.console_splitter.setChildrenCollapsible(True)
         self.frame_main_middle_content = QFrame(self.console_splitter)
         self.frame_main_middle_content.setObjectName(u"frame_main_middle_content")
         self.frame_main_middle_content.setMinimumSize(QSize(0, 300))
@@ -146,6 +153,7 @@ class Ui_MainWindow(object):
         self.frame_main_middle_content.setFrameShadow(QFrame.Raised)
         self.verticalLayout_5 = QVBoxLayout(self.frame_main_middle_content)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+        self.verticalLayout_5.setContentsMargins(0, 0, 0, -1)
         self.stackedWidget = QStackedWidget(self.frame_main_middle_content)
         self.stackedWidget.setObjectName(u"stackedWidget")
         self.home = QWidget()
@@ -167,7 +175,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_24 = QVBoxLayout(self.frame_scan_results)
         self.verticalLayout_24.setSpacing(6)
         self.verticalLayout_24.setObjectName(u"verticalLayout_24")
-        self.verticalLayout_24.setContentsMargins(-1, 0, -1, 0)
+        self.verticalLayout_24.setContentsMargins(0, 0, -1, 0)
         self.frame_3 = QFrame(self.frame_scan_results)
         self.frame_3.setObjectName(u"frame_3")
         self.frame_3.setMinimumSize(QSize(0, 40))
@@ -177,21 +185,17 @@ class Ui_MainWindow(object):
         self.horizontalLayout_7 = QHBoxLayout(self.frame_3)
         self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
         self.horizontalLayout_7.setContentsMargins(0, 0, 0, -1)
-        self.txt_scan_filter_2 = QLineEdit(self.frame_3)
-        self.txt_scan_filter_2.setObjectName(u"txt_scan_filter_2")
-        self.txt_scan_filter_2.setMinimumSize(QSize(0, 30))
-        self.txt_scan_filter_2.setMaximumSize(QSize(16777215, 35))
+        self.txt_scan_filter = QLineEdit(self.frame_3)
+        self.txt_scan_filter.setObjectName(u"txt_scan_filter")
+        self.txt_scan_filter.setMinimumSize(QSize(0, 30))
+        self.txt_scan_filter.setMaximumSize(QSize(16777215, 35))
 
-        self.horizontalLayout_7.addWidget(self.txt_scan_filter_2)
+        self.horizontalLayout_7.addWidget(self.txt_scan_filter)
 
 
         self.verticalLayout_24.addWidget(self.frame_3)
 
         self.list_widget_discovered = QListWidget(self.frame_scan_results)
-        QListWidgetItem(self.list_widget_discovered)
-        QListWidgetItem(self.list_widget_discovered)
-        QListWidgetItem(self.list_widget_discovered)
-        QListWidgetItem(self.list_widget_discovered)
         self.list_widget_discovered.setObjectName(u"list_widget_discovered")
         font2 = QFont()
         font2.setFamilies([u"Segoe UI"])
@@ -229,28 +233,12 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_8.addWidget(self.frame_scan_results)
 
-        self.rssi_gatt_expolrer = QStackedWidget(self.frame_explorer_top)
-        self.rssi_gatt_expolrer.setObjectName(u"rssi_gatt_expolrer")
-        self.rssi_graph = QWidget()
-        self.rssi_graph.setObjectName(u"rssi_graph")
-        self.verticalLayout_25 = QVBoxLayout(self.rssi_graph)
-        self.verticalLayout_25.setSpacing(0)
-        self.verticalLayout_25.setObjectName(u"verticalLayout_25")
-        self.verticalLayout_25.setContentsMargins(-1, 0, -1, 0)
-        self.qtchart_widgetholder = QChartView(self.rssi_graph)
-        self.qtchart_widgetholder.setObjectName(u"qtchart_widgetholder")
+        self.frame_2 = QFrame(self.frame_explorer_top)
+        self.frame_2.setObjectName(u"frame_2")
+        self.frame_2.setFrameShape(QFrame.StyledPanel)
+        self.frame_2.setFrameShadow(QFrame.Raised)
 
-        self.verticalLayout_25.addWidget(self.qtchart_widgetholder)
-
-        self.rssi_gatt_expolrer.addWidget(self.rssi_graph)
-        self.gatt_view = QWidget()
-        self.gatt_view.setObjectName(u"gatt_view")
-        self.verticalLayout_26 = QVBoxLayout(self.gatt_view)
-        self.verticalLayout_26.setObjectName(u"verticalLayout_26")
-        self.verticalLayout_26.setContentsMargins(-1, 0, -1, -1)
-        self.rssi_gatt_expolrer.addWidget(self.gatt_view)
-
-        self.horizontalLayout_8.addWidget(self.rssi_gatt_expolrer)
+        self.horizontalLayout_8.addWidget(self.frame_2)
 
         self.horizontalLayout_8.setStretch(0, 2)
         self.horizontalLayout_8.setStretch(1, 2)
@@ -264,26 +252,13 @@ class Ui_MainWindow(object):
         self.frame_adv_data.setFrameShadow(QFrame.Raised)
         self.verticalLayout_21 = QVBoxLayout(self.frame_adv_data)
         self.verticalLayout_21.setObjectName(u"verticalLayout_21")
-        self.verticalLayout_21.setContentsMargins(-1, 0, -1, 0)
+        self.verticalLayout_21.setContentsMargins(0, 0, 0, 0)
         self.table_adv_data = QTableWidget(self.frame_adv_data)
-        if (self.table_adv_data.columnCount() < 3):
-            self.table_adv_data.setColumnCount(3)
-        __qtablewidgetitem = QTableWidgetItem()
-        self.table_adv_data.setHorizontalHeaderItem(0, __qtablewidgetitem)
-        __qtablewidgetitem1 = QTableWidgetItem()
-        self.table_adv_data.setHorizontalHeaderItem(1, __qtablewidgetitem1)
-        __qtablewidgetitem2 = QTableWidgetItem()
-        self.table_adv_data.setHorizontalHeaderItem(2, __qtablewidgetitem2)
-        if (self.table_adv_data.rowCount() < 3):
-            self.table_adv_data.setRowCount(3)
-        __qtablewidgetitem3 = QTableWidgetItem()
-        self.table_adv_data.setVerticalHeaderItem(0, __qtablewidgetitem3)
-        __qtablewidgetitem4 = QTableWidgetItem()
-        self.table_adv_data.setVerticalHeaderItem(1, __qtablewidgetitem4)
-        __qtablewidgetitem5 = QTableWidgetItem()
-        self.table_adv_data.setVerticalHeaderItem(2, __qtablewidgetitem5)
         self.table_adv_data.setObjectName(u"table_adv_data")
+        self.table_adv_data.setRowCount(0)
+        self.table_adv_data.setColumnCount(0)
         self.table_adv_data.horizontalHeader().setVisible(False)
+        self.table_adv_data.horizontalHeader().setStretchLastSection(True)
         self.table_adv_data.verticalHeader().setVisible(False)
 
         self.verticalLayout_21.addWidget(self.table_adv_data)
@@ -368,7 +343,7 @@ class Ui_MainWindow(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollAreaWidgetContents_2 = QWidget()
         self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
-        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 86, 30))
+        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 18, 16))
         self.scrollArea_2.setWidget(self.scrollAreaWidgetContents_2)
 
         self.verticalLayout_28.addWidget(self.scrollArea_2)
@@ -408,14 +383,191 @@ class Ui_MainWindow(object):
 
         self.frame_main_right = QFrame(self.frame_main_middle)
         self.frame_main_right.setObjectName(u"frame_main_right")
+        self.frame_main_right.setMinimumSize(QSize(250, 0))
+        self.frame_main_right.setMaximumSize(QSize(165, 16777215))
         self.frame_main_right.setFrameShape(QFrame.StyledPanel)
         self.frame_main_right.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_4 = QVBoxLayout(self.frame_main_right)
+        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.frame_scanner_settings = QFrame(self.frame_main_right)
+        self.frame_scanner_settings.setObjectName(u"frame_scanner_settings")
+        self.frame_scanner_settings.setMinimumSize(QSize(0, 0))
+        self.frame_scanner_settings.setMaximumSize(QSize(16777215, 900))
+        self.frame_scanner_settings.setFrameShape(QFrame.NoFrame)
+        self.frame_scanner_settings.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_31 = QVBoxLayout(self.frame_scanner_settings)
+        self.verticalLayout_31.setSpacing(6)
+        self.verticalLayout_31.setObjectName(u"verticalLayout_31")
+        self.btn_save_logs = QPushButton(self.frame_scanner_settings)
+        self.btn_save_logs.setObjectName(u"btn_save_logs")
+        sizePolicy2 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.btn_save_logs.sizePolicy().hasHeightForWidth())
+        self.btn_save_logs.setSizePolicy(sizePolicy2)
+        self.btn_save_logs.setMinimumSize(QSize(0, 45))
+        self.btn_save_logs.setFont(font2)
+        self.btn_save_logs.setCursor(QCursor(Qt.PointingHandCursor))
+        self.btn_save_logs.setLayoutDirection(Qt.LeftToRight)
+
+        self.verticalLayout_31.addWidget(self.btn_save_logs)
+
+        self.btn_clear_logs = QPushButton(self.frame_scanner_settings)
+        self.btn_clear_logs.setObjectName(u"btn_clear_logs")
+        sizePolicy2.setHeightForWidth(self.btn_clear_logs.sizePolicy().hasHeightForWidth())
+        self.btn_clear_logs.setSizePolicy(sizePolicy2)
+        self.btn_clear_logs.setMinimumSize(QSize(0, 45))
+        self.btn_clear_logs.setFont(font2)
+        self.btn_clear_logs.setCursor(QCursor(Qt.PointingHandCursor))
+        self.btn_clear_logs.setLayoutDirection(Qt.LeftToRight)
+
+        self.verticalLayout_31.addWidget(self.btn_clear_logs)
+
+        self.frame_scan = QFrame(self.frame_scanner_settings)
+        self.frame_scan.setObjectName(u"frame_scan")
+        self.frame_scan.setEnabled(True)
+        self.frame_scan.setFrameShape(QFrame.StyledPanel)
+        self.frame_scan.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_23 = QVBoxLayout(self.frame_scan)
+        self.verticalLayout_23.setSpacing(10)
+        self.verticalLayout_23.setObjectName(u"verticalLayout_23")
+        self.verticalLayout_23.setContentsMargins(-1, 5, -1, 0)
+        self.frame_scan_timeout = QFrame(self.frame_scan)
+        self.frame_scan_timeout.setObjectName(u"frame_scan_timeout")
+        self.frame_scan_timeout.setMinimumSize(QSize(0, 0))
+        self.frame_scan_timeout.setMaximumSize(QSize(16777215, 20))
+        self.frame_scan_timeout.setFrameShape(QFrame.StyledPanel)
+        self.frame_scan_timeout.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_6 = QHBoxLayout(self.frame_scan_timeout)
+        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
+        self.horizontalLayout_6.setContentsMargins(0, 0, -1, 0)
+        self.label_scan_timeout = QLabel(self.frame_scan_timeout)
+        self.label_scan_timeout.setObjectName(u"label_scan_timeout")
+        self.label_scan_timeout.setMaximumSize(QSize(16777215, 20))
+
+        self.horizontalLayout_6.addWidget(self.label_scan_timeout)
+
+        self.label_scan_timeout_value = QLabel(self.frame_scan_timeout)
+        self.label_scan_timeout_value.setObjectName(u"label_scan_timeout_value")
+        self.label_scan_timeout_value.setMaximumSize(QSize(16777215, 20))
+        self.label_scan_timeout_value.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_6.addWidget(self.label_scan_timeout_value)
+
+
+        self.verticalLayout_23.addWidget(self.frame_scan_timeout)
+
+        self.scanSlider = QSlider(self.frame_scan)
+        self.scanSlider.setObjectName(u"scanSlider")
+        self.scanSlider.setMaximum(30)
+        self.scanSlider.setPageStep(1)
+        self.scanSlider.setValue(5)
+        self.scanSlider.setOrientation(Qt.Horizontal)
+
+        self.verticalLayout_23.addWidget(self.scanSlider)
+
+        self.check_no_timeout = QCheckBox(self.frame_scan)
+        self.check_no_timeout.setObjectName(u"check_no_timeout")
+        self.check_no_timeout.setChecked(True)
+
+        self.verticalLayout_23.addWidget(self.check_no_timeout)
+
+        self.label_4 = QLabel(self.frame_scan)
+        self.label_4.setObjectName(u"label_4")
+        self.label_4.setMaximumSize(QSize(16777215, 20))
+        font3 = QFont()
+        font3.setFamilies([u"Segoe UI"])
+        font3.setPointSize(11)
+        font3.setBold(False)
+        font3.setItalic(False)
+        self.label_4.setFont(font3)
+
+        self.verticalLayout_23.addWidget(self.label_4)
+
+        self.logSelection = QRadioButton(self.frame_scan)
+        self.logSelection.setObjectName(u"logSelection")
+
+        self.verticalLayout_23.addWidget(self.logSelection)
+
+        self.logAll = QRadioButton(self.frame_scan)
+        self.logAll.setObjectName(u"logAll")
+        self.logAll.setChecked(True)
+
+        self.verticalLayout_23.addWidget(self.logAll)
+
+        self.logNone = QRadioButton(self.frame_scan)
+        self.logNone.setObjectName(u"logNone")
+        self.logNone.setChecked(False)
+
+        self.verticalLayout_23.addWidget(self.logNone)
+
+        self.frame = QFrame(self.frame_scan)
+        self.frame.setObjectName(u"frame")
+        self.frame.setMinimumSize(QSize(0, 50))
+        self.frame.setFrameShape(QFrame.StyledPanel)
+        self.frame.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_10 = QHBoxLayout(self.frame)
+        self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
+        self.label_5 = QLabel(self.frame)
+        self.label_5.setObjectName(u"label_5")
+
+        self.horizontalLayout_10.addWidget(self.label_5)
+
+        self.graph_enabled = AnimatedToggle(self.frame)
+        self.graph_enabled.setObjectName(u"graph_enabled")
+        self.graph_enabled.setMinimumSize(QSize(84, 0))
+        self.graph_enabled.setMaximumSize(QSize(84, 999999))
+        self.graph_enabled.setChecked(True)
+
+        self.horizontalLayout_10.addWidget(self.graph_enabled)
+
+        self.horizontalLayout_10.setStretch(0, 5)
+        self.horizontalLayout_10.setStretch(1, 2)
+
+        self.verticalLayout_23.addWidget(self.frame)
+
+        self.options_frame = QFrame(self.frame_scan)
+        self.options_frame.setObjectName(u"options_frame")
+        self.options_frame.setMinimumSize(QSize(0, 40))
+        self.options_frame.setMaximumSize(QSize(16777215, 45))
+        self.options_frame.setFrameShape(QFrame.StyledPanel)
+        self.options_frame.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_14 = QVBoxLayout(self.options_frame)
+        self.verticalLayout_14.setObjectName(u"verticalLayout_14")
+        self.verticalLayout_14.setContentsMargins(0, -1, -1, -1)
+        self.check_scroll_to_bottom = QCheckBox(self.options_frame)
+        self.check_scroll_to_bottom.setObjectName(u"check_scroll_to_bottom")
+        self.check_scroll_to_bottom.setChecked(True)
+
+        self.verticalLayout_14.addWidget(self.check_scroll_to_bottom)
+
+
+        self.verticalLayout_23.addWidget(self.options_frame)
+
+        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.verticalLayout_23.addItem(self.verticalSpacer_2)
+
+
+        self.verticalLayout_31.addWidget(self.frame_scan)
+
+        self.verticalSpacer_3 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.verticalLayout_31.addItem(self.verticalSpacer_3)
+
+        self.verticalLayout_31.setStretch(0, 1)
+
+        self.verticalLayout_4.addWidget(self.frame_scanner_settings)
+
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.verticalLayout_4.addItem(self.verticalSpacer)
+
 
         self.horizontalLayout.addWidget(self.frame_main_right)
 
         self.horizontalLayout.setStretch(0, 1)
         self.horizontalLayout.setStretch(1, 5)
-        self.horizontalLayout.setStretch(2, 1)
 
         self.verticalLayout.addWidget(self.frame_main_middle)
 
@@ -424,9 +576,9 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
+        self.scanSlider.valueChanged.connect(self.label_scan_timeout_value.setNum)
 
         self.stackedWidget.setCurrentIndex(0)
-        self.rssi_gatt_expolrer.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -442,37 +594,24 @@ class Ui_MainWindow(object):
         self.btn_menu.setToolTip(QCoreApplication.translate("MainWindow", u"Settings", None))
 #endif // QT_CONFIG(tooltip)
         self.btn_menu.setText("")
-        self.txt_scan_filter_2.setText("")
-        self.txt_scan_filter_2.setPlaceholderText(QCoreApplication.translate("MainWindow", u"filter scan results", None))
-
-        __sortingEnabled = self.list_widget_discovered.isSortingEnabled()
-        self.list_widget_discovered.setSortingEnabled(False)
-        ___qlistwidgetitem = self.list_widget_discovered.item(0)
-        ___qlistwidgetitem.setText(QCoreApplication.translate("MainWindow", u"New Item", None));
-        ___qlistwidgetitem1 = self.list_widget_discovered.item(1)
-        ___qlistwidgetitem1.setText(QCoreApplication.translate("MainWindow", u"New Item", None));
-        ___qlistwidgetitem2 = self.list_widget_discovered.item(2)
-        ___qlistwidgetitem2.setText(QCoreApplication.translate("MainWindow", u"New Item", None));
-        ___qlistwidgetitem3 = self.list_widget_discovered.item(3)
-        ___qlistwidgetitem3.setText(QCoreApplication.translate("MainWindow", u"New Item", None));
-        self.list_widget_discovered.setSortingEnabled(__sortingEnabled)
-
+        self.txt_scan_filter.setText("")
+        self.txt_scan_filter.setPlaceholderText(QCoreApplication.translate("MainWindow", u"filter scan results", None))
         self.btn_scan.setText(QCoreApplication.translate("MainWindow", u"Scan", None))
         self.btn_connect.setText(QCoreApplication.translate("MainWindow", u"Connect", None))
-        ___qtablewidgetitem = self.table_adv_data.horizontalHeaderItem(0)
-        ___qtablewidgetitem.setText(QCoreApplication.translate("MainWindow", u"New Column", None));
-        ___qtablewidgetitem1 = self.table_adv_data.horizontalHeaderItem(1)
-        ___qtablewidgetitem1.setText(QCoreApplication.translate("MainWindow", u"New Column", None));
-        ___qtablewidgetitem2 = self.table_adv_data.horizontalHeaderItem(2)
-        ___qtablewidgetitem2.setText(QCoreApplication.translate("MainWindow", u"New Column", None));
-        ___qtablewidgetitem3 = self.table_adv_data.verticalHeaderItem(0)
-        ___qtablewidgetitem3.setText(QCoreApplication.translate("MainWindow", u"New Row", None));
-        ___qtablewidgetitem4 = self.table_adv_data.verticalHeaderItem(1)
-        ___qtablewidgetitem4.setText(QCoreApplication.translate("MainWindow", u"New Row", None));
-        ___qtablewidgetitem5 = self.table_adv_data.verticalHeaderItem(2)
-        ___qtablewidgetitem5.setText(QCoreApplication.translate("MainWindow", u"New Row", None));
         ___qtreewidgetitem = self.gatt_treeView.headerItem()
         ___qtreewidgetitem.setText(0, QCoreApplication.translate("MainWindow", u"Gatt Tree", None));
         self.btn_disconnect.setText(QCoreApplication.translate("MainWindow", u"Disconnect", None))
+        self.btn_save_logs.setText(QCoreApplication.translate("MainWindow", u"Save  logs", None))
+        self.btn_clear_logs.setText(QCoreApplication.translate("MainWindow", u"Clear logs & graph", None))
+        self.label_scan_timeout.setText(QCoreApplication.translate("MainWindow", u"Scan timeout (s):", None))
+        self.label_scan_timeout_value.setText(QCoreApplication.translate("MainWindow", u"5", None))
+        self.check_no_timeout.setText(QCoreApplication.translate("MainWindow", u"No timeout", None))
+        self.label_4.setText(QCoreApplication.translate("MainWindow", u"Adv data logging :", None))
+        self.logSelection.setText(QCoreApplication.translate("MainWindow", u"Selection", None))
+        self.logAll.setText(QCoreApplication.translate("MainWindow", u"Log all data", None))
+        self.logNone.setText(QCoreApplication.translate("MainWindow", u"Do not log", None))
+        self.label_5.setText(QCoreApplication.translate("MainWindow", u"RSSI graph :", None))
+        self.graph_enabled.setText(QCoreApplication.translate("MainWindow", u"CheckBox", None))
+        self.check_scroll_to_bottom.setText(QCoreApplication.translate("MainWindow", u"Auto scroll table", None))
     # retranslateUi
 

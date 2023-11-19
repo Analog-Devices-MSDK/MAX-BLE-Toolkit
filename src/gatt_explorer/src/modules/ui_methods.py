@@ -4,7 +4,7 @@ def set_theme(main_window):
         # set custom font for application
         font_id = QFontDatabase.addApplicationFont("../../common/assets/themes/Ubuntu-Medium.ttf")
         if font_id == -1:
-            print("Failed to load font")
+            main_window.logger.info("Failed to load font")
         else:
             font_family = QFontDatabase.applicationFontFamilies(font_id)[0]
         main_window.setFont(QFont(font_family, 24))
@@ -23,6 +23,11 @@ def set_theme(main_window):
 
         set_console_log_theme(main_window)
         set_adv_data_table_theme(main_window)
+        # remove horizontal header from table_adv_data
+        main_window.ui.table_adv_data.horizontalHeader().setVisible(False)
+    
+
+        
 
 def set_theme_button_icon(main_window):
     icon = QIcon()

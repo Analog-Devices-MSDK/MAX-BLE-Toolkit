@@ -10,6 +10,9 @@ class MainWindow(QMainWindow):
     dark_themefile = "../assets/themes/dark_theme.qss"
     ble_scanner = None
     logger = None
+
+    # Signals to update gui elements
+    add_adv_table_item = Signal(str)
     def __init__(self):
         # instantiate the QMainWindow
         QMainWindow.__init__(self)
@@ -35,9 +38,11 @@ class MainWindow(QMainWindow):
         
         # Slots
         slots.init_signals_and_slots(self)
+        self.add_adv_table_item.connect(lambda data :slots.add_table_item(self,data))
         
     def logToTextbox(self, data):
         self.ui.console.append(data)
+
     def closeEvent(self, event):
         self.stop_scanner()
 

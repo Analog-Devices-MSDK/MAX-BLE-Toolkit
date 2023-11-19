@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1274</width>
-    <height>687</height>
+    <width>1302</width>
+    <height>743</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -206,9 +206,9 @@
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,5,1">
+      <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,5,0">
        <property name="spacing">
-        <number>6</number>
+        <number>9</number>
        </property>
        <property name="leftMargin">
         <number>0</number>
@@ -279,11 +279,26 @@
               <height>0</height>
              </size>
             </property>
+            <property name="frameShape">
+             <enum>QFrame::NoFrame</enum>
+            </property>
+            <property name="lineWidth">
+             <number>1</number>
+            </property>
+            <property name="midLineWidth">
+             <number>0</number>
+            </property>
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
+            <property name="opaqueResize">
+             <bool>true</bool>
+            </property>
             <property name="handleWidth">
-             <number>6</number>
+             <number>10</number>
+            </property>
+            <property name="childrenCollapsible">
+             <bool>true</bool>
             </property>
             <widget class="QFrame" name="frame_main_middle_content">
              <property name="minimumSize">
@@ -299,6 +314,15 @@
               <enum>QFrame::Raised</enum>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_5">
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
               <item>
                <widget class="QStackedWidget" name="stackedWidget">
                 <property name="currentIndex">
@@ -342,6 +366,9 @@
                         <property name="spacing">
                          <number>6</number>
                         </property>
+                        <property name="leftMargin">
+                         <number>0</number>
+                        </property>
                         <property name="topMargin">
                          <number>0</number>
                         </property>
@@ -379,7 +406,7 @@
                             <number>0</number>
                            </property>
                            <item>
-                            <widget class="QLineEdit" name="txt_scan_filter_2">
+                            <widget class="QLineEdit" name="txt_scan_filter">
                              <property name="minimumSize">
                               <size>
                                <width>0</width>
@@ -417,26 +444,6 @@
                           <property name="selectionMode">
                            <enum>QAbstractItemView::SingleSelection</enum>
                           </property>
-                          <item>
-                           <property name="text">
-                            <string>New Item</string>
-                           </property>
-                          </item>
-                          <item>
-                           <property name="text">
-                            <string>New Item</string>
-                           </property>
-                          </item>
-                          <item>
-                           <property name="text">
-                            <string>New Item</string>
-                           </property>
-                          </item>
-                          <item>
-                           <property name="text">
-                            <string>New Item</string>
-                           </property>
-                          </item>
                          </widget>
                         </item>
                         <item>
@@ -496,33 +503,13 @@
                       </widget>
                      </item>
                      <item>
-                      <widget class="QStackedWidget" name="rssi_gatt_expolrer">
-                       <property name="currentIndex">
-                        <number>1</number>
+                      <widget class="QFrame" name="frame_2">
+                       <property name="frameShape">
+                        <enum>QFrame::StyledPanel</enum>
                        </property>
-                       <widget class="QWidget" name="rssi_graph">
-                        <layout class="QVBoxLayout" name="verticalLayout_25" stretch="0">
-                         <property name="spacing">
-                          <number>0</number>
-                         </property>
-                         <property name="topMargin">
-                          <number>0</number>
-                         </property>
-                         <property name="bottomMargin">
-                          <number>0</number>
-                         </property>
-                         <item>
-                          <widget class="QChartView" name="qtchart_widgetholder" native="true" />
-                         </item>
-                        </layout>
-                       </widget>
-                       <widget class="QWidget" name="gatt_view">
-                        <layout class="QVBoxLayout" name="verticalLayout_26">
-                         <property name="topMargin">
-                          <number>0</number>
-                         </property>
-                        </layout>
-                       </widget>
+                       <property name="frameShadow">
+                        <enum>QFrame::Raised</enum>
+                       </property>
                       </widget>
                      </item>
                     </layout>
@@ -543,7 +530,13 @@
                      <enum>QFrame::Raised</enum>
                     </property>
                     <layout class="QVBoxLayout" name="verticalLayout_21" stretch="7">
+                     <property name="leftMargin">
+                      <number>0</number>
+                     </property>
                      <property name="topMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="rightMargin">
                       <number>0</number>
                      </property>
                      <property name="bottomMargin">
@@ -551,42 +544,21 @@
                      </property>
                      <item>
                       <widget class="QTableWidget" name="table_adv_data">
+                       <property name="rowCount">
+                        <number>0</number>
+                       </property>
+                       <property name="columnCount">
+                        <number>0</number>
+                       </property>
                        <attribute name="horizontalHeaderVisible">
                         <bool>false</bool>
+                       </attribute>
+                       <attribute name="horizontalHeaderStretchLastSection">
+                        <bool>true</bool>
                        </attribute>
                        <attribute name="verticalHeaderVisible">
                         <bool>false</bool>
                        </attribute>
-                       <row>
-                        <property name="text">
-                         <string>New Row</string>
-                        </property>
-                       </row>
-                       <row>
-                        <property name="text">
-                         <string>New Row</string>
-                        </property>
-                       </row>
-                       <row>
-                        <property name="text">
-                         <string>New Row</string>
-                        </property>
-                       </row>
-                       <column>
-                        <property name="text">
-                         <string>New Column</string>
-                        </property>
-                       </column>
-                       <column>
-                        <property name="text">
-                         <string>New Column</string>
-                        </property>
-                       </column>
-                       <column>
-                        <property name="text">
-                         <string>New Column</string>
-                        </property>
-                       </column>
                       </widget>
                      </item>
                     </layout>
@@ -742,8 +714,8 @@
                             <rect>
                              <x>0</x>
                              <y>0</y>
-                             <width>86</width>
-                             <height>30</height>
+                             <width>18</width>
+                             <height>16</height>
                             </rect>
                            </property>
                           </widget>
@@ -787,12 +759,405 @@
        </item>
        <item>
         <widget class="QFrame" name="frame_main_right">
+         <property name="minimumSize">
+          <size>
+           <width>250</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>165</width>
+           <height>16777215</height>
+          </size>
+         </property>
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
          </property>
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <widget class="QFrame" name="frame_scanner_settings">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>900</height>
+             </size>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::NoFrame</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_31" stretch="1,0,0,0">
+             <property name="spacing">
+              <number>6</number>
+             </property>
+             <item>
+              <widget class="QPushButton" name="btn_save_logs">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>45</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Segoe UI</family>
+                 <pointsize>10</pointsize>
+                 <weight>50</weight>
+                 <italic>false</italic>
+                 <bold>false</bold>
+                </font>
+               </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="layoutDirection">
+                <enum>Qt::LeftToRight</enum>
+               </property>
+               <property name="text">
+                <string>Save  logs</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btn_clear_logs">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>45</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Segoe UI</family>
+                 <pointsize>10</pointsize>
+                 <weight>50</weight>
+                 <italic>false</italic>
+                 <bold>false</bold>
+                </font>
+               </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="layoutDirection">
+                <enum>Qt::LeftToRight</enum>
+               </property>
+               <property name="text">
+                <string>Clear logs &amp; graph</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QFrame" name="frame_scan">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_23">
+                <property name="spacing">
+                 <number>10</number>
+                </property>
+                <property name="topMargin">
+                 <number>5</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QFrame" name="frame_scan_timeout">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                  <property name="frameShape">
+                   <enum>QFrame::StyledPanel</enum>
+                  </property>
+                  <property name="frameShadow">
+                   <enum>QFrame::Raised</enum>
+                  </property>
+                  <layout class="QHBoxLayout" name="horizontalLayout_6">
+                   <property name="leftMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>0</number>
+                   </property>
+                   <item>
+                    <widget class="QLabel" name="label_scan_timeout">
+                     <property name="maximumSize">
+                      <size>
+                       <width>16777215</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>Scan timeout (s):</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="label_scan_timeout_value">
+                     <property name="maximumSize">
+                      <size>
+                       <width>16777215</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>5</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QSlider" name="scanSlider">
+                  <property name="maximum">
+                   <number>30</number>
+                  </property>
+                  <property name="pageStep">
+                   <number>1</number>
+                  </property>
+                  <property name="value">
+                   <number>5</number>
+                  </property>
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QCheckBox" name="check_no_timeout">
+                  <property name="text">
+                   <string>No timeout</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_4">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Segoe UI</family>
+                    <pointsize>11</pointsize>
+                    <weight>50</weight>
+                    <italic>false</italic>
+                    <bold>false</bold>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>Adv data logging :</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QRadioButton" name="logSelection">
+                  <property name="text">
+                   <string>Selection</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QRadioButton" name="logAll">
+                  <property name="text">
+                   <string>Log all data</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QRadioButton" name="logNone">
+                  <property name="text">
+                   <string>Do not log</string>
+                  </property>
+                  <property name="checked">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QFrame" name="frame">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>50</height>
+                   </size>
+                  </property>
+                  <property name="frameShape">
+                   <enum>QFrame::StyledPanel</enum>
+                  </property>
+                  <property name="frameShadow">
+                   <enum>QFrame::Raised</enum>
+                  </property>
+                  <layout class="QHBoxLayout" name="horizontalLayout_10" stretch="5,2">
+                   <item>
+                    <widget class="QLabel" name="label_5">
+                     <property name="text">
+                      <string>RSSI graph :</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="AnimatedToggle" name="graph_enabled">
+                     <property name="minimumSize">
+                      <size>
+                       <width>84</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>84</width>
+                       <height>999999</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>CheckBox</string>
+                     </property>
+                     <property name="checked">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QFrame" name="options_frame">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>45</height>
+                   </size>
+                  </property>
+                  <property name="frameShape">
+                   <enum>QFrame::StyledPanel</enum>
+                  </property>
+                  <property name="frameShadow">
+                   <enum>QFrame::Raised</enum>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_14">
+                   <property name="leftMargin">
+                    <number>0</number>
+                   </property>
+                   <item>
+                    <widget class="QCheckBox" name="check_scroll_to_bottom">
+                     <property name="text">
+                      <string>Auto scroll table</string>
+                     </property>
+                     <property name="checked">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="verticalSpacer_2">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_3">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
         </widget>
        </item>
       </layout>
@@ -803,14 +1168,30 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QChartView</class>
-   <extends>QWidget</extends>
-   <header>QtCharts.h</header>
-   <container>1</container>
+   <class>AnimatedToggle</class>
+   <extends>QCheckBox</extends>
+   <header>toggle.h</header>
   </customwidget>
  </customwidgets>
  <resources>
   <include location="../../../../../projects/BLE-PyDex/resources.qrc" />
  </resources>
- <connections />
+ <connections>
+  <connection>
+   <sender>scanSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>label_scan_timeout_value</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1119</x>
+     <y>217</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1234</x>
+     <y>194</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

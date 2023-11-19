@@ -2,8 +2,6 @@ from main_app import *
 from . import app_settings
 from . import ui_methods
 
-
-
 def btn_scan_callback(main_window):
     if main_window.ble_scanner.is_scanning:
         main_window.ble_scanner.is_scanning = False
@@ -15,7 +13,6 @@ def btn_scan_callback(main_window):
         main_window.ui.btn_scan.setText("Scanning...")
         main_window.ble_scanner.scan_timeout = 0
         main_window.ble_scanner.start()
-
 
 def btn_connect_callback(main_window):
     pass
@@ -29,11 +26,10 @@ def btn_theme_callback(main_window):
     ui_methods.set_theme(main_window)
 
 def register_button_callbacks(main_window):
-    pass
     try:
         main_window.ui.btn_scan.clicked.connect(lambda: btn_scan_callback(main_window))
         main_window.ui.btn_connect.clicked.connect(lambda: btn_connect_callback(main_window))
         main_window.ui.btn_theme.clicked.connect(lambda: btn_theme_callback(main_window))
     except Exception as e:
-        print(e)
+        main_window.logger.info(e)
     

@@ -7,8 +7,8 @@ QLabel{
     background-color: rgb(33, 37, 43);
 }
 QPushButton{
-    background-color: #464E69;
-    border: 0px solid rgb(52, 59, 72);
+    background-color: rgb(33, 37, 43);
+    border: 1px solid rgb(30, 70, 78);
     color: rgb(255, 255, 255);
     border-radius: 5px;	
     text-align: center;
@@ -26,7 +26,7 @@ QPushButton:pressed{
 
 /***********************| Common button style for all lists |***********************/
 QListWidget {
-    border: 2px solid rgb(53, 93, 101);
+    border: 2px solid rgb(20, 60, 68);
     border-radius: 5px;
     color: rgb(222, 221, 218);
 }
@@ -39,6 +39,52 @@ QChartView{
 QLineEdit {
     color: rgb(222, 221, 218);
     background-color: rgb(33, 37, 43);
+}
+/***********************| Common button style for all labels |***********************/
+QLabel{
+    color: rgb(222, 221, 218);
+    background: transparent;
+
+}
+
+/***********************| Common button style for all radio button |***********************/
+QRadioButton{
+    color: rgb(222, 221, 218);
+}
+QRadioButton::indicator {
+    border: 3px solid rgb(52, 59, 72);
+	width: 15px;
+	height: 15px;
+	border-radius: 10px;
+    background: rgb(44, 49, 60);
+    
+}
+QRadioButton::indicator:hover {
+    border: 3px solid rgb(58, 66, 81);
+}
+QRadioButton::indicator:checked {
+    background: 3px solid rgb(94, 106, 130);
+	border: 3px solid rgb(52, 59, 72);	
+}
+
+
+/***********************| Common button style for all check boxes |***********************/
+QCheckBox{
+    color: rgb(222, 221, 218);
+}
+QCheckBox::indicator {
+    border: 3px solid rgb(52, 59, 72);
+	width: 15px;
+	height: 15px;
+	border-radius: 10px;
+    background: rgb(52, 59, 72);
+}
+QCheckBox::indicator:hover {
+    border: 3px solid rgb(119, 136, 187);
+}
+QCheckBox::indicator:checked {
+    background: 3px solid #bd93f9;
+	border: 3px solid #bd93f9;	
 }
 /***********************| custom style for top gatt explorer label |***********************/
 #label_gatt_explorer{
@@ -109,59 +155,133 @@ QLineEdit {
         border: 0px solid #E0E0F0;
     border-radius: 0px;	
 }
-#qtchart_widgetholder {
+QChartView{
     background-color: rgb(40, 44, 52);
 
 }
 /***********************| custom style for advertising data table |***********************/
 QTableWidget {	
-	background-color: rgb(40, 44, 52);
+	background-color: transparent;
 	padding: 10px;
 	border-radius: 5px;
-	gridline-color: rgb(53, 93, 101);
-    border: 2px solid rgb(53, 93, 101);
+	gridline-color: rgb(33, 73, 81);
+    border: 2px solid rgb(20, 60, 68);
+    color: rgb(222, 221, 218);
 }
 QTableWidget::item{
-	border-color:  #EBEBEF;
+	border-color:  rgb(20, 60, 68);
 	padding-left: 5px;
 	padding-right: 5px;
-	gridline-color: rgb(53, 93, 101);
+    padding-top: 10px;
+	gridline-color: rgb(43, 83, 91);
     color: rgb(222, 221, 218);
 }
 QTableWidget::item:selected{
-	background-color: #464E69;
+	background-color: rgb(153, 193, 241);
 }
 QHeaderView::section{
-	background-color: rgb(33, 37, 43);
-	max-width: 30px;
-	border: 1px solid rgb(44, 49, 58);
+    color: rgb(222, 221, 218);
+	background-color: rgb(40, 44, 52);
+	max-width: 10px;
+	border: 0px solid rgb(44, 49, 58);
 	border-style: none;
-    border-bottom: 1px solid rgb(44, 49, 60);
-    border-right: 1px solid rgb(44, 49, 60);
+    border-bottom: 0px solid rgb(44, 49, 60);
+    border-right: 0px solid rgb(44, 49, 60);
 }
 QTableWidget::horizontalHeader {	
-	background-color: rgb(33, 37, 43);
+    color: rgb(222, 221, 218);
+	background-color: rgb(40, 44, 52);
 }
 QHeaderView::section:horizontal
 {
+    color: rgb(222, 221, 218);
     border: 1px solid rgb(33, 37, 43);
-	background-color: rgb(33, 37, 43);
-	padding: 3px;
-	border-top-left-radius: 7px;
-    border-top-right-radius: 7px;
+	background-color: rgb(40, 44, 52);
+	padding: 10px;
+	border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
 }
 QHeaderView::section:vertical
 {
-    border: 1px solid rgb(44, 49, 60);
+    color: rgb(222, 221, 218);
+    border: 0px solid rgb(44, 49, 60);
 }
-QChartView {	
-	background-color: rgb(40, 44, 52);
-	padding: 10px;
-    border: 1px solid rgb(33, 37, 43);
-	border-radius: 5px;
-	gridline-color: rgb(44, 49, 58);
-border: 2px solid rgb(53, 93, 101);
+QTableWidget QTableCornerButton::section {
+    background-color: rgb(40, 44, 52);
+
 }
-QStackedWidget{
-    background: transparent;
+QScrollBar:horizontal {
+    border: none;
+    background: #6272a4;
+    height: 8px;
+    margin: 0px 21px 0 21px;
+	border-radius: 0px;
 }
+QScrollBar::handle:horizontal {
+    background: rgb(189, 147, 249);
+    min-width: 25px;
+	border-radius: 4px
+}
+QScrollBar::add-line:horizontal {
+    border: none;
+    background: #6272a4;
+    width: 20px;
+	border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    subcontrol-position: right;
+    subcontrol-origin: margin;
+}
+QScrollBar::sub-line:horizontal {
+    border: none;
+    background: #6272a4;
+    width: 20px;
+	border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    subcontrol-position: left;
+    subcontrol-origin: margin;
+}
+QScrollBar::up-arrow:horizontal, QScrollBar::down-arrow:horizontal
+{
+     background: none;
+}
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal
+{
+     background: none;
+}
+ QScrollBar:vertical {
+	border: none;
+    background-color: #6272a4;
+    width: 8px;
+    margin: 21px 0 21px 0;
+	border-radius: 0px;
+ }
+ QScrollBar::handle:vertical {	
+	background: rgb(189, 147, 249);
+    min-height: 25px;
+	border-radius: 4px
+ }
+ QScrollBar::add-line:vertical {
+     border: none;
+    background: #6272a4;
+     height: 20px;
+	border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+     subcontrol-position: bottom;
+     subcontrol-origin: margin;
+ }
+ QScrollBar::sub-line:vertical {
+	border: none;
+    background: #6272a4;
+     height: 20px;
+	border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+     subcontrol-position: top;
+     subcontrol-origin: margin;
+ }
+ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
+     background: none;
+ }
+
+ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+     background: none;
+ }
