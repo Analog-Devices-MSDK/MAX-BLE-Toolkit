@@ -5,6 +5,7 @@ from PySide6.QtWidgets import *
 from . app_settings import *
 from . ble import *
 from . btn_callbacks import *
-from . console import *
+from . console_log import *
 from . slots import *
+from . ui_methods import *
 from . main_ui import Ui_MainWindow

@@ -3,49 +3,39 @@ from pathlib import Path
 from modules import *
 # Adding the 'src' directory to the Python path
 sys.path.append(str(Path(__file__).resolve().parent / "src"))
-# Now you can use absolute imports
-from modules import *
 
 import sys
 class MainWindow(QMainWindow):
+    light_themefile = "../assets/themes/light_theme.qss"
+    dark_themefile = "../assets/themes/dark_theme.qss"
+    logger = None
     def __init__(self):
         # instantiate the QMainWindow
         QMainWindow.__init__(self)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self.set_theme()
-
+        ui_methods.set_theme(self)
         self.show()
         #register button callbacks
         btn_callbacks.register_button_callbacks(self)
 
-        # connect signals and slots
+        # Theme stuff
+        ui_methods.set_theme_button_icon(self)
+        ui_methods.set_menu_button_icon(self)
+        ui_methods.set_console_log_theme(self)
 
-        # other stuff
-
-    def set_theme(self):
-        # set custom font for application
-        font_id = QFontDatabase.addApplicationFont("../../common/assets/themes/Ubuntu-Medium.ttf")
-        if font_id == -1:
-            print("Failed to load font")
-        else:
-            font_family = QFontDatabase.applicationFontFamilies(font_id)[0]
-        self.setFont(QFont(font_family, 24))
-        #set theme
-        light_themefile = "../local_assets/themes/light_theme.qss"
-        dark_themefile = "../local_assets/themes/dark_theme.qss"
-        if app_settings.THEME == "light":
-            str = open(light_themefile, 'r').read()
-        else:
-            str = open(dark_themefile, 'r').read()
-        self.setStyleSheet(str)
-
-        #top left logo icon
-        pixmap = QPixmap("../../common/assets/images/analog.png")
-        self.ui.topLeftLogoLabel.setPixmap(pixmap)
-        self.ui.topLeftLogoLabel.setScaledContents(True)
+        #config logging
+        console_log.init_logging(self)
+        self.logger = logging.getLogger("gattLogger")
+        self.logger.info("Application started")
+        
+    def logToTextbox(self, data):
+        self.ui.console.append(data)
 
 if __name__ == "__main__":
+    light_themefile = "../assets/themes/light_theme.qss"
+    str = open(light_themefile, 'r').read()
     app = QApplication(sys.argv)
+    app.setStyleSheet(str)
     window = MainWindow()
     sys.exit(app.exec())

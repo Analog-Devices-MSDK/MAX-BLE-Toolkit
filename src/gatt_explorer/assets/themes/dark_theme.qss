@@ -1,0 +1,167 @@
+/***********************| Common button style for all buttons |***********************/
+QFrame{
+    border: 0px;
+    background-color: rgb(40, 44, 52);
+}
+QLabel{
+    background-color: rgb(33, 37, 43);
+}
+QPushButton{
+    background-color: #464E69;
+    border: 0px solid rgb(52, 59, 72);
+    color: rgb(255, 255, 255);
+    border-radius: 5px;	
+    text-align: center;
+    padding: 0px;
+    margin: 0px;
+}
+QPushButton:hover{
+    color: rgb(255, 255, 255);
+    background-color: rgb(153, 193, 241);
+}
+QPushButton:pressed{
+    color: rgb(255, 255, 255);
+    background-color: #262E49;
+}
+
+/***********************| Common button style for all lists |***********************/
+QListWidget {
+    border: 2px solid rgb(53, 93, 101);
+    border-radius: 5px;
+    color: #464E69;
+}
+QChartView{
+    border: 2px solid rgb(53, 93, 101);
+    border-radius: 5px;
+}
+
+/***********************| Common button style for all line edit |***********************/
+QLineEdit {
+    color: rgb(222, 221, 218);
+    background-color: rgb(33, 37, 43);
+}
+/***********************| custom style for top gatt explorer label |***********************/
+#label_gatt_explorer{
+    color: rgb(255, 255, 255);
+}
+#logo_divider_line{
+    color: rgb(255, 255, 255);
+}
+
+/***********************| custom style for top frame |***********************/
+#frame_main_top_bar{
+    background-color: rgb(33, 37, 43);
+}
+
+/***********************| custom style for side frames |***********************/
+#frame_main_left {
+    background-color: rgb(33, 37, 43);
+}
+#frame_main_right {
+    background-color: rgb(43, 47, 53);
+}
+
+#frame_main_middle_2{
+    background-color: rgb(40, 44, 52);
+}
+
+/***********************| custom style for logging frame |***********************/
+#frame_logging{
+    background-color: rgb(33, 37, 43);
+}
+
+/***********************| custom style stacked widget |***********************/
+#stackedWidget .QStackedWidget{
+    background: transparent;
+}
+
+/***********************| custom style main window middle frame  |***********************/
+#frame_main_window_middle .QFrame{
+    background-color: rgb(40, 44, 52);
+    border: 0px;
+}
+/***********************| custom style main middle frame  |***********************/
+#frame_main_middle_content .QFrame{
+    background-color: rgb(40, 44, 52);
+    border: 0px solid #E0E0F0;
+    border-radius: 0px;	
+}
+
+#frame_main_middle{
+    background-color: rgb(40, 44, 52);
+}
+
+#centralwidget .QWidget{
+    background-color: rgb(40, 44, 52);
+}
+
+#MainWindow .QMainWindow{
+    background-color: rgb(40, 44, 52);
+}
+#frame_main_top_bar .QFrame{
+    background-color: #0067B9;
+}
+
+
+/***********************| custom style rssi viewer  |***********************/
+#rssi_graph{
+    background-color: rgb(40, 44, 52);
+        border: 0px solid #E0E0F0;
+    border-radius: 0px;	
+}
+#qtchart_widgetholder {
+    background-color: rgb(40, 44, 52);
+
+}
+/***********************| custom style for advertising data table |***********************/
+QTableWidget {	
+	background-color: rgb(40, 44, 52);
+	padding: 10px;
+	border-radius: 5px;
+	gridline-color: rgb(53, 93, 101);
+    border: 2px solid rgb(53, 93, 101);
+}
+QTableWidget::item{
+	border-color:  #EBEBEF;
+	padding-left: 5px;
+	padding-right: 5px;
+	gridline-color: rgb(53, 93, 101);
+    color: rgb(222, 221, 218);
+}
+QTableWidget::item:selected{
+	background-color: rgb(189, 147, 249);
+}
+QHeaderView::section{
+	background-color: rgb(33, 37, 43);
+	max-width: 30px;
+	border: 1px solid rgb(44, 49, 58);
+	border-style: none;
+    border-bottom: 1px solid rgb(44, 49, 60);
+    border-right: 1px solid rgb(44, 49, 60);
+}
+QTableWidget::horizontalHeader {	
+	background-color: rgb(33, 37, 43);
+}
+QHeaderView::section:horizontal
+{
+    border: 1px solid rgb(33, 37, 43);
+	background-color: rgb(33, 37, 43);
+	padding: 3px;
+	border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+}
+QHeaderView::section:vertical
+{
+    border: 1px solid rgb(44, 49, 60);
+}
+QChartView {	
+	background-color: rgb(40, 44, 52);
+	padding: 10px;
+    border: 1px solid rgb(33, 37, 43);
+	border-radius: 5px;
+	gridline-color: rgb(44, 49, 58);
+border: 2px solid rgb(53, 93, 101);
+}
+QStackedWidget{
+    background: transparent;
+}
