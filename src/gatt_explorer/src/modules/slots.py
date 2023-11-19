@@ -33,7 +33,6 @@ def update_discovered_devices(main_window, device):
         # the checkbox could be considred here to see if we graph or not
         #main_window.update_rssi_thread.updateDeviceData(device, time.time())
 
-
     # check if the filter is empty
     if main_window.ui.txt_scan_filter.text() == "":
         add_device_to_list()
@@ -122,12 +121,11 @@ def txt_scan_filter_changed(main_window):
     except Exception as e:
         main_window.logger.warning(e)
         main_window.logger.warning("txt_scan_filter_changed failed")
-        
+
 def timed_scanning_stoped(main_window):
     main_window.stop_scanner()
 
 def init_signals_and_slots(main_window):
     main_window.ble_scanner.discovered_devices.connect(lambda device : update_discovered_devices(main_window,device))
     main_window.ble_scanner.scanning_stoped.connect(lambda : timed_scanning_stoped(main_window))
-
     main_window.ui.txt_scan_filter.textChanged.connect(lambda: txt_scan_filter_changed(main_window))

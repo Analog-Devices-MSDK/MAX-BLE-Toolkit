@@ -50,16 +50,16 @@ sys.path.append(str(Path(__file__).resolve().parent / "src"))
 Also note that in qt designer the check box is promoted to 
 custom_widgets.toggle.h as the header and AnimatedToggle as the promoted  class name
 '''
-# string1 = "from toggle import AnimatedToggle"
-# string2 = "from custom_widgets.toggle import AnimatedToggle"
-# file_path = "modules/main_ui.py"
+string1 = "from toggle import AnimatedToggle"
+string2 = "from custom_widgets.toggle import AnimatedToggle"
+file_path = "modules/main_ui.py"
 
-# # # Perform the replacement
-# with open(file_path, "r") as file:
-#     content = file.read()
-#     updated_content = content.replace(string1, string2)
+# # Perform the replacement
+with open(file_path, "r") as file:
+    content = file.read()
+    updated_content = content.replace(string1, string2)
 
-# with open(file_path, "w") as file:
-#     file.write(updated_content)
+with open(file_path, "w") as file:
+    file.write(updated_content)
 
 print("Done generating main_ui.py")

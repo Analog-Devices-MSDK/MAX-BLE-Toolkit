@@ -23,7 +23,7 @@ from PySide6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox, QFram
     QTableWidgetItem, QTextEdit, QTreeWidget, QTreeWidgetItem,
     QVBoxLayout, QWidget)
 
-from toggle import AnimatedToggle
+from custom_widgets.toggle import AnimatedToggle
 import resources_rc
 
 class Ui_MainWindow(object):
