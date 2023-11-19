@@ -26,7 +26,7 @@ def set_theme(main_window):
 
 def set_theme_button_icon(main_window):
     icon = QIcon()
-    icon.addPixmap(QPixmap("../assets/images/icons/theme_mode.png"), QIcon.Normal, QIcon.On)
+    icon.addPixmap(QPixmap("../../common/assets/images/icons/theme_mode.png"), QIcon.Normal, QIcon.On)
     # set button width and height
     main_window.ui.btn_theme.setFixedWidth(35)
     main_window.ui.btn_theme.setFixedHeight(35)
@@ -49,7 +49,7 @@ def set_theme_button_icon(main_window):
 
 def set_menu_button_icon(main_window):
     icon = QIcon()
-    icon.addPixmap(QPixmap("../assets/images/icons/icon_settings.png"), QIcon.Normal, QIcon.On)
+    icon.addPixmap(QPixmap("../../common/assets/images/icons/icon_settings.png"), QIcon.Normal, QIcon.On)
     # set button width and height
     main_window.ui.btn_menu.setFixedWidth(35)
     main_window.ui.btn_menu.setFixedHeight(35)
