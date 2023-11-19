@@ -1,7 +1,7 @@
 /***********************| Common button style for all buttons |***********************/
 QFrame{
     border: 0px;
-    background-color: rgb(40, 44, 52);
+    background-color: transparent;
 }
 QLabel{
     background-color: rgb(33, 37, 43);
@@ -106,6 +106,7 @@ QCheckBox::indicator:checked {
 #frame_main_right {
     background-color: rgb(33, 37, 43);
 }
+
 
 #frame_main_middle_2{
     background-color: rgb(40, 44, 52);

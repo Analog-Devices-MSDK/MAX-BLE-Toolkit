@@ -919,13 +919,13 @@ QPushButton:pressed{
         <widget class="QFrame" name="frame_main_right">
          <property name="minimumSize">
           <size>
-           <width>250</width>
+           <width>0</width>
            <height>0</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>165</width>
+           <width>0</width>
            <height>16777215</height>
           </size>
          </property>

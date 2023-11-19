@@ -25,11 +25,15 @@ def btn_theme_callback(main_window):
         app_settings.THEME = "light"
     ui_methods.set_theme(main_window)
 
+def btn_menu_callback(main_window):
+    ui_methods.toggleRightBox(main_window)
+
 def register_button_callbacks(main_window):
     try:
         main_window.ui.btn_scan.clicked.connect(lambda: btn_scan_callback(main_window))
         main_window.ui.btn_connect.clicked.connect(lambda: btn_connect_callback(main_window))
         main_window.ui.btn_theme.clicked.connect(lambda: btn_theme_callback(main_window))
+        main_window.ui.btn_menu.clicked.connect(lambda: btn_menu_callback(main_window))
     except Exception as e:
         main_window.logger.info(e)
     

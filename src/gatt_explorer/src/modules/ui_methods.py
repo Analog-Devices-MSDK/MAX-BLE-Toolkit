@@ -93,3 +93,71 @@ def set_adv_data_table_theme(main_window):
         main_window.ui.table_adv_data.setStyleSheet('''
         QTextEdit {background-color: transparent; border: none;}
         QTextEdit {color: rgb(222, 221, 218);}''') 
+
+#************| Animation stuff |-------------------
+def toggleRightBox(main_window):
+        # GET WIDTH
+        width = main_window.ui.frame_main_right.width()
+        widthLeftBox = main_window.ui.frame_main_left.width()
+        maxExtend = app_settings.RIGHT_BOX_WIDTH
+       # color = Settings.BTN_RIGHT_BOX_COLOR
+        standard = 0
+
+        # GET BTN STYLE
+       # style = main_window.ui.settingsTopBtn.styleSheet()
+
+        # SET MAX WIDTH
+        if width == 0:
+            widthExtended = maxExtend
+            # SELECT BTN
+          #  main_window.ui.settingsTopBtn.setStyleSheet(style + color)
+            # if widthLeftBox != 0:
+            #     style = main_window.ui.toggleLeftBox.styleSheet()
+            #     main_window.ui.toggleLeftBox.setStyleSheet(style.replace(Settings.BTN_LEFT_BOX_COLOR, ''))
+        else:
+            widthExtended = standard
+            # RESET BTN
+          #  main_window.ui.settingsTopBtn.setStyleSheet(style.replace(color, ''))
+
+        start_box_animation(main_window, widthLeftBox, width, "right")
+
+def start_box_animation(main_window, left_box_width, right_box_width, direction):
+        right_width = 0
+        left_width = 0 
+
+        # Check values
+        if left_box_width == 0 and direction == "left":
+            left_width = 240
+        else:
+            left_width = 0
+        # Check values
+        if right_box_width == 0 and direction == "right":
+            right_width = 240
+        else:
+            right_width = 0       
+
+        # # ANIMATION LEFT BOX        
+        main_window.left_box = QPropertyAnimation(main_window.ui.frame_main_left, b"minimumWidth")
+        main_window.left_box.setDuration(app_settings.TIME_ANIMATION)
+        main_window.left_box.setStartValue(left_box_width)
+        main_window.left_box.setEndValue(left_width)
+        main_window.left_box.setEasingCurve(QEasingCurve.InOutQuart)
+
+        # ANIMATION RIGHT BOX        
+        main_window.right_box = QPropertyAnimation(main_window.ui.frame_main_right, b"minimumWidth")
+        main_window.right_box.setDuration(app_settings.TIME_ANIMATION)
+        main_window.right_box.setStartValue(right_box_width)
+        main_window.right_box.setEndValue(right_width)
+        main_window.right_box.setEasingCurve(QEasingCurve.InOutQuart)
+        print("right box width: ", right_box_width)
+        print("right width: ", right_width)
+        print(app_settings.TIME_ANIMATION)
+        print(app_settings.RIGHT_BOX_WIDTH)
+
+
+
+        # GROUP ANIMATION
+        main_window.group = QParallelAnimationGroup()
+        main_window.group.addAnimation(main_window.left_box)
+        main_window.group.addAnimation(main_window.right_box)
+        main_window.group.start()

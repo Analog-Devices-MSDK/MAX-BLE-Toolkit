@@ -383,8 +383,8 @@ class Ui_MainWindow(object):
 
         self.frame_main_right = QFrame(self.frame_main_middle)
         self.frame_main_right.setObjectName(u"frame_main_right")
-        self.frame_main_right.setMinimumSize(QSize(250, 0))
-        self.frame_main_right.setMaximumSize(QSize(165, 16777215))
+        self.frame_main_right.setMinimumSize(QSize(0, 0))
+        self.frame_main_right.setMaximumSize(QSize(0, 16777215))
         self.frame_main_right.setFrameShape(QFrame.StyledPanel)
         self.frame_main_right.setFrameShadow(QFrame.Raised)
         self.verticalLayout_4 = QVBoxLayout(self.frame_main_right)

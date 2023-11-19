@@ -20,8 +20,6 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
         ui_methods.set_theme(self)
         self.show()
-        #register button callbacks
-        btn_callbacks.register_button_callbacks(self)
 
         # Theme stuff
         ui_methods.set_theme_button_icon(self)
@@ -35,6 +33,9 @@ class MainWindow(QMainWindow):
 
         #BLE scanner
         self.ble_scanner = ble.BleScanner(self)
+
+        #register button callbacks
+        btn_callbacks.register_button_callbacks(self)
         
         # Slots
         slots.init_signals_and_slots(self)
