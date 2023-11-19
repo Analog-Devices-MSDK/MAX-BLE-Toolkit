@@ -11,7 +11,10 @@ def btn_scan_callback(main_window):
         return
     else:
         main_window.ui.btn_scan.setText("Scanning...")
-        main_window.ble_scanner.scan_timeout = 0
+        if main_window.ui.check_no_timeout.isChecked():
+            main_window.ble_scanner.scan_timeout = 0
+        else:
+            main_window.ble_scanner.scan_timeout = main_window.ui.scanSlider.value()
         main_window.ble_scanner.start()
 
 def btn_connect_callback(main_window):

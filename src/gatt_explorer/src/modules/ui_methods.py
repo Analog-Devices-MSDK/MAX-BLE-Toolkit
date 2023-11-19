@@ -2,14 +2,15 @@ from main_app import *
 
 def set_theme(main_window):
         # set custom font for application
-        font_id = QFontDatabase.addApplicationFont("../../common/assets/themes/Ubuntu-Medium.ttf")
-        font_family =  None
-        if font_id == -1:
-            print("Failed to load font")
-        else:
-            font_family = QFontDatabase.applicationFontFamilies(font_id)[0]
-        if font_family:
-            main_window.setFont(QFont(font_family, 24))
+        # TODO debug this
+        # font_id = QFontDatabase.addApplicationFont("../../common/assets/themes/Ubuntu-Medium.ttf")
+        # font_family =  None
+        # if font_id == -1:
+        #     print("Failed to load font")
+        # else:
+        #     font_family = QFontDatabase.applicationFontFamilies(font_id)[0]
+        # if font_family:
+        #     main_window.setFont(QFont(font_family, 24))
         #set theme
         if app_settings.THEME == "light":
             str = open(main_window.light_themefile, 'r').read()

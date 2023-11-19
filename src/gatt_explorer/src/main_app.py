@@ -49,9 +49,11 @@ class MainWindow(QMainWindow):
 
     def stop_scanner(self):
         self.ui.btn_scan.setText("Scan")
+        # break infinite loop so the thread can return
         self.ble_scanner.is_scanning = False
         self.ble_scanner.quit()
         self.ble_scanner.wait()
+        print("Scanner stopped")
         #self.stop_graphing()
 
 if __name__ == "__main__":

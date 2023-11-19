@@ -11,6 +11,7 @@ class BleScanner(QThread):
     scan_timeout = 0
     is_scanning = False
     discovered_devices = Signal(tuple)
+    scanning_stoped = Signal()
     logger = logging.getLogger("gattLogger")
 
     def run(self):
@@ -29,7 +30,7 @@ class BleScanner(QThread):
                         return_adv=True,timeout=0.1)
                     for item, adv in devices.values():
                         self.discovered_devices.emit((item,adv))
-                self.logger.info("Scan stopped")
+                
             elif self.is_scanning == False:
 
                 # in in half second intervals until timeout is met
@@ -45,9 +46,9 @@ class BleScanner(QThread):
                         self.discovered_devices.emit(item)
                     self.scan_timeout -= scanTime
                     
-                self.logger.info("Scan stopped")
-                self.is_scanning = False
-                self.scanning_stoped.emit()
+            self.logger.info("Scan stopped")
+            self.is_scanning = False
+            self.scanning_stoped.emit()
 
         except Exception as err:
             self.is_scanning = False
