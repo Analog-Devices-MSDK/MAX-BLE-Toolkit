@@ -5,25 +5,11 @@ Main Application for DTM Testsing
 import sys
 
 import ble_hci
-from ble_hci.constants import PhyOption, PayloadOption
-from ble_hci.packet_codes import StatusCode
-import BLE_util
-import hci_util
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
+
+import hci_util
+import src.dtm.src.ble_util as ble_util
 from ui_mainwindow import Ui_MainWindow
-
-TX_PACKET_TYPES = {
-    "PRBS9": 0,
-    "11110000": 1,
-    "10101010": 2,
-    "PRBS15": 3,
-    "11111111": 4,
-    "00000000": 5,
-    "00001111": 6,
-    "01010101": 7,
-}
-
-TX_PHY_TYPES = {"1M": 1, "2M": 2, "S8": 3, "S2": 4}
 
 
 class MainWindow(QMainWindow):
@@ -39,10 +25,10 @@ class MainWindow(QMainWindow):
         self.refresh_port_select()
         self.win.baud_rate_select.setValue(hci_util.DEFAULT_BAUDRATE)
 
-        self.win.phy_select.insertItems(0, BLE_util.AVAILABLE_PHYS)
-        self.win.packet_type_select.insertItems(0, BLE_util.TX_PACKET_TYPE_OPTIONS)
-        self.win.power_select.insertItems(0, BLE_util.AVAILABLE_TX_POWERS)
-        self.win.power_select.setCurrentIndex(len(BLE_util.AVAILABLE_TX_POWERS) - 1)
+        self.win.phy_select.insertItems(0, ble_util.AVAILABLE_PHYS)
+        self.win.packet_type_select.insertItems(0, ble_util.TX_PACKET_TYPE_OPTIONS)
+        self.win.power_select.insertItems(0, ble_util.AVAILABLE_TX_POWERS)
+        self.win.power_select.setCurrentIndex(len(ble_util.AVAILABLE_TX_POWERS) - 1)
 
         self.win.channel_select.valueChanged.connect(self.slider_value_changed)
         self.win.packet_len_select.valueChanged.connect(self.slider_value_changed)
@@ -96,8 +82,10 @@ class MainWindow(QMainWindow):
         if not self.dtm_test_started:
             tx_power = int(self.win.power_select.currentText().split("dbm")[0])
             channel = int(self.win.channel_select.value())
-            payload = TX_PACKET_TYPES[self.win.packet_type_select.currentText()]
-            phy = TX_PHY_TYPES[self.win.phy_select.currentText()]
+            payload = ble_util.TX_PACKET_TYPES[
+                self.win.packet_type_select.currentText()
+            ]
+            phy = ble_util.TX_PHY_TYPES[self.win.phy_select.currentText()]
             packet_len = self.win.packet_len_select.value()
 
             try:
