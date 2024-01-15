@@ -230,7 +230,7 @@ class Ui_MainWindow(object):
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"DTM_TX", None))
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"DTM TOOL", None))
         self.label_9.setText(QCoreApplication.translate("MainWindow", u"Port", None))
         self.port_select_tx.setCurrentText("")
         self.label_10.setText(QCoreApplication.translate("MainWindow", u"Baud", None))
@@ -249,6 +249,6 @@ class Ui_MainWindow(object):
         self.start_stop_btn_rx.setText(QCoreApplication.translate("MainWindow", u"START RX", None))
         self.rx_per_label.setText(QCoreApplication.translate("MainWindow", u"PER", None))
         self.tab_mode.setTabText(self.tab_mode.indexOf(self.tab_rx), QCoreApplication.translate("MainWindow", u"RX", None))
-        self.reset_hci.setText(QCoreApplication.translate("MainWindow", u"RESET", None))
+        self.reset_hci.setText(QCoreApplication.translate("MainWindow", u"RESET HCI", None))
     # retranslateUi
 
