@@ -8,10 +8,11 @@ import time
 
 import ble_hci
 
-#pylint: disable=no-name-in-module,c-extension-no-member
+# pylint: disable=no-name-in-module,c-extension-no-member
 from PySide6.QtCore import QThread, Signal
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
-#pylint: enable=no-name-in-module,c-extension-no-member
+
+# pylint: enable=no-name-in-module,c-extension-no-member
 
 import ble_util
 import hci_util
@@ -19,8 +20,6 @@ from ui_mainwindow import Ui_MainWindow
 
 TAB_TX = 0
 TAB_RX = 1
-
-
 
 
 class RxStatsThread(QThread):
@@ -34,8 +33,7 @@ class RxStatsThread(QThread):
         self.hci = hci
 
     def run(self):
-        """Run worker thread
-        """
+        """Run worker thread"""
         self.early_exit = False
 
         while not self.early_exit:
@@ -43,13 +41,11 @@ class RxStatsThread(QThread):
             time.sleep(1)
 
     def stop(self):
-        """Stop worker thread
-        """
+        """Stop worker thread"""
         self.early_exit = True
 
     def quit(self):
-        """Quit worker thread
-        """
+        """Quit worker thread"""
         self.early_exit = True
 
 
