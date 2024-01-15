@@ -32,185 +32,332 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_6">
         <item>
-         <widget class="QFrame" name="input_frame">
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
+         <widget class="QTabWidget" name="tab_mode">
+          <property name="currentIndex">
+           <number>1</number>
           </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout">
-           <item>
-            <widget class="QLabel" name="label">
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Port</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QComboBox" name="port_select">
-             <property name="currentText">
-              <string extracomment="Port"/>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="label_2">
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Baud</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QSpinBox" name="baud_rate_select">
-             <property name="maximum">
-              <number>10000000</number>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="label_3">
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>PHY</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QComboBox" name="phy_select"/>
-           </item>
-           <item>
-            <widget class="QLabel" name="packet_type_label">
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Packet Type</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QComboBox" name="packet_type_select"/>
-           </item>
-           <item>
-            <widget class="QLabel" name="label_4">
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Power</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QComboBox" name="power_select"/>
-           </item>
-           <item>
-            <widget class="QLabel" name="channel_label">
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Channel</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QSlider" name="channel_select">
-             <property name="maximum">
-              <number>39</number>
-             </property>
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="packet_len_label">
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Packet Length</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QSlider" name="packet_len_select">
-             <property name="maximum">
-              <number>255</number>
-             </property>
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item>
-         <widget class="QFrame" name="frame">
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>50</height>
-           </size>
-          </property>
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <layout class="QHBoxLayout" name="horizontalLayout">
-           <item>
-            <widget class="QPushButton" name="start_stop_btn">
-             <property name="maximumSize">
-              <size>
-               <width>100</width>
-               <height>50</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>START</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
+          <widget class="QWidget" name="tab_tx">
+           <attribute name="title">
+            <string>TX</string>
+           </attribute>
+           <widget class="QFrame" name="tx_frame">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>0</y>
+              <width>1176</width>
+              <height>531</height>
+             </rect>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_4">
+             <item>
+              <widget class="QLabel" name="label_9">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Port</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="port_select_tx">
+               <property name="currentText">
+                <string extracomment="Port"/>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_10">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Baud</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QSpinBox" name="baud_rate_select_tx">
+               <property name="maximum">
+                <number>10000000</number>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_11">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>PHY</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="phy_select_tx"/>
+             </item>
+             <item>
+              <widget class="QLabel" name="packet_type_label_3">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Packet Type</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="packet_type_select_tx"/>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_12">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Power</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="power_select_tx"/>
+             </item>
+             <item>
+              <widget class="QLabel" name="channel_label_tx">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Channel</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QSlider" name="channel_select_tx">
+               <property name="maximum">
+                <number>39</number>
+               </property>
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="packet_len_label_tx">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Packet Length</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QSlider" name="packet_len_select_tx">
+               <property name="maximum">
+                <number>255</number>
+               </property>
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QPushButton" name="start_stop_btn_tx">
+            <property name="geometry">
+             <rect>
+              <x>510</x>
+              <y>550</y>
+              <width>100</width>
+              <height>25</height>
+             </rect>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>100</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>START TX</string>
+            </property>
+           </widget>
+          </widget>
+          <widget class="QWidget" name="tab_rx">
+           <attribute name="title">
+            <string>RX</string>
+           </attribute>
+           <widget class="QFrame" name="rx_input_frame">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>0</y>
+              <width>1176</width>
+              <height>501</height>
+             </rect>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_5">
+             <item>
+              <widget class="QLabel" name="label_13">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Port</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="port_select_rx">
+               <property name="currentText">
+                <string extracomment="Port"/>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_14">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Baud</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QSpinBox" name="baud_rate_select_rx">
+               <property name="maximum">
+                <number>10000000</number>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_15">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>PHY</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="phy_select_rx"/>
+             </item>
+             <item>
+              <widget class="QLabel" name="channel_label_rx">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Channel</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QSlider" name="channel_select_rx">
+               <property name="maximum">
+                <number>39</number>
+               </property>
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QPushButton" name="start_stop_btn_rx">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>550</y>
+              <width>1156</width>
+              <height>25</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>START RX</string>
+            </property>
+           </widget>
+           <widget class="QLabel" name="rx_per_label">
+            <property name="geometry">
+             <rect>
+              <x>500</x>
+              <y>510</y>
+              <width>181</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>PER</string>
+            </property>
+           </widget>
+          </widget>
          </widget>
         </item>
        </layout>
       </item>
      </layout>
+    </item>
+    <item>
+     <widget class="QPushButton" name="reset_hci">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>50</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>RESET</string>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
