@@ -2,13 +2,16 @@
 Main Application for DTM Testsing
 """
 
-import random
+
 import sys
 import time
 
 import ble_hci
-from PySide6 import QtGui
+
+#pylint: disable=no-name-in-module,c-extension-no-member
+from PySide6.QtCore import QThread, Signal
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
+#pylint: enable=no-name-in-module,c-extension-no-member
 
 import ble_util
 import hci_util
@@ -18,22 +21,11 @@ TAB_TX = 0
 TAB_RX = 1
 
 
-class ConsoleRedirector:
-    def __init__(self, text_widget):
-        self.text_widget = text_widget
-
-    def write(self, text):
-        cursor = self.text_widget.textCursor()
-        cursor.movePosition(QtGui.QTextCursor.End)
-        cursor.insertText(text)
-        self.text_widget.setTextCursor(cursor)
-        self.text_widget.ensureCursorVisible()
-
-
-from PySide6.QtCore import Qt, QThread, Signal
 
 
 class RxStatsThread(QThread):
+    """RX Stats worker thread"""
+
     early_exit = False
     data_ready = Signal(list)
 
@@ -42,6 +34,8 @@ class RxStatsThread(QThread):
         self.hci = hci
 
     def run(self):
+        """Run worker thread
+        """
         self.early_exit = False
 
         while not self.early_exit:
@@ -49,9 +43,13 @@ class RxStatsThread(QThread):
             time.sleep(1)
 
     def stop(self):
+        """Stop worker thread
+        """
         self.early_exit = True
 
     def quit(self):
+        """Quit worker thread
+        """
         self.early_exit = True
 
 
@@ -61,12 +59,12 @@ class MainWindow(QMainWindow):
     """
 
     def __init__(self):
-        super(MainWindow, self).__init__()
+        super().__init__()
         self.rx_is_init = False
         self.win = Ui_MainWindow()
         self.win.setupUi(self)
 
-        # sys.stdout = ConsoleRedirector(self.win.std_out_text)
+        self.win.tab_mode.setCurrentIndex(TAB_TX)
 
         self.refresh_port_select()
         self.win.baud_rate_select_tx.setValue(hci_util.DEFAULT_BAUDRATE)
@@ -87,7 +85,6 @@ class MainWindow(QMainWindow):
         self.win.start_stop_btn_tx.clicked.connect(self.tx_dtm_btn_click)
         self.win.start_stop_btn_rx.clicked.connect(self.rx_dtm_btn_click)
 
-        self.win.tab_mode.currentChanged.connect(self.mode_change_update)
         self.win.reset_hci.clicked.connect(self._reset_hci)
         self.set_channel_label(0, TAB_TX)
         self.set_channel_label(0, TAB_RX)
@@ -101,9 +98,6 @@ class MainWindow(QMainWindow):
 
     def _update_rx_stats(self, data):
         self.win.rx_per_label.setText(f"PER {data[0]}")
-
-    def mode_change_update(self):
-        pass
 
     def refresh_port_select(self, is_tx=True):
         """
@@ -137,7 +131,7 @@ class MainWindow(QMainWindow):
         Updates Labels whenever slider values are moved
         """
         tab = TAB_TX
-        if self.state_tab_is_tx():
+        if self._state_tab_is_tx():
             channel = self.win.channel_select_tx.value()
         else:
             channel = self.win.channel_select_rx.value()
@@ -146,17 +140,17 @@ class MainWindow(QMainWindow):
         self.set_channel_label(channel, tab)
         self.set_packet_len_label(self.win.packet_len_select_tx.value())
 
-    def get_selected_port(self, tab=TAB_TX):
+    def _get_selected_port(self, tab=TAB_TX):
         if tab == TAB_TX:
             return self.win.port_select_tx.currentText()
 
         return self.win.port_select_rx.currentText()
 
-    def state_tab_is_tx(self):
+    def _state_tab_is_tx(self):
         return self.win.tab_mode.currentIndex() == 0
 
     def _reset_hci(self):
-        if self.state_tab_is_tx():
+        if self._state_tab_is_tx():
             port = self.win.port_select_tx.currentText()
             baud_rate = self.win.baud_rate_select_tx.value()
         else:
@@ -177,7 +171,7 @@ class MainWindow(QMainWindow):
 
         port = self.win.port_select_rx.currentText()
         baud_rate = self.win.baud_rate_select_rx.value()
-        if self.tx_test_started and port == self.get_selected_port(TAB_TX):
+        if self.tx_test_started and port == self._get_selected_port(TAB_TX):
             self.show_basic_msg_box("Cannot use the same port for both TX and RX")
             return
 
@@ -186,8 +180,8 @@ class MainWindow(QMainWindow):
 
         try:
             hci.reset()
-        except:
-            self.show_basic_msg_box(f"Failed to reset devices!")
+        except TimeoutError:
+            self.show_basic_msg_box("Timeout occured: Failed to reset devices!")
 
         if not self.rx_test_started:
             channel = int(self.win.channel_select_rx.value())
@@ -200,7 +194,7 @@ class MainWindow(QMainWindow):
                 self.win.start_stop_btn_rx.setText("STOP RX")
                 self.rx_stats_thread.start()
                 self.rx_test_started = True
-            except:
+            except TimeoutError:
                 self.show_basic_msg_box("Failed to start test")
 
         else:
@@ -210,14 +204,14 @@ class MainWindow(QMainWindow):
             self.rx_test_started = False
             try:
                 hci.end_test()
-            except:
+            except TimeoutError:
                 self.show_basic_msg_box("Failed to end test!")
 
     def tx_dtm_btn_click(self):
         """
         Starts or Stops DTM test
         """
-        if self.state_tab_is_tx():
+        if self._state_tab_is_tx():
             port = self.win.port_select_tx.currentText()
             baud_rate = self.win.baud_rate_select_tx.value()
 
@@ -225,8 +219,8 @@ class MainWindow(QMainWindow):
 
         try:
             hci.reset()
-        except:
-            self.show_basic_msg_box(f"Failed to reset devices!")
+        except TimeoutError:
+            self.show_basic_msg_box("Failed to reset devices!")
 
         if not self.tx_test_started:
             tx_power = int(self.win.power_select_tx.currentText().split("dbm")[0])
@@ -245,7 +239,7 @@ class MainWindow(QMainWindow):
                 self.disable_inputs()
                 self.win.start_stop_btn_tx.setText("STOP")
                 self.tx_test_started = True
-            except:
+            except TimeoutError:
                 self.show_basic_msg_box("Failed to start test")
 
         else:
@@ -254,7 +248,7 @@ class MainWindow(QMainWindow):
             self.win.start_stop_btn_tx.setText("START")
             try:
                 hci.end_test()
-            except:
+            except TimeoutError:
                 self.show_basic_msg_box("Failed to end test!")
 
     def show_basic_msg_box(self, msg):
