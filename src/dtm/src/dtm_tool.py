@@ -7,6 +7,7 @@ import sys
 import time
 
 import ble_hci
+from ble_hci import utils as hci_utils
 
 # pylint: disable=no-name-in-module,c-extension-no-member
 from PySide6.QtCore import QThread, Signal
@@ -15,7 +16,7 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
 # pylint: enable=no-name-in-module,c-extension-no-member
 
 import ble_util
-import hci_util
+
 from ui_mainwindow import Ui_MainWindow
 
 TAB_TX = 0
@@ -63,9 +64,9 @@ class MainWindow(QMainWindow):
         self.win.tab_mode.setCurrentIndex(TAB_TX)
 
         self.refresh_port_select()
-        self.win.baud_rate_select_tx.setValue(hci_util.DEFAULT_BAUDRATE)
+        self.win.baud_rate_select_tx.setValue(hci_utils.DEFAULT_BAUDRATE)
         self.refresh_port_select(is_tx=False)
-        self.win.baud_rate_select_rx.setValue(hci_util.DEFAULT_BAUDRATE)
+        self.win.baud_rate_select_rx.setValue(hci_utils.DEFAULT_BAUDRATE)
 
         self.win.phy_select_tx.insertItems(0, ble_util.AVAILABLE_PHYS)
         self.win.phy_select_rx.insertItems(0, ble_util.AVAILABLE_PHYS)
@@ -99,7 +100,8 @@ class MainWindow(QMainWindow):
         """
         Refreshes available ports in port selector
         """
-        ports = hci_util.serial_ports()
+        ports = hci_utils.get_serial_ports()
+
         if is_tx:
             self.win.port_select_tx.clear()
             self.win.port_select_tx.insertItems(0, ports)
