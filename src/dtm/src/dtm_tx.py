@@ -2,17 +2,16 @@
 Main Application for DTM Testsing
 """
 
-import random
 import sys
 import time
-
 import ble_hci
-from PySide6 import QtGui
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
-
-import ble_util
+from PySide6 import QtGui
 import hci_util
+import ble_util
 from ui_mainwindow import Ui_MainWindow
+from PySide6.QtCore import QThread, Signal
+
 
 TAB_TX = 0
 TAB_RX = 1
@@ -28,9 +27,6 @@ class ConsoleRedirector:
         cursor.insertText(text)
         self.text_widget.setTextCursor(cursor)
         self.text_widget.ensureCursorVisible()
-
-
-from PySide6.QtCore import Qt, QThread, Signal
 
 
 class RxStatsThread(QThread):
