@@ -2,7 +2,8 @@ import random
 import sys
 import time
 
-import hci_util
+from ble_hci.utils import get_serial_ports
+
 from PySide6.QtCharts import (
     QBarCategoryAxis,
     QBarSeries,
@@ -84,7 +85,7 @@ class MainWindow(QMainWindow):
         self._chart_view.setRenderHint(QPainter.Antialiasing)
 
         self.ui.gridLayout.addWidget(self._chart_view)
-        self.ui.port_selector.addItems(hci_util.get_serial_ports())
+        self.ui.port_selector.addItems(get_serial_ports())
 
         self.ui.run_button.clicked.connect(self._run_button_clicked)
 
