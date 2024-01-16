@@ -1,9 +1,11 @@
 import random
 import sys
+import math
 import time
 
 from ble_hci.utils import get_serial_ports
-
+from ble_hci import BleHci
+from ble_hci.packet_codes import StatusCode
 from PySide6.QtCharts import (
     QBarCategoryAxis,
     QBarSeries,
@@ -24,10 +26,18 @@ class RssiWorkerThread(QThread):
     early_exit = False
     data_ready = Signal(list)
 
-    def __init__(self):
+    def __init__(self, hci:BleHci = None, update_rate = 0.1):
         super().__init__()
+        self.hci = hci
+        self.update_rate = update_rate
 
     def get_rssi(self, channel):
+
+        rssi, code = self.hci.get_rssi_vs(channel)
+        if code != StatusCode.SUCCESS:
+            print(f'Error {code}')
+
+        return abs(rssi)
         _ = channel
         return random.randint(-120, 8) + 120
 
@@ -36,8 +46,9 @@ class RssiWorkerThread(QThread):
 
         while not self.early_exit:
             data_list = [self.get_rssi(x) for x in range(BLE_CHANNELS)]
+            print(data_list)
             self.data_ready.emit(data_list)
-            time.sleep(0.1)
+            time.sleep(self.update_rate)
 
     def stop(self):
         self.early_exit = True
@@ -93,7 +104,9 @@ class MainWindow(QMainWindow):
         self.rssi_capture.data_ready.connect(self.update_rssis)
 
     def _run_button_clicked(self):
+
         if self.ui.run_button.text() == "Run":
+            self.rssi_capture.hci  = BleHci(self.ui.port_selector.currentText())
             self.rssi_capture.start()
             self.ui.run_button.setText("Stop")
         else:
