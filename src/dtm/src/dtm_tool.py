@@ -9,6 +9,7 @@ import time
 import ble_hci
 from ble_hci import utils as hci_utils
 from ble_hci.data_params import DataPktStats
+
 # pylint: disable=no-name-in-module,c-extension-no-member
 from PySide6.QtCore import QThread, Signal
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
@@ -29,18 +30,18 @@ class RxStatsThread(QThread):
     early_exit = False
     data_ready = Signal(list)
 
-    def __init__(self, hci: ble_hci.BleHci = None, update_rate = 1):
+    def __init__(self, hci: ble_hci.BleHci = None, update_rate=1):
         super().__init__()
         self.hci = hci
-        self.update_rate = update_rate 
+        self.update_rate = update_rate
 
     def run(self):
         """Run worker thread"""
         self.early_exit = False
 
         while not self.early_exit:
-            stats, code  = self.hci.get_test_stats()
-        
+            stats, code = self.hci.get_test_stats()
+
             self.data_ready.emit([stats, code])
             time.sleep(self.update_rate)
 
@@ -57,7 +58,8 @@ class MainWindow(QMainWindow):
     """
     App Main Window
     """
-    RX_DEFAULT_UPDATE_RATE=1
+
+    RX_DEFAULT_UPDATE_RATE = 1
 
     def __init__(self):
         super().__init__()
@@ -99,25 +101,22 @@ class MainWindow(QMainWindow):
 
         self.rx_stats_thread = RxStatsThread()
         self.rx_stats_thread.data_ready.connect(self._update_rx_stats)
+
     def _refresh_rx_update_rate(self):
         actual_rate: float = self.win.update_rate_slider.value() / 10
         self.rx_stats_thread.update_rate = actual_rate
         self._set_rx_update_rate_label(actual_rate)
-    
-
 
     def _set_rx_update_rate_label(self, update_rate):
-        self.win.update_rate_label.setText(f'Update Rate (s) - {update_rate : .1f}')
-
+        self.win.update_rate_label.setText(f"Update Rate (s) - {update_rate : .1f}")
 
     def _update_rx_stats(self, data):
-
         stats: DataPktStats
         stats, _ = data
 
-        self.win.rx_ok_label.setText(f'RX OK - {stats.rx_data}')
-        self.win.rx_crc_label.setText(f'RX CRC - {stats.rx_data_crc}')
-        self.win.rx_timeout_label.setText(f'RX Timeout - {stats.rx_data_timeout}')
+        self.win.rx_ok_label.setText(f"RX OK - {stats.rx_data}")
+        self.win.rx_crc_label.setText(f"RX CRC - {stats.rx_data_crc}")
+        self.win.rx_timeout_label.setText(f"RX Timeout - {stats.rx_data_timeout}")
         self.win.rx_per_label.setText(f"PER  - {stats.per() * 100 : .2f}")
 
     def refresh_port_select(self, is_tx=True):
@@ -184,12 +183,12 @@ class MainWindow(QMainWindow):
             baud_rate = self.win.baud_rate_select_rx.value()
 
         hci = ble_hci.BleHci(port_id=port, baud=baud_rate)
-        
+
         try:
             hci.reset()
         except TimeoutError:
-            self.show_basic_msg_box('Timeout occured resetting device')
-    
+            self.show_basic_msg_box("Timeout occured resetting device")
+
     def rx_dtm_btn_click(self):
         """
         Starts or Stops DTM test
@@ -218,7 +217,7 @@ class MainWindow(QMainWindow):
 
                 self.win.port_select_rx.setEnabled(False)
                 self.win.baud_rate_select_rx.setEnabled(False)
-                
+
                 self.win.start_stop_btn_rx.setText("STOP RX")
                 self.rx_stats_thread.start()
                 self.rx_test_started = True
@@ -241,7 +240,7 @@ class MainWindow(QMainWindow):
         """
         Starts or Stops DTM test
         """
-        
+
         port = self.win.port_select_tx.currentText()
         baud_rate = self.win.baud_rate_select_tx.value()
 
@@ -270,10 +269,10 @@ class MainWindow(QMainWindow):
                 hci.tx_test(
                     channel=channel, phy=phy, payload=payload, packet_len=packet_len
                 )
-                
+
                 self.win.port_select_tx.setEnabled(False)
                 self.win.baud_rate_select_tx.setEnabled(False)
-                
+
                 self.win.start_stop_btn_tx.setText("STOP")
                 self.tx_test_started = True
             except TimeoutError:
@@ -282,7 +281,7 @@ class MainWindow(QMainWindow):
         else:
             self.win.port_select_tx.setEnabled(True)
             self.win.baud_rate_select_tx.setEnabled(True)
-            
+
             self.tx_test_started = False
             self.win.start_stop_btn_tx.setText("START")
             try:
@@ -297,24 +296,6 @@ class MainWindow(QMainWindow):
         msg_box = QMessageBox()
         msg_box.setText(msg)
         msg_box.exec()
-
-    def disable_tx_inputs(
-        self,
-    ):
-        """
-        Disable all inputs used for DTM testing
-        to prevent alterations before stopping the test
-        """
-        self.win.port_select_tx.setEnabled(False)
-        self.win.baud_rate_select_tx.setEnabled(False)
-
-
-    def enable_inputs(self):
-        """
-        Enable all DTM inputs
-        """
-        self.win.port_select_tx.setEnabled(True)
-        self.win.baud_rate_select_tx.setEnabled(False)
 
 
 if __name__ == "__main__":
