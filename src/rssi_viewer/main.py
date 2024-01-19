@@ -1,6 +1,5 @@
 import random
 import sys
-import math
 import time
 
 from max_ble_hci.utils import get_serial_ports

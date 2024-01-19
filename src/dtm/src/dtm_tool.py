@@ -95,6 +95,57 @@ class CommonInputGroup:
         self.port_select.clear()
         self.port_select.insertItems(0, ports)
 
+    def selected_port(self) -> str:
+        """Get Current selected
+
+        Returns
+        -------
+        str
+            Serial port string
+        """
+        return self.port_select.currentText()
+
+    def selected_baud(self) -> int:
+        """Get current selected baud rate
+
+        Returns
+        -------
+        int
+            Baudrate
+        """
+        return self.baud_rate_select.value()
+
+    def selected_phy(self) -> str:
+        """Get Current Select PHY
+
+        Returns
+        -------
+        str
+            PHY
+        """
+        return self.phy_select.currentText()
+
+    def selected_channel(self) -> int:
+        """Get current selected channel
+
+        Returns
+        -------
+        int
+            Channel
+        """
+        return self.channel_select.value()
+
+    def enable_serial_inputs(self, enable=True):
+        """Enable/Disable serial inputs
+
+        Parameters
+        ----------
+        enable : bool, optional
+            Enable or disable, by default True
+        """
+        self.port_select.setEnabled(enable)
+        self.baud_rate_select.setEnabled(enable)
+
 
 class MainWindow(QMainWindow):
     """
@@ -197,17 +248,7 @@ class MainWindow(QMainWindow):
         if tab == TAB_TX:
             self.set_packet_len_label(self.win.packet_len_select_tx.value())
 
-    def _get_selected_port(self, tab=TAB_TX):
-        if tab == TAB_TX:
-            return self.win.port_select_tx.currentText()
-
-        return self.win.port_select_rx.currentText()
-
-    def _state_tab_is_tx(self):
-        return self.win.tab_mode.currentIndex() == 0
-
     def _reset_hci(self):
-
         tab = self.win.tab_mode.currentIndex()
 
         if tab == TAB_RX and self.rx_stats_thread.isRunning():
@@ -222,17 +263,18 @@ class MainWindow(QMainWindow):
         try:
             hci.reset()
         except TimeoutError:
-            self.show_basic_msg_box("Timeout occured resetting device")
+            self._show_basic_msg_box("Timeout occured resetting device")
 
     def rx_dtm_btn_click(self):
         """
         Starts or Stops DTM test
         """
 
-        port = self.win.port_select_rx.currentText()
-        baud_rate = self.win.baud_rate_select_rx.value()
-        if self.tx_test_started and port == self._get_selected_port(TAB_TX):
-            self.show_basic_msg_box("Cannot use the same port for both TX and RX")
+        port = self.inputs[TAB_RX].selected_port()
+        baud_rate = self.inputs[TAB_RX].selected_baud()
+
+        if self.tx_test_started and port == self.inputs[TAB_TX].selected_port():
+            self._show_basic_msg_box("Cannot use the same port for both TX and RX")
             return
 
         hci = max_ble_hci.BleHci(port_id=port, baud=baud_rate)
@@ -241,46 +283,43 @@ class MainWindow(QMainWindow):
         try:
             hci.reset()
         except TimeoutError:
-            self.show_basic_msg_box("Timeout occured: Failed to reset devices!")
+            self._show_basic_msg_box("Timeout occured: Failed to reset devices!")
 
         if not self.rx_test_started:
-            channel = int(self.win.channel_select_rx.value())
-            phy = ble_util.TX_PHY_TYPES[self.win.phy_select_tx.currentText()]
+            channel = int(self.inputs[TAB_RX].selected_channel())
+            phy = ble_util.TX_PHY_TYPES[self.inputs[TAB_RX].selected_phy()]
 
             try:
                 hci.rx_test(channel=channel, phy=phy)
 
-                self.win.port_select_rx.setEnabled(False)
-                self.win.baud_rate_select_rx.setEnabled(False)
+                self.inputs[TAB_RX].enable_serial_inputs(False)
 
                 self.win.start_stop_btn_rx.setText("STOP RX")
                 self.rx_stats_thread.start()
                 self.rx_test_started = True
             except TimeoutError:
-                self.show_basic_msg_box("Failed to start test")
+                self._show_basic_msg_box("Failed to start test")
 
         else:
-            self.win.port_select_rx.setEnabled(True)
-            self.win.baud_rate_select_rx.setEnabled(True)
-
+            self.inputs[TAB_RX].enable_serial_inputs()
             self.win.start_stop_btn_rx.setText("START RX")
             self.rx_stats_thread.stop()
             self.rx_test_started = False
             try:
                 hci.end_test()
             except TimeoutError:
-                self.show_basic_msg_box("Failed to end test!")
+                self._show_basic_msg_box("Failed to end test!")
 
     def tx_dtm_btn_click(self):
         """
         Starts or Stops DTM test
         """
 
-        port = self.win.port_select_tx.currentText()
-        baud_rate = self.win.baud_rate_select_tx.value()
+        port = self.inputs[TAB_TX].selected_port()
+        baud_rate = self.inputs[TAB_TX].selected_baud()
 
-        if self.rx_test_started and port == self._get_selected_port(TAB_RX):
-            self.show_basic_msg_box("Cannot use the same port for both TX and RX")
+        if self.rx_test_started and port == self.inputs[TAB_RX].selected_port():
+            self._show_basic_msg_box("Cannot use the same port for both TX and RX")
             return
 
         hci = max_ble_hci.BleHci(port_id=port, baud=baud_rate)
@@ -288,15 +327,15 @@ class MainWindow(QMainWindow):
         try:
             hci.reset()
         except TimeoutError:
-            self.show_basic_msg_box("Failed to reset devices!")
+            self._show_basic_msg_box("Failed to reset devices!")
 
         if not self.tx_test_started:
             tx_power = int(self.win.power_select_tx.currentText().split("dbm")[0])
-            channel = int(self.win.channel_select_tx.value())
+            channel = int(self.inputs[TAB_TX].selected_channel())
             payload = ble_util.TX_PACKET_TYPES[
                 self.win.packet_type_select_tx.currentText()
             ]
-            phy = ble_util.TX_PHY_TYPES[self.win.phy_select_tx.currentText()]
+            phy = ble_util.TX_PHY_TYPES[self.inputs[TAB_TX].selected_phy()]
             packet_len = self.win.packet_len_select_tx.value()
 
             try:
@@ -305,26 +344,24 @@ class MainWindow(QMainWindow):
                     channel=channel, phy=phy, payload=payload, packet_len=packet_len
                 )
 
-                self.win.port_select_tx.setEnabled(False)
-                self.win.baud_rate_select_tx.setEnabled(False)
+                self.inputs[TAB_TX].enable_serial_inputs(False)
 
                 self.win.start_stop_btn_tx.setText("STOP")
                 self.tx_test_started = True
             except TimeoutError:
-                self.show_basic_msg_box("Failed to start test")
+                self._show_basic_msg_box("Failed to start test")
 
         else:
-            self.win.port_select_tx.setEnabled(True)
-            self.win.baud_rate_select_tx.setEnabled(True)
+            self.inputs[TAB_TX].enable_serial_inputs()
 
             self.tx_test_started = False
             self.win.start_stop_btn_tx.setText("START")
             try:
                 hci.end_test()
             except TimeoutError:
-                self.show_basic_msg_box("Failed to end test!")
+                self._show_basic_msg_box("Failed to end test!")
 
-    def show_basic_msg_box(self, msg):
+    def _show_basic_msg_box(self, msg):
         """
         Display a basic message box with a given message
         """
