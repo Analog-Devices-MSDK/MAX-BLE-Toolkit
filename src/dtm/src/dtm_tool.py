@@ -14,20 +14,20 @@ from max_ble_hci.data_params import DataPktStats
 from PySide6.QtCore import QThread, Signal
 from PySide6.QtWidgets import (
     QApplication,
+    QComboBox,
+    QLabel,
     QMainWindow,
     QMessageBox,
-    QLabel,
+    QPushButton,
     QSlider,
-    QComboBox,
     QSpinBox,
-    QPushButton
 )
+
+import ble_util
+from ui_mainwindow import Ui_MainWindow
 
 # pylint: enable=no-name-in-module,c-extension-no-member
 
-import ble_util
-
-from ui_mainwindow import Ui_MainWindow
 
 TAB_TX = 0
 TAB_RX = 1
@@ -75,7 +75,6 @@ class CommonInputGroup:
         self.channel_label: QLabel = channel_label
         self.channel_select: QSlider = channel_select
         self.phy_select: QComboBox = phy_select
-        
 
     def set_channel_label(self, channel: int):
         """Set channel label
@@ -116,9 +115,9 @@ class CommonInputGroup:
             Baudrate
         """
         return self.baud_rate_select.value()
-    
+
     def set_baud(self, baud: int):
-        """Set baud rate 
+        """Set baud rate
 
         Parameters
         ----------
@@ -157,10 +156,7 @@ class CommonInputGroup:
         """
         self.port_select.setEnabled(enable)
         self.baud_rate_select.setEnabled(enable)
-    
 
-
-    
 
 class MainWindow(QMainWindow):
     """
@@ -182,7 +178,6 @@ class MainWindow(QMainWindow):
                 channel_label=self.win.channel_label_tx,
                 channel_select=self.win.channel_select_tx,
                 phy_select=self.win.phy_select_tx,
-                
             ),
             CommonInputGroup(
                 port_select=self.win.port_select_rx,
@@ -190,7 +185,6 @@ class MainWindow(QMainWindow):
                 channel_label=self.win.channel_label_rx,
                 channel_select=self.win.channel_select_rx,
                 phy_select=self.win.phy_select_rx,
-                
             ),
         ]
 
@@ -204,17 +198,19 @@ class MainWindow(QMainWindow):
         self.common[TAB_TX].phy_select.insertItems(0, ble_util.AVAILABLE_PHYS)
         self.common[TAB_RX].phy_select.insertItems(0, ble_util.AVAILABLE_PHYS)
 
-        self.common[TAB_TX].channel_select.valueChanged.connect(self.slider_value_changed)
-        self.common[TAB_RX].channel_select.valueChanged.connect(self.slider_value_changed)
-        
-        
+        self.common[TAB_TX].channel_select.valueChanged.connect(
+            self.slider_value_changed
+        )
+        self.common[TAB_RX].channel_select.valueChanged.connect(
+            self.slider_value_changed
+        )
+
         self.win.packet_type_select_tx.insertItems(0, ble_util.TX_PACKET_TYPE_OPTIONS)
         self.win.power_select_tx.insertItems(0, ble_util.AVAILABLE_TX_POWERS)
         self.win.power_select_tx.setCurrentIndex(len(ble_util.AVAILABLE_TX_POWERS) - 1)
 
-
         self.win.packet_len_select_tx.valueChanged.connect(self.slider_value_changed)
-        
+
         self.win.start_stop_btn_tx.clicked.connect(self.tx_dtm_btn_click)
         self.win.start_stop_btn_rx.clicked.connect(self.rx_dtm_btn_click)
 
