@@ -1,5 +1,5 @@
-# BLE_DTM_TX
-Simple GUI App to drive BLE_hci.py found in Analog-Devices-MSDK
+# BLE DTM GUI
+Control TX and RX DTM from the comfort of the GUI
 
 # Dependencies
 The BLE-HCI backend is not available on PyPi and needs to be installed from source
