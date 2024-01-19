@@ -20,6 +20,7 @@ from PySide6.QtWidgets import (
     QSlider,
     QComboBox,
     QSpinBox,
+    QPushButton
 )
 
 # pylint: enable=no-name-in-module,c-extension-no-member
@@ -74,6 +75,7 @@ class CommonInputGroup:
         self.channel_label: QLabel = channel_label
         self.channel_select: QSlider = channel_select
         self.phy_select: QComboBox = phy_select
+        
 
     def set_channel_label(self, channel: int):
         """Set channel label
@@ -114,6 +116,16 @@ class CommonInputGroup:
             Baudrate
         """
         return self.baud_rate_select.value()
+    
+    def set_baud(self, baud: int):
+        """Set baud rate 
+
+        Parameters
+        ----------
+        baud : int
+            Baudrate
+        """
+        self.baud_rate_select.setValue(baud)
 
     def selected_phy(self) -> str:
         """Get Current Select PHY
@@ -145,7 +157,10 @@ class CommonInputGroup:
         """
         self.port_select.setEnabled(enable)
         self.baud_rate_select.setEnabled(enable)
+    
 
+
+    
 
 class MainWindow(QMainWindow):
     """
@@ -160,13 +175,14 @@ class MainWindow(QMainWindow):
         self.win = Ui_MainWindow()
         self.win.setupUi(self)
 
-        self.inputs = [
+        self.common = [
             CommonInputGroup(
                 port_select=self.win.port_select_tx,
                 baud_rate_select=self.win.baud_rate_select_tx,
                 channel_label=self.win.channel_label_tx,
                 channel_select=self.win.channel_select_tx,
                 phy_select=self.win.phy_select_tx,
+                
             ),
             CommonInputGroup(
                 port_select=self.win.port_select_rx,
@@ -174,29 +190,31 @@ class MainWindow(QMainWindow):
                 channel_label=self.win.channel_label_rx,
                 channel_select=self.win.channel_select_rx,
                 phy_select=self.win.phy_select_rx,
+                
             ),
         ]
 
         self.win.tab_mode.setCurrentIndex(TAB_TX)
 
-        self.inputs[TAB_TX].refresh_port_select()
+        self.common[TAB_TX].refresh_port_select()
+        self.common[TAB_RX].refresh_port_select()
+        self.common[TAB_TX].set_baud(hci_utils.DEFAULT_BAUDRATE)
+        self.common[TAB_RX].set_baud(hci_utils.DEFAULT_BAUDRATE)
 
-        self.win.baud_rate_select_tx.setValue(hci_utils.DEFAULT_BAUDRATE)
-        self.inputs[TAB_RX].refresh_port_select()
+        self.common[TAB_TX].phy_select.insertItems(0, ble_util.AVAILABLE_PHYS)
+        self.common[TAB_RX].phy_select.insertItems(0, ble_util.AVAILABLE_PHYS)
 
-        self.win.baud_rate_select_rx.setValue(hci_utils.DEFAULT_BAUDRATE)
-
-        self.win.phy_select_tx.insertItems(0, ble_util.AVAILABLE_PHYS)
-        self.win.phy_select_rx.insertItems(0, ble_util.AVAILABLE_PHYS)
-
+        self.common[TAB_TX].channel_select.valueChanged.connect(self.slider_value_changed)
+        self.common[TAB_RX].channel_select.valueChanged.connect(self.slider_value_changed)
+        
+        
         self.win.packet_type_select_tx.insertItems(0, ble_util.TX_PACKET_TYPE_OPTIONS)
         self.win.power_select_tx.insertItems(0, ble_util.AVAILABLE_TX_POWERS)
         self.win.power_select_tx.setCurrentIndex(len(ble_util.AVAILABLE_TX_POWERS) - 1)
 
-        self.win.channel_select_tx.valueChanged.connect(self.slider_value_changed)
-        self.win.channel_select_rx.valueChanged.connect(self.slider_value_changed)
 
         self.win.packet_len_select_tx.valueChanged.connect(self.slider_value_changed)
+        
         self.win.start_stop_btn_tx.clicked.connect(self.tx_dtm_btn_click)
         self.win.start_stop_btn_rx.clicked.connect(self.rx_dtm_btn_click)
 
@@ -204,10 +222,10 @@ class MainWindow(QMainWindow):
         self.win.update_rate_slider.valueChanged.connect(self._refresh_rx_update_rate)
 
         self.win.reset_hci.clicked.connect(self._reset_hci)
-        self.inputs[TAB_TX].set_channel_label(0)
-        self.inputs[TAB_RX].set_channel_label(0)
+        self.common[TAB_TX].set_channel_label(0)
+        self.common[TAB_RX].set_channel_label(0)
 
-        self.set_packet_len_label(0)
+        self._set_packet_len_label(0)
 
         self.tx_test_started = False
         self.rx_test_started = False
@@ -230,9 +248,9 @@ class MainWindow(QMainWindow):
         self.win.rx_ok_label.setText(f"RX OK - {stats.rx_data}")
         self.win.rx_crc_label.setText(f"RX CRC - {stats.rx_data_crc}")
         self.win.rx_timeout_label.setText(f"RX Timeout - {stats.rx_data_timeout}")
-        self.win.rx_per_label.setText(f"PER  - {stats.per() * 100 : .2f}")
+        self.win.rx_per_label.setText(f"PER  - {stats.per() : .2f}")
 
-    def set_packet_len_label(self, packet_len):
+    def _set_packet_len_label(self, packet_len):
         """
         Sets the label to show the packet length
         """
@@ -243,10 +261,10 @@ class MainWindow(QMainWindow):
         Updates Labels whenever slider values are moved
         """
         tab = self.win.tab_mode.currentIndex()
-        self.inputs[tab].set_channel_label(self.inputs[tab].channel_select.value())
+        self.common[tab].set_channel_label(self.common[tab].channel_select.value())
 
         if tab == TAB_TX:
-            self.set_packet_len_label(self.win.packet_len_select_tx.value())
+            self._set_packet_len_label(self.win.packet_len_select_tx.value())
 
     def _reset_hci(self):
         tab = self.win.tab_mode.currentIndex()
@@ -255,8 +273,8 @@ class MainWindow(QMainWindow):
             self.rx_stats_thread.hci.reset()
             return
 
-        port = self.inputs[tab].port_select.currentText()
-        baud_rate = self.inputs[tab].baud_rate_select.value()
+        port = self.common[tab].port_select.currentText()
+        baud_rate = self.common[tab].baud_rate_select.value()
 
         hci = max_ble_hci.BleHci(port_id=port, baud=baud_rate)
 
@@ -270,10 +288,10 @@ class MainWindow(QMainWindow):
         Starts or Stops DTM test
         """
 
-        port = self.inputs[TAB_RX].selected_port()
-        baud_rate = self.inputs[TAB_RX].selected_baud()
+        port = self.common[TAB_RX].selected_port()
+        baud_rate = self.common[TAB_RX].selected_baud()
 
-        if self.tx_test_started and port == self.inputs[TAB_TX].selected_port():
+        if self.tx_test_started and port == self.common[TAB_TX].selected_port():
             self._show_basic_msg_box("Cannot use the same port for both TX and RX")
             return
 
@@ -282,17 +300,18 @@ class MainWindow(QMainWindow):
 
         try:
             hci.reset()
+            hci.reset_test_stats()
         except TimeoutError:
             self._show_basic_msg_box("Timeout occured: Failed to reset devices!")
 
         if not self.rx_test_started:
-            channel = int(self.inputs[TAB_RX].selected_channel())
-            phy = ble_util.TX_PHY_TYPES[self.inputs[TAB_RX].selected_phy()]
+            channel = int(self.common[TAB_RX].selected_channel())
+            phy = ble_util.TX_PHY_TYPES[self.common[TAB_RX].selected_phy()]
 
             try:
                 hci.rx_test(channel=channel, phy=phy)
 
-                self.inputs[TAB_RX].enable_serial_inputs(False)
+                self.common[TAB_RX].enable_serial_inputs(False)
 
                 self.win.start_stop_btn_rx.setText("STOP RX")
                 self.rx_stats_thread.start()
@@ -301,12 +320,13 @@ class MainWindow(QMainWindow):
                 self._show_basic_msg_box("Failed to start test")
 
         else:
-            self.inputs[TAB_RX].enable_serial_inputs()
+            self.common[TAB_RX].enable_serial_inputs()
             self.win.start_stop_btn_rx.setText("START RX")
             self.rx_stats_thread.stop()
             self.rx_test_started = False
             try:
                 hci.end_test()
+                hci.reset_test_stats()
             except TimeoutError:
                 self._show_basic_msg_box("Failed to end test!")
 
@@ -315,10 +335,10 @@ class MainWindow(QMainWindow):
         Starts or Stops DTM test
         """
 
-        port = self.inputs[TAB_TX].selected_port()
-        baud_rate = self.inputs[TAB_TX].selected_baud()
+        port = self.common[TAB_TX].selected_port()
+        baud_rate = self.common[TAB_TX].selected_baud()
 
-        if self.rx_test_started and port == self.inputs[TAB_RX].selected_port():
+        if self.rx_test_started and port == self.common[TAB_RX].selected_port():
             self._show_basic_msg_box("Cannot use the same port for both TX and RX")
             return
 
@@ -331,11 +351,11 @@ class MainWindow(QMainWindow):
 
         if not self.tx_test_started:
             tx_power = int(self.win.power_select_tx.currentText().split("dbm")[0])
-            channel = int(self.inputs[TAB_TX].selected_channel())
+            channel = int(self.common[TAB_TX].selected_channel())
             payload = ble_util.TX_PACKET_TYPES[
                 self.win.packet_type_select_tx.currentText()
             ]
-            phy = ble_util.TX_PHY_TYPES[self.inputs[TAB_TX].selected_phy()]
+            phy = ble_util.TX_PHY_TYPES[self.common[TAB_TX].selected_phy()]
             packet_len = self.win.packet_len_select_tx.value()
 
             try:
@@ -344,7 +364,7 @@ class MainWindow(QMainWindow):
                     channel=channel, phy=phy, payload=payload, packet_len=packet_len
                 )
 
-                self.inputs[TAB_TX].enable_serial_inputs(False)
+                self.common[TAB_TX].enable_serial_inputs(False)
 
                 self.win.start_stop_btn_tx.setText("STOP")
                 self.tx_test_started = True
@@ -352,7 +372,7 @@ class MainWindow(QMainWindow):
                 self._show_basic_msg_box("Failed to start test")
 
         else:
-            self.inputs[TAB_TX].enable_serial_inputs()
+            self.common[TAB_TX].enable_serial_inputs()
 
             self.tx_test_started = False
             self.win.start_stop_btn_tx.setText("START")
