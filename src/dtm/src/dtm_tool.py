@@ -163,13 +163,16 @@ class MainWindow(QMainWindow):
     App Main Window
     """
 
-    RX_DEFAULT_UPDATE_RATE = 1
+    RX_DEFAULT_UPDATE_RATE = 10 # 1 second slider is only int
 
     def __init__(self):
         super().__init__()
         self.rx_is_init = False
         self.win = Ui_MainWindow()
         self.win.setupUi(self)
+        
+        self.rx_stats_thread = RxStatsThread()
+        self.rx_stats_thread.data_ready.connect(self._update_rx_stats)
 
         self.common = [
             CommonInputGroup(
@@ -214,7 +217,9 @@ class MainWindow(QMainWindow):
         self.win.start_stop_btn_tx.clicked.connect(self.tx_dtm_btn_click)
         self.win.start_stop_btn_rx.clicked.connect(self.rx_dtm_btn_click)
 
-        self._set_rx_update_rate_label(self.RX_DEFAULT_UPDATE_RATE)
+        # SLIDER IS ONLY INTE
+        self.win.update_rate_slider.setValue(self.RX_DEFAULT_UPDATE_RATE)
+        self._refresh_rx_update_rate()
         self.win.update_rate_slider.valueChanged.connect(self._refresh_rx_update_rate)
 
         self.win.reset_hci.clicked.connect(self._reset_hci)
@@ -226,8 +231,7 @@ class MainWindow(QMainWindow):
         self.tx_test_started = False
         self.rx_test_started = False
 
-        self.rx_stats_thread = RxStatsThread()
-        self.rx_stats_thread.data_ready.connect(self._update_rx_stats)
+
 
     def _refresh_rx_update_rate(self):
         actual_rate: float = self.win.update_rate_slider.value() / 10
