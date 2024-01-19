@@ -18,7 +18,6 @@ from PySide6.QtWidgets import (
     QLabel,
     QMainWindow,
     QMessageBox,
-    QPushButton,
     QSlider,
     QSpinBox,
 )
@@ -163,14 +162,14 @@ class MainWindow(QMainWindow):
     App Main Window
     """
 
-    RX_DEFAULT_UPDATE_RATE = 10 # 1 second slider is only int
+    RX_DEFAULT_UPDATE_RATE = 10  # 1 second slider is only int
 
     def __init__(self):
         super().__init__()
         self.rx_is_init = False
         self.win = Ui_MainWindow()
         self.win.setupUi(self)
-        
+
         self.rx_stats_thread = RxStatsThread()
         self.rx_stats_thread.data_ready.connect(self._update_rx_stats)
 
@@ -230,8 +229,6 @@ class MainWindow(QMainWindow):
 
         self.tx_test_started = False
         self.rx_test_started = False
-
-
 
     def _refresh_rx_update_rate(self):
         actual_rate: float = self.win.update_rate_slider.value() / 10
