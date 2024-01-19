@@ -6,9 +6,9 @@ Main Application for DTM Testsing
 import sys
 import time
 
-import ble_hci
-from ble_hci import utils as hci_utils
-from ble_hci.data_params import DataPktStats
+import max_ble_hci
+from max_ble_hci import utils as hci_utils
+from max_ble_hci.data_params import DataPktStats
 
 # pylint: disable=no-name-in-module,c-extension-no-member
 from PySide6.QtCore import QThread, Signal
@@ -30,7 +30,7 @@ class RxStatsThread(QThread):
     early_exit = False
     data_ready = Signal(list)
 
-    def __init__(self, hci: ble_hci.BleHci = None, update_rate=1):
+    def __init__(self, hci: max_ble_hci.BleHci = None, update_rate=1):
         super().__init__()
         self.hci = hci
         self.update_rate = update_rate
@@ -182,7 +182,7 @@ class MainWindow(QMainWindow):
             port = self.win.port_select_rx.currentText()
             baud_rate = self.win.baud_rate_select_rx.value()
 
-        hci = ble_hci.BleHci(port_id=port, baud=baud_rate)
+        hci = max_ble_hci.BleHci(port_id=port, baud=baud_rate)
 
         try:
             hci.reset()
@@ -200,7 +200,7 @@ class MainWindow(QMainWindow):
             self.show_basic_msg_box("Cannot use the same port for both TX and RX")
             return
 
-        hci = ble_hci.BleHci(port_id=port, baud=baud_rate)
+        hci = max_ble_hci.BleHci(port_id=port, baud=baud_rate)
         self.rx_stats_thread.hci = hci
 
         try:
@@ -248,7 +248,7 @@ class MainWindow(QMainWindow):
             self.show_basic_msg_box("Cannot use the same port for both TX and RX")
             return
 
-        hci = ble_hci.BleHci(port_id=port, baud=baud_rate)
+        hci = max_ble_hci.BleHci(port_id=port, baud=baud_rate)
 
         try:
             hci.reset()

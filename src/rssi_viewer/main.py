@@ -3,9 +3,9 @@ import sys
 import math
 import time
 
-from ble_hci.utils import get_serial_ports
-from ble_hci import BleHci
-from ble_hci.packet_codes import StatusCode
+from max_ble_hci.utils import get_serial_ports
+from max_ble_hci import BleHci
+from max_ble_hci.packet_codes import StatusCode
 from PySide6.QtCharts import (
     QBarCategoryAxis,
     QBarSeries,
