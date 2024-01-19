@@ -3,7 +3,7 @@ Simple GUI App to drive BLE_hci.py found in Analog-Devices-MSDK
 
 # Dependencies
 The BLE-HCI backend is not available on PyPi and needs to be installed from source
-The HCI can be found at (BLE-HCI)[https://github.com/Analog-Devices-MSDK/BLE-HCI]
+The HCI can be found at [BLE-HCI](https://github.com/Analog-Devices-MSDK/MAX-BLE-HCI)
 
 ## Running from python directly
 
