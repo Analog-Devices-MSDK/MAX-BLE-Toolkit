@@ -12,7 +12,15 @@ from max_ble_hci.data_params import DataPktStats
 
 # pylint: disable=no-name-in-module,c-extension-no-member
 from PySide6.QtCore import QThread, Signal
-from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
+from PySide6.QtWidgets import (
+    QApplication,
+    QMainWindow,
+    QMessageBox,
+    QLabel,
+    QSlider,
+    QComboBox,
+    QSpinBox,
+)
 
 # pylint: enable=no-name-in-module,c-extension-no-member
 
@@ -54,6 +62,40 @@ class RxStatsThread(QThread):
         self.early_exit = True
 
 
+class CommonInputGroup:
+    """Internal grouping of common inputs"""
+
+    # pylint: disable=too-many-arguments
+    def __init__(
+        self, port_select, baud_rate_select, channel_label, channel_select, phy_select
+    ) -> None:
+        self.port_select: QComboBox = port_select
+        self.baud_rate_select: QSpinBox = baud_rate_select
+        self.channel_label: QLabel = channel_label
+        self.channel_select: QSlider = channel_select
+        self.phy_select: QComboBox = phy_select
+
+    def set_channel_label(self, channel: int):
+        """Set channel label
+
+        Parameters
+        ----------
+        channel : int
+            channel to set label to
+        """
+        assert (
+            self.channel_select.minimum() <= channel <= self.channel_select.maximum()
+        ), f"Channel out of range {channel}"
+
+        self.channel_label.setText(f"Channel {channel}")
+
+    def refresh_port_select(self):
+        """Refresh serial ports"""
+        ports = hci_utils.get_serial_ports()
+        self.port_select.clear()
+        self.port_select.insertItems(0, ports)
+
+
 class MainWindow(QMainWindow):
     """
     App Main Window
@@ -67,11 +109,30 @@ class MainWindow(QMainWindow):
         self.win = Ui_MainWindow()
         self.win.setupUi(self)
 
+        self.inputs = [
+            CommonInputGroup(
+                port_select=self.win.port_select_tx,
+                baud_rate_select=self.win.baud_rate_select_tx,
+                channel_label=self.win.channel_label_tx,
+                channel_select=self.win.channel_select_tx,
+                phy_select=self.win.phy_select_tx,
+            ),
+            CommonInputGroup(
+                port_select=self.win.port_select_rx,
+                baud_rate_select=self.win.baud_rate_select_rx,
+                channel_label=self.win.channel_label_rx,
+                channel_select=self.win.channel_select_rx,
+                phy_select=self.win.phy_select_rx,
+            ),
+        ]
+
         self.win.tab_mode.setCurrentIndex(TAB_TX)
 
-        self.refresh_port_select()
+        self.inputs[TAB_TX].refresh_port_select()
+
         self.win.baud_rate_select_tx.setValue(hci_utils.DEFAULT_BAUDRATE)
-        self.refresh_port_select(is_tx=False)
+        self.inputs[TAB_RX].refresh_port_select()
+
         self.win.baud_rate_select_rx.setValue(hci_utils.DEFAULT_BAUDRATE)
 
         self.win.phy_select_tx.insertItems(0, ble_util.AVAILABLE_PHYS)
@@ -92,8 +153,9 @@ class MainWindow(QMainWindow):
         self.win.update_rate_slider.valueChanged.connect(self._refresh_rx_update_rate)
 
         self.win.reset_hci.clicked.connect(self._reset_hci)
-        self.set_channel_label(0, TAB_TX)
-        self.set_channel_label(0, TAB_RX)
+        self.inputs[TAB_TX].set_channel_label(0)
+        self.inputs[TAB_RX].set_channel_label(0)
+
         self.set_packet_len_label(0)
 
         self.tx_test_started = False
@@ -119,28 +181,6 @@ class MainWindow(QMainWindow):
         self.win.rx_timeout_label.setText(f"RX Timeout - {stats.rx_data_timeout}")
         self.win.rx_per_label.setText(f"PER  - {stats.per() * 100 : .2f}")
 
-    def refresh_port_select(self, is_tx=True):
-        """
-        Refreshes available ports in port selector
-        """
-        ports = hci_utils.get_serial_ports()
-
-        if is_tx:
-            self.win.port_select_tx.clear()
-            self.win.port_select_tx.insertItems(0, ports)
-        else:
-            self.win.port_select_rx.clear()
-            self.win.port_select_rx.insertItems(0, ports)
-
-    def set_channel_label(self, channel, tab=TAB_TX):
-        """
-        Sets the label to show the channel
-        """
-        if tab == TAB_TX:
-            self.win.channel_label_tx.setText(f"Channel {channel}")
-        else:
-            self.win.channel_label_rx.setText(f"Channel {channel}")
-
     def set_packet_len_label(self, packet_len):
         """
         Sets the label to show the packet length
@@ -151,15 +191,11 @@ class MainWindow(QMainWindow):
         """
         Updates Labels whenever slider values are moved
         """
-        tab = TAB_TX
-        if self._state_tab_is_tx():
-            channel = self.win.channel_select_tx.value()
-        else:
-            channel = self.win.channel_select_rx.value()
-            tab = TAB_RX
+        tab = self.win.tab_mode.currentIndex()
+        self.inputs[tab].set_channel_label(self.inputs[tab].channel_select.value())
 
-        self.set_channel_label(channel, tab)
-        self.set_packet_len_label(self.win.packet_len_select_tx.value())
+        if tab == TAB_TX:
+            self.set_packet_len_label(self.win.packet_len_select_tx.value())
 
     def _get_selected_port(self, tab=TAB_TX):
         if tab == TAB_TX:
@@ -171,16 +207,15 @@ class MainWindow(QMainWindow):
         return self.win.tab_mode.currentIndex() == 0
 
     def _reset_hci(self):
-        if self._state_tab_is_tx():
-            port = self.win.port_select_tx.currentText()
-            baud_rate = self.win.baud_rate_select_tx.value()
-        else:
-            if self.rx_stats_thread.isRunning():
-                self.rx_stats_thread.hci.reset()
-                return
 
-            port = self.win.port_select_rx.currentText()
-            baud_rate = self.win.baud_rate_select_rx.value()
+        tab = self.win.tab_mode.currentIndex()
+
+        if tab == TAB_RX and self.rx_stats_thread.isRunning():
+            self.rx_stats_thread.hci.reset()
+            return
+
+        port = self.inputs[tab].port_select.currentText()
+        baud_rate = self.inputs[tab].baud_rate_select.value()
 
         hci = max_ble_hci.BleHci(port_id=port, baud=baud_rate)
 
