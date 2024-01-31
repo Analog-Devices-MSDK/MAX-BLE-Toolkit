@@ -3,8 +3,10 @@ Main Application for DTM Testsing
 """
 
 
+import subprocess
 import sys
 import time
+import webbrowser
 
 import max_ble_hci
 from max_ble_hci import utils as hci_utils
@@ -170,6 +172,9 @@ class MainWindow(QMainWindow):
         self.win = Ui_MainWindow()
         self.win.setupUi(self)
 
+        self.win.action_about.triggered.connect(self._show_about)
+        self.win.action_report_issue.triggered.connect(self._open_issues)
+
         self.rx_stats_thread = RxStatsThread()
         self.rx_stats_thread.data_ready.connect(self._update_rx_stats)
 
@@ -216,7 +221,6 @@ class MainWindow(QMainWindow):
         self.win.start_stop_btn_tx.clicked.connect(self.tx_dtm_btn_click)
         self.win.start_stop_btn_rx.clicked.connect(self.rx_dtm_btn_click)
 
-        # SLIDER IS ONLY INTE
         self.win.update_rate_slider.setValue(self.RX_DEFAULT_UPDATE_RATE)
         self._refresh_rx_update_rate()
         self.win.update_rate_slider.valueChanged.connect(self._refresh_rx_update_rate)
@@ -229,6 +233,21 @@ class MainWindow(QMainWindow):
 
         self.tx_test_started = False
         self.rx_test_started = False
+
+        self.version = "1.0.0"
+
+    def _show_about(self):
+        msg = f"""DTM Tool\nVersion {self.version}\nAnalog Devices, Inc.
+        """
+        QMessageBox.about(self, "About", msg)
+
+    def _open_issues(self):
+        issues_url = "https://github.com/Analog-Devices-MSDK/MAX-BLE-Toolkit/issues"
+        if sys.platform == "darwin":
+            with subprocess.Popen(["open", issues_url]):
+                pass
+        else:
+            webbrowser.open(issues_url)
 
     def _refresh_rx_update_rate(self):
         actual_rate: float = self.win.update_rate_slider.value() / 10
