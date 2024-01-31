@@ -3,7 +3,7 @@ Control TX and RX DTM from the comfort of the GUI
 
 ## TX
 ![TX](assets/tx.png)
-- PORT: Serial port to connect to as HCI
+- Port: Serial port to connect to as HCI
 - Baud: Baudrate for HCI device
 - PHY: Data rate standard
 - Packet Type: Data output type
@@ -13,7 +13,7 @@ Control TX and RX DTM from the comfort of the GUI
 
 ## RX
 ![RX](assets/rx.png)
-- PORT: Serial port to connect to as HCI
+- Port: Serial port to connect to as HCI
 - Baud: Baudrate for HCI device
 - PHY: Data rate standard
 - Channel: RF channel to transmit on
