@@ -1,0 +1,17 @@
+var x = 0
+PRINT x
+x = x + 1
+PRINT x
+x = x - 1
+PRINT x
+x = -1
+PRINT x
+x = -x * 3
+PRINT x
+x = x / 3
+PRINT x
+
+x = 2*3 - 4/2
+PRINT x
+x = 2*2**3 - 4**2
+PRINT x

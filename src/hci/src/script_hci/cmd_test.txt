@@ -1,0 +1,20 @@
+// SIMPLE PER SCRIPT
+
+ADD_DEV hci1 'COM3'
+ADD_DEV hci2 'COM4'
+
+var z = 3 ** 2
+
+for chan = 0 to 40 step 1 {
+    hci1: VS_RX_TEST chan, 1, 0x0, 10000
+    hci2: VS_TX_TEST chan, 100, 0x0, 1, 10000
+    WAIT 5
+    hci1: LE_TEST_END
+    hci2: LE_TEST_END
+    hci1: VS_GET_TEST_STATS
+    hci1: VS_RESET_TEST_STATS
+    hci1: RESET
+    hci2: RESET
+}
+
+PRINT 'hello world'
