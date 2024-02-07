@@ -20,7 +20,7 @@ from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHeaderView,
     QLabel, QLineEdit, QMainWindow, QMenu,
     QMenuBar, QPushButton, QSizePolicy, QSpacerItem,
     QSplitter, QStackedWidget, QStatusBar, QTabWidget,
-    QTextEdit, QTreeWidget, QTreeWidgetItem, QVBoxLayout,
+    QTextEdit, QToolButton, QTreeWidget, QTreeWidgetItem, QVBoxLayout,
     QWidget)
 
 class Ui_MainWindow(object):
@@ -67,33 +67,49 @@ class Ui_MainWindow(object):
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.gridLayout_4 = QGridLayout(self.centralwidget)
+        self.gridLayout_4.setSpacing(0)
         self.gridLayout_4.setObjectName(u"gridLayout_4")
+        self.gridLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.line_2 = QFrame(self.centralwidget)
+        self.line_2.setObjectName(u"line_2")
+        self.line_2.setMinimumSize(QSize(1, 0))
+        self.line_2.setMaximumSize(QSize(1, 16777215))
+        self.line_2.setLineWidth(0)
+        self.line_2.setMidLineWidth(1)
+        self.line_2.setFrameShape(QFrame.VLine)
+        self.line_2.setFrameShadow(QFrame.Sunken)
+
+        self.gridLayout_4.addWidget(self.line_2, 0, 2, 1, 1)
+
         self.splitter = QSplitter(self.centralwidget)
         self.splitter.setObjectName(u"splitter")
+        sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(1)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.splitter.sizePolicy().hasHeightForWidth())
+        self.splitter.setSizePolicy(sizePolicy)
         self.splitter.setOrientation(Qt.Vertical)
         self.editor_win = QTabWidget(self.splitter)
         self.editor_win.setObjectName(u"editor_win")
-        sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(1)
-        sizePolicy.setHeightForWidth(self.editor_win.sizePolicy().hasHeightForWidth())
-        self.editor_win.setSizePolicy(sizePolicy)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(1)
+        sizePolicy1.setHeightForWidth(self.editor_win.sizePolicy().hasHeightForWidth())
+        self.editor_win.setSizePolicy(sizePolicy1)
+        self.editor_win.setTabShape(QTabWidget.Rounded)
         self.editor_win.setTabsClosable(True)
         self.editor_win.setMovable(True)
         self.doc_tab = QWidget()
         self.doc_tab.setObjectName(u"doc_tab")
-        self.gridLayout_15 = QGridLayout(self.doc_tab)
-        self.gridLayout_15.setObjectName(u"gridLayout_15")
-        self.gridLayout_16 = QGridLayout()
-        self.gridLayout_16.setObjectName(u"gridLayout_16")
+        self.gridLayout_5 = QGridLayout(self.doc_tab)
+        self.gridLayout_5.setSpacing(0)
+        self.gridLayout_5.setObjectName(u"gridLayout_5")
+        self.gridLayout_5.setContentsMargins(0, 0, 0, 0)
         self.textEdit = QTextEdit(self.doc_tab)
         self.textEdit.setObjectName(u"textEdit")
         self.textEdit.setFrameShape(QFrame.NoFrame)
 
-        self.gridLayout_16.addWidget(self.textEdit, 0, 0, 1, 1)
-
-
-        self.gridLayout_15.addLayout(self.gridLayout_16, 0, 0, 1, 1)
+        self.gridLayout_5.addWidget(self.textEdit, 0, 0, 1, 1)
 
         self.editor_win.addTab(self.doc_tab, "")
         self.quickadd_btn = QWidget()
@@ -102,128 +118,96 @@ class Ui_MainWindow(object):
         self.splitter.addWidget(self.editor_win)
         self.console_win = QFrame(self.splitter)
         self.console_win.setObjectName(u"console_win")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Minimum)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.console_win.sizePolicy().hasHeightForWidth())
-        self.console_win.setSizePolicy(sizePolicy1)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Minimum)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.console_win.sizePolicy().hasHeightForWidth())
+        self.console_win.setSizePolicy(sizePolicy2)
         self.console_win.setBaseSize(QSize(0, 0))
         self.console_win.setFrameShape(QFrame.NoFrame)
         self.console_win.setFrameShadow(QFrame.Raised)
         self.gridLayout_23 = QGridLayout(self.console_win)
         self.gridLayout_23.setObjectName(u"gridLayout_23")
+        self.gridLayout_23.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_24 = QGridLayout()
         self.gridLayout_24.setObjectName(u"gridLayout_24")
-        self.logfile_btn_4 = QPushButton(self.console_win)
-        self.logfile_btn_4.setObjectName(u"logfile_btn_4")
+        self.logfile_btn = QPushButton(self.console_win)
+        self.logfile_btn.setObjectName(u"logfile_btn")
+        sizePolicy3 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.logfile_btn.sizePolicy().hasHeightForWidth())
+        self.logfile_btn.setSizePolicy(sizePolicy3)
+        self.logfile_btn.setMinimumSize(QSize(115, 0))
 
-        self.gridLayout_24.addWidget(self.logfile_btn_4, 0, 3, 1, 1)
+        self.gridLayout_24.addWidget(self.logfile_btn, 0, 5, 1, 1)
 
-        self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_3 = QSpacerItem(5, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
 
-        self.gridLayout_24.addItem(self.horizontalSpacer_5, 0, 1, 1, 1)
+        self.gridLayout_24.addItem(self.horizontalSpacer_3, 0, 6, 1, 1)
+
+        self.horizontalSpacer_2 = QSpacerItem(5, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
+
+        self.gridLayout_24.addItem(self.horizontalSpacer_2, 0, 4, 1, 1)
+
+        self.horizontalSpacer = QSpacerItem(5, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
+
+        self.gridLayout_24.addItem(self.horizontalSpacer, 0, 0, 1, 1)
+
+        self.console_out = QTextEdit(self.console_win)
+        self.console_out.setObjectName(u"console_out")
+        self.console_out.setFrameShape(QFrame.NoFrame)
+        self.console_out.setReadOnly(False)
+
+        self.gridLayout_24.addWidget(self.console_out, 1, 1, 1, 5)
+
+        self.logfile_label = QLabel(self.console_win)
+        self.logfile_label.setObjectName(u"logfile_label")
+
+        self.gridLayout_24.addWidget(self.logfile_label, 0, 2, 1, 1)
 
         self.label_8 = QLabel(self.console_win)
         self.label_8.setObjectName(u"label_8")
 
-        self.gridLayout_24.addWidget(self.label_8, 0, 0, 1, 1)
+        self.gridLayout_24.addWidget(self.label_8, 0, 1, 1, 1)
 
-        self.logfile_label_4 = QLabel(self.console_win)
-        self.logfile_label_4.setObjectName(u"logfile_label_4")
+        self.verticalSpacer_4 = QSpacerItem(20, 5, QSizePolicy.Minimum, QSizePolicy.Fixed)
 
-        self.gridLayout_24.addWidget(self.logfile_label_4, 0, 2, 1, 1)
+        self.gridLayout_24.addItem(self.verticalSpacer_4, 2, 1, 1, 1)
 
-        self.console_out_4 = QTextEdit(self.console_win)
-        self.console_out_4.setObjectName(u"console_out_4")
-        self.console_out_4.setFrameShape(QFrame.NoFrame)
-        self.console_out_4.setReadOnly(True)
+        self.delete_btn = QPushButton(self.console_win)
+        self.delete_btn.setObjectName(u"delete_btn")
+        sizePolicy3.setHeightForWidth(self.delete_btn.sizePolicy().hasHeightForWidth())
+        self.delete_btn.setSizePolicy(sizePolicy3)
+        self.delete_btn.setMinimumSize(QSize(25, 25))
+        self.delete_btn.setMaximumSize(QSize(25, 25))
 
-        self.gridLayout_24.addWidget(self.console_out_4, 1, 0, 1, 4)
+        self.gridLayout_24.addWidget(self.delete_btn, 0, 3, 1, 1)
 
 
         self.gridLayout_23.addLayout(self.gridLayout_24, 0, 0, 1, 1)
 
         self.splitter.addWidget(self.console_win)
 
-        self.gridLayout_4.addWidget(self.splitter, 0, 2, 1, 1)
+        self.gridLayout_4.addWidget(self.splitter, 0, 3, 2, 1)
 
         self.context_menu = QFrame(self.centralwidget)
         self.context_menu.setObjectName(u"context_menu")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Preferred)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.context_menu.sizePolicy().hasHeightForWidth())
-        self.context_menu.setSizePolicy(sizePolicy2)
+        sizePolicy4 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Preferred)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.context_menu.sizePolicy().hasHeightForWidth())
+        self.context_menu.setSizePolicy(sizePolicy4)
         self.context_menu.setFrameShape(QFrame.NoFrame)
         self.context_menu.setFrameShadow(QFrame.Raised)
         self.gridLayout_3 = QGridLayout(self.context_menu)
         self.gridLayout_3.setObjectName(u"gridLayout_3")
-        self.nav_bar = QFrame(self.context_menu)
-        self.nav_bar.setObjectName(u"nav_bar")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
-        sizePolicy3.setHorizontalStretch(0)
-        sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.nav_bar.sizePolicy().hasHeightForWidth())
-        self.nav_bar.setSizePolicy(sizePolicy3)
-        self.nav_bar.setMinimumSize(QSize(60, 0))
-        self.nav_bar.setMaximumSize(QSize(60, 16777215))
-        self.nav_bar.setFrameShape(QFrame.NoFrame)
-        self.nav_bar.setFrameShadow(QFrame.Raised)
-        self.gridLayout_2 = QGridLayout(self.nav_bar)
-        self.gridLayout_2.setObjectName(u"gridLayout_2")
-        self.settings_btn = QPushButton(self.nav_bar)
-        self.settings_btn.setObjectName(u"settings_btn")
-        sizePolicy4 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        sizePolicy4.setHorizontalStretch(0)
-        sizePolicy4.setVerticalStretch(0)
-        sizePolicy4.setHeightForWidth(self.settings_btn.sizePolicy().hasHeightForWidth())
-        self.settings_btn.setSizePolicy(sizePolicy4)
-        self.settings_btn.setMinimumSize(QSize(40, 40))
-        self.settings_btn.setMaximumSize(QSize(40, 40))
-
-        self.gridLayout_2.addWidget(self.settings_btn, 4, 0, 1, 1)
-
-        self.verticalSpacer_2 = QSpacerItem(20, 5, QSizePolicy.Minimum, QSizePolicy.Fixed)
-
-        self.gridLayout_2.addItem(self.verticalSpacer_2, 3, 0, 1, 1)
-
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-
-        self.gridLayout_2.addItem(self.verticalSpacer, 5, 0, 1, 1)
-
-        self.reference_btn = QPushButton(self.nav_bar)
-        self.reference_btn.setObjectName(u"reference_btn")
-        sizePolicy4.setHeightForWidth(self.reference_btn.sizePolicy().hasHeightForWidth())
-        self.reference_btn.setSizePolicy(sizePolicy4)
-        self.reference_btn.setMinimumSize(QSize(40, 40))
-        self.reference_btn.setMaximumSize(QSize(40, 40))
-
-        self.gridLayout_2.addWidget(self.reference_btn, 2, 0, 1, 1)
-
-        self.explorer_btn = QPushButton(self.nav_bar)
-        self.explorer_btn.setObjectName(u"explorer_btn")
-        sizePolicy4.setHeightForWidth(self.explorer_btn.sizePolicy().hasHeightForWidth())
-        self.explorer_btn.setSizePolicy(sizePolicy4)
-        self.explorer_btn.setMinimumSize(QSize(40, 40))
-        self.explorer_btn.setMaximumSize(QSize(40, 40))
-
-        self.gridLayout_2.addWidget(self.explorer_btn, 0, 0, 1, 1)
-
-        self.verticalSpacer_3 = QSpacerItem(20, 5, QSizePolicy.Minimum, QSizePolicy.Fixed)
-
-        self.gridLayout_2.addItem(self.verticalSpacer_3, 1, 0, 1, 1)
-
-
-        self.gridLayout_3.addWidget(self.nav_bar, 0, 0, 1, 1)
-
-        self.line = QFrame(self.context_menu)
-        self.line.setObjectName(u"line")
-        self.line.setFrameShape(QFrame.VLine)
-        self.line.setFrameShadow(QFrame.Sunken)
-
-        self.gridLayout_3.addWidget(self.line, 0, 1, 1, 1)
-
-        self.nav_window = QStackedWidget(self.context_menu)
+        self.gridLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.widget = QWidget(self.context_menu)
+        self.widget.setObjectName(u"widget")
+        self.verticalLayout = QVBoxLayout(self.widget)
+        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.nav_window = QStackedWidget(self.widget)
         self.nav_window.setObjectName(u"nav_window")
         sizePolicy5 = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Preferred)
         sizePolicy5.setHorizontalStretch(0)
@@ -305,17 +289,107 @@ class Ui_MainWindow(object):
 
         self.nav_window.addWidget(self.settings_win)
 
-        self.gridLayout_3.addWidget(self.nav_window, 0, 2, 1, 1)
+        self.verticalLayout.addWidget(self.nav_window)
+
+        self.adi_logo = QLabel(self.widget)
+        self.adi_logo.setObjectName(u"adi_logo")
+        sizePolicy5.setHeightForWidth(self.adi_logo.sizePolicy().hasHeightForWidth())
+        self.adi_logo.setSizePolicy(sizePolicy5)
+
+        self.verticalLayout.addWidget(self.adi_logo)
 
 
-        self.gridLayout_4.addWidget(self.context_menu, 0, 0, 1, 1)
+        self.gridLayout_3.addWidget(self.widget, 0, 2, 1, 1)
 
-        self.line_2 = QFrame(self.centralwidget)
-        self.line_2.setObjectName(u"line_2")
-        self.line_2.setFrameShape(QFrame.VLine)
-        self.line_2.setFrameShadow(QFrame.Sunken)
+        self.nav_bar = QFrame(self.context_menu)
+        self.nav_bar.setObjectName(u"nav_bar")
+        sizePolicy7 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+        sizePolicy7.setHorizontalStretch(0)
+        sizePolicy7.setVerticalStretch(0)
+        sizePolicy7.setHeightForWidth(self.nav_bar.sizePolicy().hasHeightForWidth())
+        self.nav_bar.setSizePolicy(sizePolicy7)
+        self.nav_bar.setMinimumSize(QSize(60, 0))
+        self.nav_bar.setMaximumSize(QSize(60, 16777215))
+        self.nav_bar.setFrameShape(QFrame.NoFrame)
+        self.nav_bar.setFrameShadow(QFrame.Raised)
+        self.gridLayout_2 = QGridLayout(self.nav_bar)
+        self.gridLayout_2.setObjectName(u"gridLayout_2")
+        self.verticalSpacer_3 = QSpacerItem(20, 5, QSizePolicy.Minimum, QSizePolicy.Fixed)
 
-        self.gridLayout_4.addWidget(self.line_2, 0, 1, 1, 1)
+        self.gridLayout_2.addItem(self.verticalSpacer_3, 1, 1, 1, 1)
+
+        self.reference_btn = QPushButton(self.nav_bar)
+        self.reference_btn.setObjectName(u"reference_btn")
+        sizePolicy3.setHeightForWidth(self.reference_btn.sizePolicy().hasHeightForWidth())
+        self.reference_btn.setSizePolicy(sizePolicy3)
+        self.reference_btn.setMinimumSize(QSize(40, 40))
+        self.reference_btn.setMaximumSize(QSize(40, 40))
+
+        self.gridLayout_2.addWidget(self.reference_btn, 2, 1, 1, 1)
+
+        self.verticalSpacer_2 = QSpacerItem(20, 5, QSizePolicy.Minimum, QSizePolicy.Fixed)
+
+        self.gridLayout_2.addItem(self.verticalSpacer_2, 3, 1, 1, 1)
+
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.gridLayout_2.addItem(self.verticalSpacer, 5, 1, 1, 1)
+
+        self.explorer_btn = QPushButton(self.nav_bar)
+        self.explorer_btn.setObjectName(u"explorer_btn")
+        sizePolicy3.setHeightForWidth(self.explorer_btn.sizePolicy().hasHeightForWidth())
+        self.explorer_btn.setSizePolicy(sizePolicy3)
+        self.explorer_btn.setMinimumSize(QSize(40, 40))
+        self.explorer_btn.setMaximumSize(QSize(40, 40))
+
+        self.gridLayout_2.addWidget(self.explorer_btn, 0, 1, 1, 1)
+
+        self.settings_btn = QPushButton(self.nav_bar)
+        self.settings_btn.setObjectName(u"settings_btn")
+        sizePolicy3.setHeightForWidth(self.settings_btn.sizePolicy().hasHeightForWidth())
+        self.settings_btn.setSizePolicy(sizePolicy3)
+        self.settings_btn.setMinimumSize(QSize(40, 40))
+        self.settings_btn.setMaximumSize(QSize(40, 40))
+
+        self.gridLayout_2.addWidget(self.settings_btn, 4, 1, 1, 1)
+
+        self.explorer_ind = QFrame(self.nav_bar)
+        self.explorer_ind.setObjectName(u"explorer_ind")
+        self.explorer_ind.setFrameShape(QFrame.VLine)
+        self.explorer_ind.setFrameShadow(QFrame.Sunken)
+
+        self.gridLayout_2.addWidget(self.explorer_ind, 0, 0, 1, 1)
+
+        self.reference_ind = QFrame(self.nav_bar)
+        self.reference_ind.setObjectName(u"reference_ind")
+        self.reference_ind.setFrameShape(QFrame.VLine)
+        self.reference_ind.setFrameShadow(QFrame.Sunken)
+
+        self.gridLayout_2.addWidget(self.reference_ind, 2, 0, 1, 1)
+
+        self.settings_ind = QFrame(self.nav_bar)
+        self.settings_ind.setObjectName(u"settings_ind")
+        self.settings_ind.setFrameShape(QFrame.VLine)
+        self.settings_ind.setFrameShadow(QFrame.Sunken)
+
+        self.gridLayout_2.addWidget(self.settings_ind, 4, 0, 1, 1)
+
+
+        self.gridLayout_3.addWidget(self.nav_bar, 0, 0, 1, 1)
+
+        self.line = QFrame(self.context_menu)
+        self.line.setObjectName(u"line")
+        self.line.setMinimumSize(QSize(1, 0))
+        self.line.setMaximumSize(QSize(1, 16777215))
+        self.line.setLineWidth(0)
+        self.line.setMidLineWidth(1)
+        self.line.setFrameShape(QFrame.VLine)
+        self.line.setFrameShadow(QFrame.Sunken)
+
+        self.gridLayout_3.addWidget(self.line, 0, 1, 1, 1)
+
+
+        self.gridLayout_4.addWidget(self.context_menu, 0, 0, 1, 2)
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
@@ -400,16 +474,18 @@ class Ui_MainWindow(object):
         self.actionAdd_custom.setText(QCoreApplication.translate("MainWindow", u"Add custom", None))
         self.editor_win.setTabText(self.editor_win.indexOf(self.doc_tab), QCoreApplication.translate("MainWindow", u"Untitled", None))
         self.editor_win.setTabText(self.editor_win.indexOf(self.quickadd_btn), "")
-        self.logfile_btn_4.setText(QCoreApplication.translate("MainWindow", u"Add log file", None))
+        self.logfile_btn.setText(QCoreApplication.translate("MainWindow", u"Add log file", None))
+        self.logfile_label.setText("")
         self.label_8.setText(QCoreApplication.translate("MainWindow", u"Console", None))
-        self.logfile_label_4.setText("")
-        self.settings_btn.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
-        self.reference_btn.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
-        self.explorer_btn.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
+        self.delete_btn.setText("")
         self.label.setText(QCoreApplication.translate("MainWindow", u"Explorer", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"HCI Reference", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Settings", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"Placeholder", None))
+        self.adi_logo.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        self.reference_btn.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
+        self.explorer_btn.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
+        self.settings_btn.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
         self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
         self.menuEdit.setTitle(QCoreApplication.translate("MainWindow", u"Edit", None))
         self.menuView.setTitle(QCoreApplication.translate("MainWindow", u"View", None))
