@@ -102,6 +102,7 @@ class MainWindow(QMainWindow):
         self.ui.enable_notifyOnDelete.setChecked(self.notifyOnDelete)
         self.ui.enable_notifyCloseWithoutSave.setChecked(self.notifyOnClose)
         self.ui.select_themeMode.setCurrentIndex(self.theme)
+        self.setWindowIcon(Icons.WindowIcon)
         
 
     def write_settings(self):
@@ -367,7 +368,7 @@ class MainWindow(QMainWindow):
         self.runner.moveToThread(self.codeThread)
         self.codeThread.started.connect(self.runner.run)
         self.runner.finished.connect(self.codeThread.exit)
-        self.codeThread.finished.connect(self.runner.deleteLater)
+        self.runner.finished.connect(self.runner.deleteLater)
         self.codeThread.finished.connect(self.codeFinished)
 
         self.script_running = True
@@ -381,6 +382,7 @@ class MainWindow(QMainWindow):
     def codeFinished(self):
         self.codeThread.deleteLater()
         self.script_running = False
+        self.logger.user("Run script finished.")
         if self.theme == self.LIGHT:
             self.ui.runCode_btn.setIcon(Icons.Light.RunCode)
         else:
@@ -390,7 +392,7 @@ class MainWindow(QMainWindow):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     QCoreApplication.setOrganizationName("AnalogDevices")
-    QCoreApplication.setApplicationName("MAX-BLE-HCI-GUIx")
+    QCoreApplication.setApplicationName("MAX-BLE-HCI-GUI")
     window = MainWindow(logging.DEBUG)
     window.show()
     sys.exit(app.exec())

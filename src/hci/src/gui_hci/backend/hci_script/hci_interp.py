@@ -87,11 +87,9 @@ class HciInterpreter(QObject):
         }
 
     def __del__(self):
-        try:
-            for devName, dev in self.devs.items():
+        if getattr(self, 'devs', None) is not None:
+            for dev in self.devs.values():
                 dev.exit()
-        except NameError:
-            pass
 
     def set_prog(self, prog):
         self.prog = prog
@@ -126,6 +124,7 @@ class HciInterpreter(QObject):
             dev, instr = self.prog[lineno]
             op = instr[0]
             params = instr[1:]
+            print(op)
             if len(params) == 1: params = params[0]
 
             if op == 'CMD' and dev is not None:
@@ -151,7 +150,9 @@ class HciInterpreter(QObject):
         
         for devName, dev in self.devs.items():
             dev.exit()
-            self.logger.user("Closing device: %s", devName)
+            print(dev.port.port.is_open)
+            self.logger.user("Device: %s -- %s", devName, "OPEN" if dev.port.port.isOpen() else "CLOSED")
+
         if self.kill_evt.is_set():
             self.finished.emit(-2)
         else:

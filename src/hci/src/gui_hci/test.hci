@@ -1,0 +1,11 @@
+// quick test to make sure language works
+// i have fear
+
+ADD_DEV hci "/dev/serial/by-id/usb-FTDI_FT230X_Basic_UART_DT03O6TZ-if00-port0"
+
+hci: LE_ENHANCED_TRANSMITTER_TEST 0, 0, 0, 1
+WAIT 2
+hci: LE_TEST_END -> retVal
+
+PRINT retVal
+hci: RESET

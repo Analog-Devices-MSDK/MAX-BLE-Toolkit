@@ -19,6 +19,7 @@ def view_appearance_setColorPalatte(main_window, theme):
                 main_window.ui.editor_win.setTabIcon(idx, Icons.Dark.SaveNeeded)
     main_window.ui.actionLight.setChecked(theme == LIGHT_THEME)
     main_window.ui.actionDark.setChecked(theme == DARK_THEME)
+    main_window.ui.select_themeMode.setCurrentIndex(theme)
 
 def view_appearance_toggleShowNavbar(main_window, checked):
     main_window.ui.enable_navSidebar.setChecked(checked)

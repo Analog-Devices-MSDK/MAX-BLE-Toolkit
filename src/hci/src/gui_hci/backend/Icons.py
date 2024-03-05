@@ -12,6 +12,7 @@ _ICON_FILEPATH.cd('assets/images')
 Light: IconProvider = None
 Dark: IconProvider = None
 NoIcon: QIcon = None
+WindowIcon: QIcon = None
 
 @dataclass
 class IconProvider:
@@ -29,6 +30,7 @@ def initIcons():
     global Light
     global Dark
     global NoIcon
+    global WindowIcon
 
     _explorer = QIcon()
     _reference = QIcon()
@@ -95,3 +97,4 @@ def initIcons():
     )
 
     NoIcon = QIcon()
+    WindowIcon = QIcon(_ICON_FILEPATH.filePath('adi_logo_icon.ico'))
