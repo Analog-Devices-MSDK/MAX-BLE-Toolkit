@@ -1,0 +1,99 @@
+{
+    "SECTION_NAME" : "Informational",
+    "READ_LOCAL_VER_INFO" : {
+        "TOOLTIP" : "Read the version information values for the local Controller.",
+        "Parameters" : null,
+        "Returns" : {
+            "Status" : 1,
+            "HCI_Version" : 1,
+            "HCI_Subversion" : 2,
+            "LMP_Version" : 1,
+            "Company_ID" : 2,
+            "LMP_Subversion" : 2
+        }
+    },
+
+    "READ_LOCAL_SUP_CMDS" : {
+        "TOOLTIP" : "Reads the list of HCI commands supported by the local Controller.",
+        "Parameters" : null,
+        "Returns" : {
+            "Status" : 1,
+            "Supported_Commands" : 64
+        }
+    },
+
+    "READ_LOCAL_SUP_FEAT" : {
+        "TOOLTIP" : "Reads a list of features supported by the local Controller.",
+        "Parameters" : null,
+        "Returns" : {
+            "Status" : 1,
+            "LMP_Features" : 8
+        }
+    },
+
+    "READ_BUF_SIZE" : {
+        "TOOLTIP" : "Read the maximum data size of HCI ACL and Synchronous packets sent from the Host to the Controller.",
+        "Parameters" : null,
+        "Returns" : {
+            "Status" : 1,
+            "ACL_Data_Pkt_Len" : 2,
+            "Sync_Data_Pkt_Len" : 1,
+            "Total_Num_ACL_Data_Pkts" : 2,
+            "Total_Num_Sync_Data_Pkts" : 2
+        }
+    },
+
+    "READ_BD_ADDR" : {
+        "TOOLTIP" : "Read the Public Device Address.",
+        "Parameters" : null,
+        "Returns" : {
+            "Status" : 1,
+            "BD_ADDR" : 6
+        }
+    },
+
+    "READ_LOCAL_SUP_CODECS" : {
+        "TOOLTIP" : "Read a list of the Bluetooth SIG approved codecs from the Controller.",
+        "Parameters" : null,
+        "Returns" : {
+            "Status" : 1,
+            "Num_Sup_Standard_Codecs" : 1,
+            "Standard_Codec_ID[i]" : 1,
+            "Standard_Codec_Transport[i]" : 1,
+            "Num_Sup_Vendor_Spec_Codecs" : 1,
+            "Vendor_Spec_Codec_ID[k]" : 4,
+            "Vendor_Spec_Codec_Transport[k]" : 1
+        }
+    },
+
+    "READ_LOCAL_SUP_CODEC_CAP" : {
+        "TOOLTIP" : "Read a list of capabilities supported by the controller for the indicated codec.",
+        "Parameters" : {
+            "Codec_ID" : 5,
+            "Logical_Transport_Type" : 1,
+            "Direction" : 1
+        },
+        "Returns" : {
+            "Status" : 1,
+            "Num_Codec_Capabilities" : 1,
+            "Codec_Capability_Len[i]" : 1,
+            "Codec_Capability" : "Codec_Capability_Len[i]" 
+        }
+    },
+
+    "READ_LOCAL_SUP_CONTROLLER_DLY" : {
+        "TOOLTIP" : "Read the range of supported Controller delays for the indicated codec.",
+        "Parameters" : {
+            "Codec_ID" : 5,
+            "Logical_Transport_Type" : 1,
+            "Direction" : 1,
+            "Codec_Cfg_Len" : 1,
+            "Codec_Cfg" : "Codec_Cfg_Len"
+        },
+        "Returns" : {
+            "Status" : 1,
+            "Min_Controller_Delay" : 3,
+            "Max_Controller_Delay" : 3
+        }
+    }
+}

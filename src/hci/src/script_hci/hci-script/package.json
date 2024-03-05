@@ -1,0 +1,25 @@
+{
+  "name": "hci-script",
+  "displayName": "HCI Script",
+  "description": "Syntax highlighting for HCI Scripting Language",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.86.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "hciscript",
+      "aliases": ["HCIScript", "hciscript"],
+      "extensions": [".hci"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "hciscript",
+      "scopeName": "source.hci",
+      "path": "./syntaxes/hciscript.tmLanguage.json"
+    }]
+  }
+}

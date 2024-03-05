@@ -1,11 +1,11 @@
-import re
-from PySide6.QtGui import QColor
+from PySide6.QtGui import QColor, QTextCharFormat, QFont
+from PySide6.QtCore import QRegularExpression
+
 _bool_vals = ['TRUE', 'FALSE']
 _cblocks_vals = ['FOR', 'TO', 'STEP', 'IF', 'ELSE', 'WHILE']
 _logic_vals = ['AND', 'OR', 'NOT']
 _func_vals = ['ADD_DEV', 'WAIT', 'PRINT']
 _cmd_vals = [
-    'NOP',
     'DISCONNECT',
     'READ_REMOTE_VER_INFO',
     'SET_EVENT_MASK',
@@ -205,24 +205,21 @@ _cmd_vals = [
     'VS_BB_DIS'
 ]
 
-BOOL_PATTERN = re.compile(fr'(?i)({"|".join(_bool_vals)})\s?')
-CBLOCK_PATTERN = re.compile(fr'(?i)({"|".join(_cblocks_vals)})\s?')
-LOGIC_PATTERN = re.compile(fr'(?i)({"|".join(_logic_vals)})\s?')
-FUNC_PATTERN = re.compile(fr'(?i)({"|".join(_func_vals)})\s?')
-CMD_PATTERN = re.compile(fr'(?i)({"|".join(_cmd_vals)})\s?')
-HEX_PATTERN = re.compile(r'[^a-zA-Z0-9_]?0x')
-STR_PATTERN = re.compile(r'(?s)\".*?\"|\'.*?\'')
-DEV_PATTERN = re.compile(r'[a-zA-Z_]+[a-zA-Z_0-9]*:')
-ID_PATTERN = re.compile(r'[a-zA-Z_]+[a-zA-Z_0-9]*')
-GROUPING_PATTERN_START = re.compile(r'\{|\(')
-GROUPING_PATTERN_END = re.compile(r'\}|\)')
-# NUM_PATTERN = re.compile(r'(\d+\.\d+|(?!0x)[a-fA-F0-9][x|\.]?[a-fA-F0-9]*)')
-NUM_PATTERN = re.compile(r'(\d+\.\d+|0x[a-fA-F0-9]+|\d+)')
-COMMENT_PATTERN = re.compile(r'(//.*)')
-MULTILINE_PATTERN_START = re.compile(r'/\*')
-MULTILINE_PATTERN_END = re.compile(r'\*/')
+BOOL_PATTERN = QRegularExpression(f'(?i)\\b({"|".join(_bool_vals)})\\b')
+CBLOCK_PATTERN = QRegularExpression(f'(?i)\\b({"|".join(_cblocks_vals)})\\b')
+LOGIC_PATTERN = QRegularExpression(f'(?i)\\b({"|".join(_logic_vals)})\\b')
+FUNC_PATTERN = QRegularExpression(f'(?i)\\b({"|".join(_func_vals)})\\b')
+CMD_PATTERN = QRegularExpression(f'(?i)\\b({"|".join(_cmd_vals)})\\b')
+HEX_PATTERN = QRegularExpression('\\b0x')
+STR_PATTERN = QRegularExpression('(?s)\\".*?\\"|\\\'.*?\\\'')
+DEV_PATTERN = QRegularExpression('[a-zA-Z_]+[a-zA-Z_0-9]*:')
+ID_PATTERN = QRegularExpression('\\b[a-zA-Z_]+[a-zA-Z_0-9]*\\b')
+NUM_PATTERN = QRegularExpression('\\b(\\d+\\.\\d+|0x[a-fA-F0-9]+|\\d+)\\b')
+COMMENT_PATTERN = QRegularExpression('(//.*)')
+MULTILINE_PATTERN_START = QRegularExpression('/\\*')
+MULTILINE_PATTERN_END = QRegularExpression('\\*/')
 
-LIGHT_THEME = {
+_colors_lightTheme = {
     'BOOL' : QColor(29, 29, 194),
     'LOGIC' : QColor(29, 29, 194),
     'CBLOCK' : QColor(126, 3, 224),
@@ -236,13 +233,13 @@ LIGHT_THEME = {
     'GROUP_2' : QColor(90, 42, 127),
     'GROUP_3' : QColor(113, 4, 22),
     'NUM' : QColor(12, 88, 74),
-    'COMMENT' : QColor(80, 126, 21),
+    'COMMENT' : QColor(80, 126, 21)
 }
 
-DARK_THEME = {
-    'BOOL' : QColor(37, 37, 221),
-    'LOGIC' : QColor(37, 37, 221),
-    'CBLOCK' : QColor(134, 55, 207),
+_colors_darkTheme = {
+    'BOOL' : QColor(16, 97, 252),
+    'LOGIC' : QColor(16, 97, 252),
+    'CBLOCK' : QColor(179, 54, 251),
     'FUNC' : QColor(228, 241, 142),
     'CMD' : QColor(251, 35, 82),
     'HEX' : QColor(153, 153, 165),
@@ -253,5 +250,129 @@ DARK_THEME = {
     'GROUP_2' : QColor(119, 17, 195),
     'GROUP_3' : QColor(218, 1, 37),
     'NUM' : QColor(240, 251, 212),
-    'COMMENT' : QColor(90, 140, 28),
+    'COMMENT' : QColor(90, 140, 28)
+}
+
+_boolFmt_lightTheme = QTextCharFormat()
+_boolFmt_lightTheme.setForeground(_colors_lightTheme['BOOL'])
+
+_logicFmt_lightTheme = QTextCharFormat()
+_logicFmt_lightTheme.setForeground(_colors_lightTheme['LOGIC'])
+
+_cblockFmt_lightTheme = QTextCharFormat()
+_cblockFmt_lightTheme.setForeground(_colors_lightTheme['CBLOCK'])
+
+_funcFmt_lightTheme = QTextCharFormat()
+_funcFmt_lightTheme.setForeground(_colors_lightTheme['FUNC'])
+
+_cmdFmt_lightTheme = QTextCharFormat()
+_cmdFmt_lightTheme.setForeground(_colors_lightTheme['CMD'])
+
+_hexFmt_lightTheme = QTextCharFormat()
+_hexFmt_lightTheme.setForeground(_colors_lightTheme['HEX'])
+
+_strFmt_lightTheme = QTextCharFormat()
+_strFmt_lightTheme.setForeground(_colors_lightTheme['STR'])
+
+_devFmt_lightTheme = QTextCharFormat()
+_devFmt_lightTheme.setForeground(_colors_lightTheme['DEV'])
+_devFmt_lightTheme.setFontWeight(QFont.Bold)
+
+_idFmt_lightTheme = QTextCharFormat()
+_idFmt_lightTheme.setForeground(_colors_lightTheme['DEV'])
+
+_groupFmt1_lightTheme = QTextCharFormat()
+_groupFmt1_lightTheme.setForeground(_colors_lightTheme['GROUP_1'])
+
+_groupFmt2_lightTheme = QTextCharFormat()
+_groupFmt2_lightTheme.setForeground(_colors_lightTheme['GROUP_2'])
+
+_groupFmt3_lightTheme = QTextCharFormat()
+_groupFmt3_lightTheme.setForeground(_colors_lightTheme['GROUP_3'])
+
+_numFmt_lightTheme = QTextCharFormat()
+_numFmt_lightTheme.setForeground(_colors_lightTheme['NUM'])
+
+_commentFmt_lightTheme = QTextCharFormat()
+_commentFmt_lightTheme.setForeground(_colors_lightTheme['COMMENT'])
+_commentFmt_lightTheme.setFontItalic(True)
+
+
+_boolFmt_darkTheme = QTextCharFormat()
+_boolFmt_darkTheme.setForeground(_colors_darkTheme['BOOL'])
+
+_logicFmt_darkTheme = QTextCharFormat()
+_logicFmt_darkTheme.setForeground(_colors_darkTheme['LOGIC'])
+
+_cblockFmt_darkTheme = QTextCharFormat()
+_cblockFmt_darkTheme.setForeground(_colors_darkTheme['CBLOCK'])
+
+_funcFmt_darkTheme = QTextCharFormat()
+_funcFmt_darkTheme.setForeground(_colors_darkTheme['FUNC'])
+
+_cmdFmt_darkTheme = QTextCharFormat()
+_cmdFmt_darkTheme.setForeground(_colors_darkTheme['CMD'])
+
+_hexFmt_darkTheme = QTextCharFormat()
+_hexFmt_darkTheme.setForeground(_colors_darkTheme['HEX'])
+
+_strFmt_darkTheme = QTextCharFormat()
+_strFmt_darkTheme.setForeground(_colors_darkTheme['STR'])
+
+_devFmt_darkTheme = QTextCharFormat()
+_devFmt_darkTheme.setForeground(_colors_darkTheme['DEV'])
+_devFmt_darkTheme.setFontWeight(QFont.Bold)
+
+_idFmt_darkTheme = QTextCharFormat()
+_idFmt_darkTheme.setForeground(_colors_darkTheme['ID'])
+
+_groupFmt1_darkTheme = QTextCharFormat()
+_groupFmt1_darkTheme.setForeground(_colors_darkTheme['GROUP_1'])
+
+_groupFmt2_darkTheme = QTextCharFormat()
+_groupFmt2_darkTheme.setForeground(_colors_darkTheme['GROUP_2'])
+
+_groupFmt3_darkTheme = QTextCharFormat()
+_groupFmt3_darkTheme.setForeground(_colors_darkTheme['GROUP_3'])
+
+_numFmt_darkTheme = QTextCharFormat()
+_numFmt_darkTheme.setForeground(_colors_darkTheme['NUM'])
+
+_commentFmt_darkTheme = QTextCharFormat()
+_commentFmt_darkTheme.setForeground(_colors_darkTheme['COMMENT'])
+_commentFmt_darkTheme.setFontItalic(True)
+
+
+LIGHT_THEME_TEXTFORMATS = {
+    'BOOL' : _boolFmt_lightTheme,
+    'LOGIC' : _logicFmt_lightTheme,
+    'CBLOCK' : _cblockFmt_lightTheme,
+    'FUNC' : _funcFmt_lightTheme,
+    'CMD' : _cmdFmt_lightTheme,
+    'HEX' : _hexFmt_lightTheme,
+    'STR' : _strFmt_lightTheme,
+    'DEV' : _devFmt_lightTheme,
+    'ID' : _idFmt_lightTheme,
+    'GROUP_1' : _groupFmt1_lightTheme,
+    'GROUP_2' : _groupFmt2_lightTheme,
+    'GROUP_3' : _groupFmt3_lightTheme,
+    'NUM' : _numFmt_lightTheme,
+    'COMMENT' : _commentFmt_lightTheme
+}
+
+DARK_THEME_TEXTFORMATS = {
+    'BOOL' : _boolFmt_darkTheme,
+    'LOGIC' : _logicFmt_darkTheme,
+    'CBLOCK' : _cblockFmt_darkTheme,
+    'FUNC' : _funcFmt_darkTheme,
+    'CMD' : _cmdFmt_darkTheme,
+    'HEX' : _hexFmt_darkTheme,
+    'STR' : _strFmt_darkTheme,
+    'DEV' : _devFmt_darkTheme,
+    'ID' : _idFmt_darkTheme,
+    'GROUP_1' : _groupFmt1_darkTheme,
+    'GROUP_2' : _groupFmt2_darkTheme,
+    'GROUP_3' : _groupFmt3_darkTheme,
+    'NUM' : _numFmt_darkTheme,
+    'COMMENT' : _commentFmt_darkTheme
 }

@@ -16,12 +16,14 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QIcon, QImage, QKeySequence, QLinearGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
-from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHeaderView,
-    QLabel, QLineEdit, QMainWindow, QMenu,
-    QMenuBar, QPushButton, QSizePolicy, QSpacerItem,
-    QSplitter, QStackedWidget, QStatusBar, QTabWidget,
-    QTextEdit, QToolButton, QTreeWidget, QTreeWidgetItem, QVBoxLayout,
+from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QFrame,
+    QGridLayout, QHeaderView, QLabel, QMainWindow,
+    QMenu, QMenuBar, QPushButton, QSizePolicy,
+    QSpacerItem, QSplitter, QStackedWidget, QStatusBar,
+    QTabWidget, QTextEdit, QTreeView, QVBoxLayout,
     QWidget)
+from .ref_window import QDeselectableTreeView
+from .nav_window import QDirectoryTree
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -52,18 +54,30 @@ class Ui_MainWindow(object):
         self.actionCopy.setObjectName(u"actionCopy")
         self.actionPaste = QAction(MainWindow)
         self.actionPaste.setObjectName(u"actionPaste")
-        self.actionLight = QAction(MainWindow)
-        self.actionLight.setObjectName(u"actionLight")
-        self.actionDark = QAction(MainWindow)
-        self.actionDark.setObjectName(u"actionDark")
-        self.actionShow_Reference_2 = QAction(MainWindow)
-        self.actionShow_Reference_2.setObjectName(u"actionShow_Reference_2")
-        self.actionShow_console = QAction(MainWindow)
-        self.actionShow_console.setObjectName(u"actionShow_console")
         self.actionDefault = QAction(MainWindow)
         self.actionDefault.setObjectName(u"actionDefault")
-        self.actionAdd_custom = QAction(MainWindow)
-        self.actionAdd_custom.setObjectName(u"actionAdd_custom")
+        self.actionDefault.setCheckable(True)
+        self.actionRefView = QAction(MainWindow)
+        self.actionRefView.setObjectName(u"actionRefView")
+        self.actionRefView.setCheckable(True)
+        self.actionMAX_BLE_HCI_Documentation = QAction(MainWindow)
+        self.actionMAX_BLE_HCI_Documentation.setObjectName(u"actionMAX_BLE_HCI_Documentation")
+        self.actionBLE_Core_Spec = QAction(MainWindow)
+        self.actionBLE_Core_Spec.setObjectName(u"actionBLE_Core_Spec")
+        self.actionHCI_GUI_Documentation = QAction(MainWindow)
+        self.actionHCI_GUI_Documentation.setObjectName(u"actionHCI_GUI_Documentation")
+        self.actionLight = QAction(MainWindow)
+        self.actionLight.setObjectName(u"actionLight")
+        self.actionLight.setCheckable(True)
+        self.actionDark = QAction(MainWindow)
+        self.actionDark.setObjectName(u"actionDark")
+        self.actionDark.setCheckable(True)
+        self.actionShow_console = QAction(MainWindow)
+        self.actionShow_console.setObjectName(u"actionShow_console")
+        self.actionShow_console.setCheckable(True)
+        self.actionShow_navbar = QAction(MainWindow)
+        self.actionShow_navbar.setObjectName(u"actionShow_navbar")
+        self.actionShow_navbar.setCheckable(True)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.gridLayout_4 = QGridLayout(self.centralwidget)
@@ -99,19 +113,6 @@ class Ui_MainWindow(object):
         self.editor_win.setTabShape(QTabWidget.Rounded)
         self.editor_win.setTabsClosable(True)
         self.editor_win.setMovable(True)
-        self.doc_tab = QWidget()
-        self.doc_tab.setObjectName(u"doc_tab")
-        self.gridLayout_5 = QGridLayout(self.doc_tab)
-        self.gridLayout_5.setSpacing(0)
-        self.gridLayout_5.setObjectName(u"gridLayout_5")
-        self.gridLayout_5.setContentsMargins(0, 0, 0, 0)
-        self.textEdit = QTextEdit(self.doc_tab)
-        self.textEdit.setObjectName(u"textEdit")
-        self.textEdit.setFrameShape(QFrame.NoFrame)
-
-        self.gridLayout_5.addWidget(self.textEdit, 0, 0, 1, 1)
-
-        self.editor_win.addTab(self.doc_tab, "")
         self.quickadd_btn = QWidget()
         self.quickadd_btn.setObjectName(u"quickadd_btn")
         self.editor_win.addTab(self.quickadd_btn, "")
@@ -209,11 +210,9 @@ class Ui_MainWindow(object):
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.nav_window = QStackedWidget(self.widget)
         self.nav_window.setObjectName(u"nav_window")
-        sizePolicy5 = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Preferred)
-        sizePolicy5.setHorizontalStretch(0)
-        sizePolicy5.setVerticalStretch(0)
-        sizePolicy5.setHeightForWidth(self.nav_window.sizePolicy().hasHeightForWidth())
-        self.nav_window.setSizePolicy(sizePolicy5)
+        sizePolicy4.setHeightForWidth(self.nav_window.sizePolicy().hasHeightForWidth())
+        self.nav_window.setSizePolicy(sizePolicy4)
+        self.nav_window.setMaximumSize(QSize(274, 16777215))
         self.explorer_win = QWidget()
         self.explorer_win.setObjectName(u"explorer_win")
         self.verticalLayout_2 = QVBoxLayout(self.explorer_win)
@@ -223,13 +222,10 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_2.addWidget(self.label)
 
-        self.filetree = QTreeWidget(self.explorer_win)
-        __qtreewidgetitem = QTreeWidgetItem()
-        __qtreewidgetitem.setText(0, u"1");
-        self.filetree.setHeaderItem(__qtreewidgetitem)
+        self.filetree = QDirectoryTree(self.explorer_win)
         self.filetree.setObjectName(u"filetree")
         self.filetree.setFrameShape(QFrame.NoFrame)
-        self.filetree.header().setVisible(False)
+        self.filetree.header().setDefaultSectionSize(57)
 
         self.verticalLayout_2.addWidget(self.filetree)
 
@@ -243,13 +239,10 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_3.addWidget(self.label_2)
 
-        self.reftree = QTreeWidget(self.reference_win)
-        __qtreewidgetitem1 = QTreeWidgetItem()
-        __qtreewidgetitem1.setText(0, u"1");
-        self.reftree.setHeaderItem(__qtreewidgetitem1)
+        self.reftree = QDeselectableTreeView(self.reference_win)
         self.reftree.setObjectName(u"reftree")
         self.reftree.setFrameShape(QFrame.NoFrame)
-        self.reftree.header().setVisible(False)
+        self.reftree.header().setDefaultSectionSize(57)
 
         self.verticalLayout_3.addWidget(self.reftree)
 
@@ -260,11 +253,11 @@ class Ui_MainWindow(object):
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.label_3 = QLabel(self.settings_win)
         self.label_3.setObjectName(u"label_3")
-        sizePolicy6 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
-        sizePolicy6.setHorizontalStretch(0)
-        sizePolicy6.setVerticalStretch(0)
-        sizePolicy6.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
-        self.label_3.setSizePolicy(sizePolicy6)
+        sizePolicy5 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        sizePolicy5.setHorizontalStretch(0)
+        sizePolicy5.setVerticalStretch(0)
+        sizePolicy5.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
+        self.label_3.setSizePolicy(sizePolicy5)
 
         self.verticalLayout_4.addWidget(self.label_3)
 
@@ -274,15 +267,196 @@ class Ui_MainWindow(object):
         self.settingstree.setFrameShadow(QFrame.Raised)
         self.gridLayout = QGridLayout(self.settingstree)
         self.gridLayout.setObjectName(u"gridLayout")
+        self.label_14 = QLabel(self.settingstree)
+        self.label_14.setObjectName(u"label_14")
+        sizePolicy6 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+        sizePolicy6.setHorizontalStretch(0)
+        sizePolicy6.setVerticalStretch(0)
+        sizePolicy6.setHeightForWidth(self.label_14.sizePolicy().hasHeightForWidth())
+        self.label_14.setSizePolicy(sizePolicy6)
+        self.label_14.setMinimumSize(QSize(133, 0))
+        self.label_14.setMaximumSize(QSize(133, 16777215))
+        self.label_14.setWordWrap(True)
+
+        self.gridLayout.addWidget(self.label_14, 13, 0, 1, 1)
+
+        self.applySettings_btn = QPushButton(self.settingstree)
+        self.applySettings_btn.setObjectName(u"applySettings_btn")
+
+        self.gridLayout.addWidget(self.applySettings_btn, 17, 1, 1, 1)
+
+        self.label_13 = QLabel(self.settingstree)
+        self.label_13.setObjectName(u"label_13")
+
+        self.gridLayout.addWidget(self.label_13, 11, 0, 1, 2)
+
+        self.verticalSpacer_6 = QSpacerItem(20, 10, QSizePolicy.Minimum, QSizePolicy.Fixed)
+
+        self.gridLayout.addItem(self.verticalSpacer_6, 5, 0, 1, 2)
+
+        self.enable_bracketAutoComplete = QCheckBox(self.settingstree)
+        self.enable_bracketAutoComplete.setObjectName(u"enable_bracketAutoComplete")
+        self.enable_bracketAutoComplete.setLayoutDirection(Qt.RightToLeft)
+
+        self.gridLayout.addWidget(self.enable_bracketAutoComplete, 3, 1, 1, 1)
+
+        self.verticalSpacer_5 = QSpacerItem(20, 10, QSizePolicy.Minimum, QSizePolicy.Fixed)
+
+        self.gridLayout.addItem(self.verticalSpacer_5, 10, 0, 1, 2)
+
+        self.line_3 = QFrame(self.settingstree)
+        self.line_3.setObjectName(u"line_3")
+        self.line_3.setFrameShape(QFrame.HLine)
+        self.line_3.setFrameShadow(QFrame.Sunken)
+
+        self.gridLayout.addWidget(self.line_3, 1, 0, 1, 2)
+
+        self.line_5 = QFrame(self.settingstree)
+        self.line_5.setObjectName(u"line_5")
+        self.line_5.setFrameShape(QFrame.HLine)
+        self.line_5.setFrameShadow(QFrame.Sunken)
+
+        self.gridLayout.addWidget(self.line_5, 12, 0, 1, 2)
+
+        self.enable_notifyCloseWithoutSave = QCheckBox(self.settingstree)
+        self.enable_notifyCloseWithoutSave.setObjectName(u"enable_notifyCloseWithoutSave")
+        self.enable_notifyCloseWithoutSave.setLayoutDirection(Qt.RightToLeft)
+
+        self.gridLayout.addWidget(self.enable_notifyCloseWithoutSave, 15, 1, 1, 1)
+
+        self.label_16 = QLabel(self.settingstree)
+        self.label_16.setObjectName(u"label_16")
+        sizePolicy6.setHeightForWidth(self.label_16.sizePolicy().hasHeightForWidth())
+        self.label_16.setSizePolicy(sizePolicy6)
+        self.label_16.setMinimumSize(QSize(133, 0))
+        self.label_16.setMaximumSize(QSize(133, 16777215))
+        self.label_16.setWordWrap(True)
+
+        self.gridLayout.addWidget(self.label_16, 15, 0, 1, 1)
+
         self.label_7 = QLabel(self.settingstree)
         self.label_7.setObjectName(u"label_7")
+        sizePolicy4.setHeightForWidth(self.label_7.sizePolicy().hasHeightForWidth())
+        self.label_7.setSizePolicy(sizePolicy4)
+        self.label_7.setMinimumSize(QSize(0, 0))
+        self.label_7.setMaximumSize(QSize(133, 16777215))
+        self.label_7.setWordWrap(True)
 
-        self.gridLayout.addWidget(self.label_7, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.label_7, 4, 0, 1, 1)
 
-        self.lineEdit = QLineEdit(self.settingstree)
-        self.lineEdit.setObjectName(u"lineEdit")
+        self.verticalSpacer_8 = QSpacerItem(20, 10, QSizePolicy.Minimum, QSizePolicy.Fixed)
 
-        self.gridLayout.addWidget(self.lineEdit, 0, 1, 1, 1)
+        self.gridLayout.addItem(self.verticalSpacer_8, 16, 0, 1, 2)
+
+        self.enable_consoleWindow = QCheckBox(self.settingstree)
+        self.enable_consoleWindow.setObjectName(u"enable_consoleWindow")
+        self.enable_consoleWindow.setLayoutDirection(Qt.RightToLeft)
+
+        self.gridLayout.addWidget(self.enable_consoleWindow, 8, 1, 1, 1)
+
+        self.label_4 = QLabel(self.settingstree)
+        self.label_4.setObjectName(u"label_4")
+
+        self.gridLayout.addWidget(self.label_4, 0, 0, 1, 2)
+
+        self.enable_syntaxHighlighting = QCheckBox(self.settingstree)
+        self.enable_syntaxHighlighting.setObjectName(u"enable_syntaxHighlighting")
+        self.enable_syntaxHighlighting.setLayoutDirection(Qt.RightToLeft)
+        self.enable_syntaxHighlighting.setChecked(False)
+
+        self.gridLayout.addWidget(self.enable_syntaxHighlighting, 2, 1, 1, 1)
+
+        self.label_10 = QLabel(self.settingstree)
+        self.label_10.setObjectName(u"label_10")
+        sizePolicy6.setHeightForWidth(self.label_10.sizePolicy().hasHeightForWidth())
+        self.label_10.setSizePolicy(sizePolicy6)
+        self.label_10.setMinimumSize(QSize(133, 0))
+        self.label_10.setMaximumSize(QSize(133, 16777215))
+        self.label_10.setWordWrap(True)
+
+        self.gridLayout.addWidget(self.label_10, 8, 0, 1, 1)
+
+        self.label_9 = QLabel(self.settingstree)
+        self.label_9.setObjectName(u"label_9")
+
+        self.gridLayout.addWidget(self.label_9, 6, 0, 1, 2)
+
+        self.enable_notifyOnDelete = QCheckBox(self.settingstree)
+        self.enable_notifyOnDelete.setObjectName(u"enable_notifyOnDelete")
+        self.enable_notifyOnDelete.setLayoutDirection(Qt.RightToLeft)
+
+        self.gridLayout.addWidget(self.enable_notifyOnDelete, 14, 1, 1, 1)
+
+        self.label_6 = QLabel(self.settingstree)
+        self.label_6.setObjectName(u"label_6")
+        sizePolicy6.setHeightForWidth(self.label_6.sizePolicy().hasHeightForWidth())
+        self.label_6.setSizePolicy(sizePolicy6)
+        self.label_6.setMinimumSize(QSize(133, 0))
+        self.label_6.setMaximumSize(QSize(133, 16777215))
+        self.label_6.setWordWrap(True)
+
+        self.gridLayout.addWidget(self.label_6, 3, 0, 1, 1)
+
+        self.label_5 = QLabel(self.settingstree)
+        self.label_5.setObjectName(u"label_5")
+        sizePolicy6.setHeightForWidth(self.label_5.sizePolicy().hasHeightForWidth())
+        self.label_5.setSizePolicy(sizePolicy6)
+        self.label_5.setMinimumSize(QSize(133, 0))
+        self.label_5.setMaximumSize(QSize(133, 16777215))
+        self.label_5.setWordWrap(True)
+
+        self.gridLayout.addWidget(self.label_5, 2, 0, 1, 1)
+
+        self.label_15 = QLabel(self.settingstree)
+        self.label_15.setObjectName(u"label_15")
+        sizePolicy6.setHeightForWidth(self.label_15.sizePolicy().hasHeightForWidth())
+        self.label_15.setSizePolicy(sizePolicy6)
+        self.label_15.setMinimumSize(QSize(133, 0))
+        self.label_15.setMaximumSize(QSize(133, 16777215))
+        self.label_15.setWordWrap(True)
+
+        self.gridLayout.addWidget(self.label_15, 14, 0, 1, 1)
+
+        self.label_11 = QLabel(self.settingstree)
+        self.label_11.setObjectName(u"label_11")
+        sizePolicy6.setHeightForWidth(self.label_11.sizePolicy().hasHeightForWidth())
+        self.label_11.setSizePolicy(sizePolicy6)
+        self.label_11.setMinimumSize(QSize(133, 0))
+        self.label_11.setMaximumSize(QSize(133, 16777215))
+        self.label_11.setWordWrap(True)
+
+        self.gridLayout.addWidget(self.label_11, 9, 0, 1, 1)
+
+        self.select_themeMode = QComboBox(self.settingstree)
+        self.select_themeMode.addItem("")
+        self.select_themeMode.addItem("")
+        self.select_themeMode.setObjectName(u"select_themeMode")
+        self.select_themeMode.setFrame(True)
+
+        self.gridLayout.addWidget(self.select_themeMode, 4, 1, 1, 1)
+
+        self.enable_notifyOnMove = QCheckBox(self.settingstree)
+        self.enable_notifyOnMove.setObjectName(u"enable_notifyOnMove")
+        self.enable_notifyOnMove.setLayoutDirection(Qt.RightToLeft)
+
+        self.gridLayout.addWidget(self.enable_notifyOnMove, 13, 1, 1, 1)
+
+        self.enable_navSidebar = QCheckBox(self.settingstree)
+        self.enable_navSidebar.setObjectName(u"enable_navSidebar")
+        self.enable_navSidebar.setLayoutDirection(Qt.RightToLeft)
+
+        self.gridLayout.addWidget(self.enable_navSidebar, 9, 1, 1, 1)
+
+        self.line_4 = QFrame(self.settingstree)
+        self.line_4.setObjectName(u"line_4")
+        self.line_4.setFrameShape(QFrame.HLine)
+        self.line_4.setFrameShadow(QFrame.Sunken)
+
+        self.gridLayout.addWidget(self.line_4, 7, 0, 1, 2)
+
+        self.verticalSpacer_7 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.gridLayout.addItem(self.verticalSpacer_7, 18, 0, 1, 2)
 
 
         self.verticalLayout_4.addWidget(self.settingstree)
@@ -293,8 +467,11 @@ class Ui_MainWindow(object):
 
         self.adi_logo = QLabel(self.widget)
         self.adi_logo.setObjectName(u"adi_logo")
-        sizePolicy5.setHeightForWidth(self.adi_logo.sizePolicy().hasHeightForWidth())
-        self.adi_logo.setSizePolicy(sizePolicy5)
+        sizePolicy7 = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Preferred)
+        sizePolicy7.setHorizontalStretch(0)
+        sizePolicy7.setVerticalStretch(0)
+        sizePolicy7.setHeightForWidth(self.adi_logo.sizePolicy().hasHeightForWidth())
+        self.adi_logo.setSizePolicy(sizePolicy7)
 
         self.verticalLayout.addWidget(self.adi_logo)
 
@@ -303,11 +480,8 @@ class Ui_MainWindow(object):
 
         self.nav_bar = QFrame(self.context_menu)
         self.nav_bar.setObjectName(u"nav_bar")
-        sizePolicy7 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
-        sizePolicy7.setHorizontalStretch(0)
-        sizePolicy7.setVerticalStretch(0)
-        sizePolicy7.setHeightForWidth(self.nav_bar.sizePolicy().hasHeightForWidth())
-        self.nav_bar.setSizePolicy(sizePolicy7)
+        sizePolicy6.setHeightForWidth(self.nav_bar.sizePolicy().hasHeightForWidth())
+        self.nav_bar.setSizePolicy(sizePolicy6)
         self.nav_bar.setMinimumSize(QSize(60, 0))
         self.nav_bar.setMaximumSize(QSize(60, 16777215))
         self.nav_bar.setFrameShape(QFrame.NoFrame)
@@ -401,12 +575,8 @@ class Ui_MainWindow(object):
         self.menuEdit.setObjectName(u"menuEdit")
         self.menuView = QMenu(self.menubar)
         self.menuView.setObjectName(u"menuView")
-        self.menuAppearance = QMenu(self.menuView)
-        self.menuAppearance.setObjectName(u"menuAppearance")
-        self.menuColor_palatte = QMenu(self.menuAppearance)
+        self.menuColor_palatte = QMenu(self.menuView)
         self.menuColor_palatte.setObjectName(u"menuColor_palatte")
-        self.menuLayout = QMenu(self.menuView)
-        self.menuLayout.setObjectName(u"menuLayout")
         self.menuHelp = QMenu(self.menubar)
         self.menuHelp.setObjectName(u"menuHelp")
         MainWindow.setMenuBar(self.menubar)
@@ -433,20 +603,19 @@ class Ui_MainWindow(object):
         self.menuEdit.addAction(self.actionCut)
         self.menuEdit.addAction(self.actionCopy)
         self.menuEdit.addAction(self.actionPaste)
-        self.menuView.addAction(self.menuAppearance.menuAction())
-        self.menuView.addAction(self.menuLayout.menuAction())
-        self.menuAppearance.addAction(self.menuColor_palatte.menuAction())
-        self.menuAppearance.addAction(self.actionShow_Reference_2)
-        self.menuAppearance.addAction(self.actionShow_console)
+        self.menuView.addAction(self.menuColor_palatte.menuAction())
+        self.menuView.addAction(self.actionShow_console)
+        self.menuView.addAction(self.actionShow_navbar)
         self.menuColor_palatte.addAction(self.actionLight)
         self.menuColor_palatte.addAction(self.actionDark)
-        self.menuLayout.addAction(self.actionDefault)
-        self.menuLayout.addAction(self.actionAdd_custom)
+        self.menuHelp.addAction(self.actionHCI_GUI_Documentation)
+        self.menuHelp.addAction(self.actionMAX_BLE_HCI_Documentation)
+        self.menuHelp.addAction(self.actionBLE_Core_Spec)
 
         self.retranslateUi(MainWindow)
 
         self.editor_win.setCurrentIndex(0)
-        self.nav_window.setCurrentIndex(0)
+        self.nav_window.setCurrentIndex(2)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -466,13 +635,15 @@ class Ui_MainWindow(object):
         self.actionCut.setText(QCoreApplication.translate("MainWindow", u"Cut", None))
         self.actionCopy.setText(QCoreApplication.translate("MainWindow", u"Copy", None))
         self.actionPaste.setText(QCoreApplication.translate("MainWindow", u"Paste", None))
+        self.actionDefault.setText(QCoreApplication.translate("MainWindow", u"Sidebar (Default)", None))
+        self.actionRefView.setText(QCoreApplication.translate("MainWindow", u"Always Show Reference", None))
+        self.actionMAX_BLE_HCI_Documentation.setText(QCoreApplication.translate("MainWindow", u"MAX BLE HCI Documentation", None))
+        self.actionBLE_Core_Spec.setText(QCoreApplication.translate("MainWindow", u"BLE Core Spec", None))
+        self.actionHCI_GUI_Documentation.setText(QCoreApplication.translate("MainWindow", u"HCI GUI Documentation", None))
         self.actionLight.setText(QCoreApplication.translate("MainWindow", u"Light", None))
         self.actionDark.setText(QCoreApplication.translate("MainWindow", u"Dark", None))
-        self.actionShow_Reference_2.setText(QCoreApplication.translate("MainWindow", u"Show reference", None))
         self.actionShow_console.setText(QCoreApplication.translate("MainWindow", u"Show console", None))
-        self.actionDefault.setText(QCoreApplication.translate("MainWindow", u"Default", None))
-        self.actionAdd_custom.setText(QCoreApplication.translate("MainWindow", u"Add custom", None))
-        self.editor_win.setTabText(self.editor_win.indexOf(self.doc_tab), QCoreApplication.translate("MainWindow", u"Untitled", None))
+        self.actionShow_navbar.setText(QCoreApplication.translate("MainWindow", u"Show navigation bar", None))
         self.editor_win.setTabText(self.editor_win.indexOf(self.quickadd_btn), "")
         self.logfile_btn.setText(QCoreApplication.translate("MainWindow", u"Add log file", None))
         self.logfile_label.setText("")
@@ -481,7 +652,28 @@ class Ui_MainWindow(object):
         self.label.setText(QCoreApplication.translate("MainWindow", u"Explorer", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"HCI Reference", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Settings", None))
-        self.label_7.setText(QCoreApplication.translate("MainWindow", u"Placeholder", None))
+        self.label_14.setText(QCoreApplication.translate("MainWindow", u"Confirm File/Folder Move", None))
+        self.applySettings_btn.setText(QCoreApplication.translate("MainWindow", u"Apply Settings", None))
+        self.label_13.setText(QCoreApplication.translate("MainWindow", u"Notifications", None))
+        self.enable_bracketAutoComplete.setText("")
+        self.enable_notifyCloseWithoutSave.setText("")
+        self.label_16.setText(QCoreApplication.translate("MainWindow", u"Confirm Close Without Save", None))
+        self.label_7.setText(QCoreApplication.translate("MainWindow", u"Theme", None))
+        self.enable_consoleWindow.setText("")
+        self.label_4.setText(QCoreApplication.translate("MainWindow", u"Editor", None))
+        self.enable_syntaxHighlighting.setText("")
+        self.label_10.setText(QCoreApplication.translate("MainWindow", u"Show Console Window", None))
+        self.label_9.setText(QCoreApplication.translate("MainWindow", u"View/Layout", None))
+        self.enable_notifyOnDelete.setText("")
+        self.label_6.setText(QCoreApplication.translate("MainWindow", u"Auto-Complete Brackets", None))
+        self.label_5.setText(QCoreApplication.translate("MainWindow", u"Syntax Highlighting", None))
+        self.label_15.setText(QCoreApplication.translate("MainWindow", u"Confirm File/Folder Delete", None))
+        self.label_11.setText(QCoreApplication.translate("MainWindow", u"Show Navigation Sidebar", None))
+        self.select_themeMode.setItemText(0, QCoreApplication.translate("MainWindow", u"Light", None))
+        self.select_themeMode.setItemText(1, QCoreApplication.translate("MainWindow", u"Dark", None))
+
+        self.enable_notifyOnMove.setText("")
+        self.enable_navSidebar.setText("")
         self.adi_logo.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
         self.reference_btn.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
         self.explorer_btn.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
@@ -489,9 +681,7 @@ class Ui_MainWindow(object):
         self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
         self.menuEdit.setTitle(QCoreApplication.translate("MainWindow", u"Edit", None))
         self.menuView.setTitle(QCoreApplication.translate("MainWindow", u"View", None))
-        self.menuAppearance.setTitle(QCoreApplication.translate("MainWindow", u"Appearance", None))
         self.menuColor_palatte.setTitle(QCoreApplication.translate("MainWindow", u"Color palatte", None))
-        self.menuLayout.setTitle(QCoreApplication.translate("MainWindow", u"Layout", None))
         self.menuHelp.setTitle(QCoreApplication.translate("MainWindow", u"Help", None))
     # retranslateUi
 

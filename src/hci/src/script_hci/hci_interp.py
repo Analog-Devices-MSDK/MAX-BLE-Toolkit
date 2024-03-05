@@ -290,10 +290,15 @@ class HciInterpreter:
             cmd = self.ops[cmd[0]](cmd[1:])
 
         if params[1] is not None:
-            for idx, param in enumerate(params[1]):
-                if isinstance(param, tuple):
-                    param = self.ops[param[0]](param[1:])
-                cmd_params.extend(self._to_le_nbyte_list(param, CMD_PARAM_LEN[cmd][idx]))
+            eval_params = self._evaluate_params(params[1])
+            param_lens = self._get_param_lens(eval_params, cmd)
+            print(eval_params)
+            print(param_lens)
+            for idx, param in enumerate(eval_params):
+                # if isinstance(param, tuple):
+                    # param = self.ops[param[0]](param[1:])
+                # param_len = self._get_param_len(cmd, idx)
+                cmd_params.extend(self._to_le_nbyte_list(param, param_lens[idx]))
 
         ogf, ocf = CMD_OPCODE[cmd]
 
@@ -309,7 +314,7 @@ class HciInterpreter:
             # raise RuntimeError(
             #     'An HCI connection must be established before commands can be sent.')
             print('An HCI connection must be established before commands can be sent.')
- 
+
     def _wait(self, params):
         if isinstance(params, tuple):
             sleep_time = self.ops[params[0]](params[1:])
@@ -424,6 +429,54 @@ class HciInterpreter:
             return self.ops[params[0]](params[1:])
         return params
     
+    def _evaluate_params(self, params):
+        eval_params = []
+        for param in params:
+            if isinstance(param, tuple):
+                eval_params.append(self.ops[param[0]](param[1:]))
+            else:
+                eval_params.append(param)
+
+        return eval_params
+
+    def _get_param_lens(self, params, cmd):
+        param_lens = []
+        in_loop = False
+        num_loop = 0
+        loop_idx = 0
+        loop_vals = []
+        for idx, param in enumerate(params):
+            if in_loop:
+                if num_loop == 0:
+                    in_loop = False
+                    continue
+                lidx = (idx - loop_idx) % len(loop_vals)
+                param_lens.append(loop_vals[lidx])
+                num_loop -= 1
+                continue
+
+            if isinstance(CMD_PARAM_LEN[cmd][idx], list):
+                loop_idx = idx
+                if CMD_PARAM_LEN[cmd][idx][0] > 0:
+                    num_loop = params[CMD_PARAM_LEN[cmd][idx][0]]*(len(CMD_PARAM_LEN[cmd][idx])-1)
+                else:
+                    if params[abs(CMD_PARAM_LEN[cmd][idx][0])] in [1, 2, 4]:
+                        num_loop = len(CMD_PARAM_LEN[cmd][idx]) - 1
+                    elif params[abs(CMD_PARAM_LEN[cmd][idx][0])] in [3, 5, 6]:
+                        num_loop = 2*(len(CMD_PARAM_LEN[cmd][idx]) - 1)
+                    else:
+                        num_loop = 3*(len(CMD_PARAM_LEN[cmd][idx]) - 1)
+                loop_vals = CMD_PARAM_LEN[cmd][idx][1:]
+                in_loop = True
+                param_lens.append(loop_vals[0])
+                num_loop -= 1
+            elif CMD_PARAM_LEN[cmd][idx] < 0:
+                param_lens.append(params[abs(CMD_PARAM_LEN[cmd][idx])-1])
+            else:
+                param_lens.append(CMD_PARAM_LEN[cmd][idx])
+
+        return param_lens
+
     def _to_le_nbyte_list(self, value, n_bytes):
         little_endian = []
         for i in range(n_bytes):

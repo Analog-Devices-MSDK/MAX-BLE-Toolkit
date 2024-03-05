@@ -1,128 +1,128 @@
-import os
-from pathlib import Path
-import sys
-import re
-from PySide6.QtCore import (QFile, Qt, QTextStream, QRegularExpression)
-from PySide6.QtGui import (QColor, QFont, QFontDatabase, QKeySequence,
-                           QSyntaxHighlighter, QTextCharFormat)
-from PySide6.QtWidgets import (QApplication, QFileDialog, QMainWindow,
-    QPlainTextEdit)
-import syntax_patterns
+# import os
+# from pathlib import Path
+# import sys
+# import re
+# from PySide6.QtCore import (QFile, Qt, QTextStream, QRegularExpression)
+# from PySide6.QtGui import (QColor, QFont, QFontDatabase, QKeySequence,
+#                            QSyntaxHighlighter, QTextCharFormat)
+# from PySide6.QtWidgets import (QApplication, QFileDialog, QMainWindow,
+#     QPlainTextEdit)
+# import syntax_patterns
 
-bools = syntax_patterns._bool_vals
-logics = syntax_patterns._logic_vals
-cblocks = syntax_patterns._cblocks_vals
-funcs = syntax_patterns._func_vals
-cmds = syntax_patterns._cmd_vals
-braces = ['\{', '\}', '\(', '\)']
+# bools = syntax_patterns._bool_vals
+# logics = syntax_patterns._logic_vals
+# cblocks = syntax_patterns._cblocks_vals
+# funcs = syntax_patterns._func_vals
+# cmds = syntax_patterns._cmd_vals
+# braces = ['\{', '\}', '\(', '\)']
 
-def format(color, style=''):
-    if isinstance(color, tuple):
-        if len(color) == 4:
-            _color = QColor(color[1], color[2], color[3], color[4])
-        else:
-            _color = QColor(color[1], color[2], color[3])
-    else:
-        _color = QColor(color)
+# def format(color, style=''):
+#     if isinstance(color, tuple):
+#         if len(color) == 4:
+#             _color = QColor(color[1], color[2], color[3], color[4])
+#         else:
+#             _color = QColor(color[1], color[2], color[3])
+#     else:
+#         _color = QColor(color)
 
-    _format = QTextCharFormat()
-    _format.setForeground(_color)
+#     _format = QTextCharFormat()
+#     _format.setForeground(_color)
 
-    if 'BOLD' in style.upper():
-        _format.setFontWeight(QFont.Bold)
-    if 'ITALIC' in style.upper():
-        _format.setFontItalic(True)
-    if 'UNDERLINE' in style.upper():
-        _format.setFontUnderline(True)
+#     if 'BOLD' in style.upper():
+#         _format.setFontWeight(QFont.Bold)
+#     if 'ITALIC' in style.upper():
+#         _format.setFontItalic(True)
+#     if 'UNDERLINE' in style.upper():
+#         _format.setFontUnderline(True)
 
-    return _format
+#     return _format
 
-STYLES = {
-    'LIGHT' : {
-        'BOOL' : format(QColor(29, 29, 194)),
-        'LOGIC' : format(QColor(29, 29, 194)),
-        'CBLOCK' : format(QColor(126, 3, 224)),
-        'FUNC' : format(QColor(128, 104, 2)),
-        'CMD' : format(QColor(137, 2, 31)),
-        'HEX' : format(QColor(68, 68, 70)),
-        'STR' : format(QColor(92, 3, 3)),
-        'DEV' : format(QColor(17, 80, 166)),
-        'ID' : format(QColor(6, 48, 106)),
-        'GROUP_1' : format(QColor(103, 73, 4)),
-        'GROUP_2' : format(QColor(90, 42, 127)),
-        'GROUP_3' : format(QColor(113, 4, 22)),
-        'NUM' : format(QColor(12, 88, 74)),
-        'COMMENT' : format(QColor(80, 126, 21)),
-    },
-    'DARK' : {
-        'BOOL' : format(QColor(37, 37, 221)),
-        'LOGIC' : format(QColor(37, 37, 221)),
-        'CBLOCK' : format(QColor(134, 55, 207)),
-        'FUNC' : format(QColor(228, 241, 142)),
-        'CMD' : format(QColor(251, 35, 82)),
-        'HEX' : format(QColor(153, 153, 165)),
-        'STR' : format(QColor(194, 112, 45)),
-        'DEV' : format(QColor(18, 181, 237)),
-        'ID' : format(QColor(209, 209, 248)),
-        'GROUP_1' : format(QColor(248, 183, 35)),
-        'GROUP_2' : format(QColor(119, 17, 195)),
-        'GROUP_3' : format(QColor(218, 1, 37)),
-        'NUM' : format(QColor(240, 251, 212)),
-        'COMMENT' : format(QColor(90, 140, 28))
-    }
-}
+# STYLES = {
+#     'LIGHT' : {
+#         'BOOL' : format(QColor(29, 29, 194)),
+#         'LOGIC' : format(QColor(29, 29, 194)),
+#         'CBLOCK' : format(QColor(126, 3, 224)),
+#         'FUNC' : format(QColor(128, 104, 2)),
+#         'CMD' : format(QColor(137, 2, 31)),
+#         'HEX' : format(QColor(68, 68, 70)),
+#         'STR' : format(QColor(92, 3, 3)),
+#         'DEV' : format(QColor(17, 80, 166)),
+#         'ID' : format(QColor(6, 48, 106)),
+#         'GROUP_1' : format(QColor(103, 73, 4)),
+#         'GROUP_2' : format(QColor(90, 42, 127)),
+#         'GROUP_3' : format(QColor(113, 4, 22)),
+#         'NUM' : format(QColor(12, 88, 74)),
+#         'COMMENT' : format(QColor(80, 126, 21)),
+#     },
+#     'DARK' : {
+#         'BOOL' : format(QColor(37, 37, 221)),
+#         'LOGIC' : format(QColor(37, 37, 221)),
+#         'CBLOCK' : format(QColor(134, 55, 207)),
+#         'FUNC' : format(QColor(228, 241, 142)),
+#         'CMD' : format(QColor(251, 35, 82)),
+#         'HEX' : format(QColor(153, 153, 165)),
+#         'STR' : format(QColor(194, 112, 45)),
+#         'DEV' : format(QColor(18, 181, 237)),
+#         'ID' : format(QColor(209, 209, 248)),
+#         'GROUP_1' : format(QColor(248, 183, 35)),
+#         'GROUP_2' : format(QColor(119, 17, 195)),
+#         'GROUP_3' : format(QColor(218, 1, 37)),
+#         'NUM' : format(QColor(240, 251, 212)),
+#         'COMMENT' : format(QColor(90, 140, 28))
+#     }
+# }
 
-class QCustomHighlighter(QSyntaxHighlighter):
-    def __init__(self, mode, parent=None):
-        super().__init__(parent)
-        if mode:
-            styles = STYLES['DARK']
-        else:
-            styles = STYLES['LIGHT']
+# class QCustomHighlighter(QSyntaxHighlighter):
+#     def __init__(self, mode, parent=None):
+#         super().__init__(parent)
+#         if mode:
+#             styles = STYLES['DARK']
+#         else:
+#             styles = STYLES['LIGHT']
 
-        self.multilineCommentStart = (QRegularExpression('/*'), 1, STYLES['LIGHT']['COMMENT'])
-        self.multilineCommentEnd = (QRegularExpression('*/'), 2, STYLES['LIGHT']['COMMENT'])
+#         self.multilineCommentStart = (QRegularExpression('/*'), 1, STYLES['LIGHT']['COMMENT'])
+#         self.multilineCommentEnd = (QRegularExpression('*/'), 2, STYLES['LIGHT']['COMMENT'])
 
-        rules = []
-        rules += [(fr'\b{x}\b', 0, styles['BOOL']) for x in bools]
-        rules += [(fr'\b{x}\b', 0, styles['LOGIC']) for x in logics]
-        rules += [(fr'\b{x}\b', 0, styles['CBLOCK']) for x in cblocks]
-        rules += [(fr'\b{x}\b', 0, styles['FUNC']) for x in funcs]
-        rules += [(fr'\b{x}\b', 0, styles['CMD']) for x in cmds]
-        rules += [(fr'{x}', 0, styles['GROUP_1']) for x in braces]
-        rules += [
-            (r'0x', 0, styles['HEX']),
-            (r'"[^"\\]*(\\.[^"\\]*)*"', 0, styles['STR']),
-            (r"'[^'\\]*(\\.[^'\\]*)*'", 0, styles['STR']),
-            (r'[a-zA-Z_]+[a-zA-Z_0-9]*:', 0, styles['DEV']),
-            (r'[a-zA-Z_]+[a-zA-Z_0-9]*', 0, styles['ID']),
-            (r'\b[+-]?[0-9]+[lL]?\b', 0, styles['NUM']),
-            (r'\b[+-]?0[xX][0-9A-Fa-f]+[lL]?\b', 0, styles['NUM']),
-            (r'\b[+-]?[0-9]+(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?\b', 0, styles['NUM']),
-            (r'//.*', 0, styles['COMMENT'])
-        ]
+#         rules = []
+#         rules += [(fr'\b{x}\b', 0, styles['BOOL']) for x in bools]
+#         rules += [(fr'\b{x}\b', 0, styles['LOGIC']) for x in logics]
+#         rules += [(fr'\b{x}\b', 0, styles['CBLOCK']) for x in cblocks]
+#         rules += [(fr'\b{x}\b', 0, styles['FUNC']) for x in funcs]
+#         rules += [(fr'\b{x}\b', 0, styles['CMD']) for x in cmds]
+#         rules += [(fr'{x}', 0, styles['GROUP_1']) for x in braces]
+#         rules += [
+#             (r'0x', 0, styles['HEX']),
+#             (r'"[^"\\]*(\\.[^"\\]*)*"', 0, styles['STR']),
+#             (r"'[^'\\]*(\\.[^'\\]*)*'", 0, styles['STR']),
+#             (r'[a-zA-Z_]+[a-zA-Z_0-9]*:', 0, styles['DEV']),
+#             (r'[a-zA-Z_]+[a-zA-Z_0-9]*', 0, styles['ID']),
+#             (r'\b[+-]?[0-9]+[lL]?\b', 0, styles['NUM']),
+#             (r'\b[+-]?0[xX][0-9A-Fa-f]+[lL]?\b', 0, styles['NUM']),
+#             (r'\b[+-]?[0-9]+(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?\b', 0, styles['NUM']),
+#             (r'//.*', 0, styles['COMMENT'])
+#         ]
 
-        self.rules = [(QRegularExpression(pat), idx, fmt) for (pat, idx, fmt) in rules]
+#         self.rules = [(QRegularExpression(pat), idx, fmt) for (pat, idx, fmt) in rules]
 
-    def highlightBlock(self, text):
-        print(text)
-        for expression, nth, fmt in self.rules:
-            patMatch = expression.match(text, 0)
-            while patMatch.hasMatch():
-                idx = patMatch.capturedStart(nth)
-                length = patMatch.capturedLength(nth)
-                self.setFormat(idx, length, fmt)
-                patMatch = expression.match(text, idx+length)
+#     def highlightBlock(self, text):
+#         print(text)
+#         for expression, nth, fmt in self.rules:
+#             patMatch = expression.match(text, 0)
+#             while patMatch.hasMatch():
+#                 idx = patMatch.capturedStart(nth)
+#                 length = patMatch.capturedLength(nth)
+#                 self.setFormat(idx, length, fmt)
+#                 patMatch = expression.match(text, idx+length)
 
-        self.setCurrentBlockState(0)
+#         self.setCurrentBlockState(0)
 
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    editor = QPlainTextEdit()
-    highlight = QCustomHighlighter(0, parent=editor.document())
-    editor.show()
+# if __name__ == '__main__':
+#     app = QApplication(sys.argv)
+#     editor = QPlainTextEdit()
+#     highlight = QCustomHighlighter(0, parent=editor.document())
+#     editor.show()
 
-    app.exec()
+#     app.exec()
 
 
 # class MainWindow(QMainWindow):
@@ -308,3 +308,119 @@ if __name__ == '__main__':
 #     codeEditor = QCodeEditor()
 #     codeEditor.show()
 #     sys.exit(app.exec_())
+
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+from collections import namedtuple
+
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QSyntaxHighlighter, QTextBlockUserData, QTextCursor
+from PySide6.QtWidgets import QPlainTextEdit, QTextEdit
+
+
+ParenInfo = namedtuple("ParenInfo", "character position")
+
+
+class ParenMatchHighlighter(QSyntaxHighlighter):
+    def highlightBlock(self, text):
+        block_data = TextBlockData()
+        for pos, rune in enumerate(text):
+            if rune in "()":
+                block_data.parentheses.append(ParenInfo(rune, pos))
+        self.setCurrentBlockUserData(block_data)
+
+
+class TextBlockData(QTextBlockUserData):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.parentheses = []
+
+
+class TextEdit(QPlainTextEdit):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.highlighter = ParenMatchHighlighter(self.document())
+        self.cursorPositionChanged.connect(self.matchParentheses)
+
+    def matchParentheses(self):
+        self.setExtraSelections([])
+        block = self.textCursor().block()
+        data = block.userData()
+        if data is not None:
+            abspos = self.textCursor().position()
+            pos = block.position()
+            for i, info in enumerate(data.parentheses):
+                curpos = abspos - pos
+                if info.position == curpos - 1 and info.character == "(":
+                    if self.matchLeftPar(block, i+1):
+                        self.createParSelection(pos + info.position)
+                if info.position == curpos - 1 and info.character == ")":
+                    if self.matchRightPar(block, i):
+                        self.createParSelection(pos + info.position)
+
+    def matchLeftPar(self, block, index, count=0):
+        pos = block.position()
+        data = block.userData()
+        for i, info in enumerate(data.parentheses[index:]):
+            if info.character == "(":
+                count += 1
+            elif info.character == ")":
+                if count == 0:
+                    self.createParSelection(pos + info.position)
+                    return True
+                else:
+                    count -= 1
+        block = block.next()
+        if block.isValid():
+            return self.matchLeftPar(block, 0, count)
+        else:
+            return False
+
+    def matchRightPar(self, block, index, count=0):
+        pos = block.position()
+        data = block.userData()
+        for i, info in enumerate(reversed(data.parentheses[:index])):
+            if info.character == ")":
+                count += 1
+            elif info.character == "(":
+                if count == 0:
+                    self.createParSelection(pos + info.position)
+                    return True
+                else:
+                    count -= 1
+        block = block.previous()
+        if block.isValid():
+            return self.matchRightPar(block, None, count)
+        else:
+            return False
+
+    def createParSelection(self, pos):
+        selection = QTextEdit.ExtraSelection()
+        selection.format.setBackground(Qt.green)
+        cursor = self.textCursor()
+        cursor.setPosition(pos)
+        cursor.movePosition(QTextCursor.NextCharacter, QTextCursor.KeepAnchor)
+        selection.cursor = cursor
+        self.setExtraSelections(self.extraSelections() + [selection])
+
+    def keyPressEvent(self, event) -> None:
+        super().keyPressEvent(event)
+        options = {'{' : '}', '(' : ')'}
+        option = options.get(event.text())
+        if option is not None:
+            tc = self.textCursor()
+            p = tc.position()
+            self.insertPlainText(option)
+            tc.setPosition(p)
+            self.setTextCursor(tc)
+
+
+
+if __name__ == "__main__":
+    import sys
+    from PySide6.QtWidgets import QApplication
+    app = QApplication(sys.argv)
+    editor = TextEdit()
+    editor.show()
+    sys.exit(app.exec_())

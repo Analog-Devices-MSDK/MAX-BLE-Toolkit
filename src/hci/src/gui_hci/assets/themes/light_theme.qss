@@ -49,6 +49,11 @@ QTextEdit {
     background-color: #EBEBEF;
     color: #464E69;
 }
+
+QCodeEditor {
+    background-color: #EBEBEF;
+    color: #464E69;
+}
 /***********************| Common button style for all labels |***********************/
 QLabel{
     color: #464E69;
@@ -97,7 +102,7 @@ QCheckBox::indicator:checked {
 }
 /***********************| custom style for lines |***********************/
 
-#line, #line_2 {
+#line, #line_2, #line_3, #line_4, #line_5 {
     background-color: rgb(153, 157, 163);
     width: 1;
 }
@@ -139,6 +144,10 @@ QCheckBox::indicator:checked {
 
 #MainWindow {
     background-color: rgb(255, 255, 255);
+}
+
+#main_frame {
+    background: rgb(255, 255, 255);
 }
 
 /***********************| custom style for scroll bar |***********************/
@@ -226,7 +235,11 @@ QTabWidget::pane {
     border-left: 0px;
     top: -1px;
 }
-
+QTabWidget::right-corner {
+    subcontrol-origin: padding;
+    right: 10px;
+    bottom: 2px;
+}
 QTabBar::tab {
     background-color: rgb(255, 255, 255);
     border: 1px solid rgb(153, 157, 163);
@@ -238,7 +251,7 @@ QTabBar::tab {
     max-width: 20ex;
     min-height: 3ex;
     max-height: 3ex;
-    padding: 0px;
+    padding: 1px 0px 1px 5px;;
     margin-right: -1px
 }
 
@@ -270,7 +283,9 @@ QTabBar::tab:!selected {
 }
 
 QTabBar::close-button {
-    image: url(assets/images/icons/cil-x-inv.png)
+    image: url(assets/images/icons/cil-x-inv.png);
+    border-radius: 4px;
+    top: 1px;
 }
 QTabBar::close-button:hover {
     background: #d5d5da;
@@ -305,4 +320,63 @@ QMenu::item {
 
 QMenu::item:selected {
     background-color: rgb(174, 206, 245);
+}
+
+/***********************| custom style for combo box |***********************/
+
+#select_themeMode {
+    color: #464E69;
+    border: 3px solid #EBEBEF;
+    background-color: #EBEBEF;
+    border-radius: 4px;
+    padding: 1px 18px 1px 3px;
+}
+
+#select_themeMode:hover {
+    border: 3px solid #6272a4;
+}
+
+#select_themeMode::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 15px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+#select_themeMode::down-arrow {
+    image: url(assets/images/icons/cil-arrow-bottom-inv.png);
+}
+
+#select_themeMode QListView {
+    border: 3px solid rgb(255, 255, 255);
+    background-color: rgb(255, 255, 255);
+    color: #464E69;
+    outline: 0px;
+}
+
+/***********************| custom style for tree view |***********************/
+QTreeView {
+    background-color: transparent;
+    color: #464E69;
+    show-decoration-selected: 0;
+}
+
+QTreeView::item {
+    background: transparent;
+    color: #464E69;
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+}
+
+QTreeView::item:hover {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #EBEBEF, stop: 1 rgb(180, 189, 202));
+}
+
+QTreeView::item:selected:active {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #6ea1f1, stop: 1 #567dbc);
+}
+
+QTreeView::item:selected:!active {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #EBEBEF, stop: 1 rgb(180, 189, 202));
 }

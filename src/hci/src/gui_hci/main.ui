@@ -85,35 +85,6 @@
        <property name="movable">
         <bool>true</bool>
        </property>
-       <widget class="QWidget" name="doc_tab">
-        <attribute name="title">
-         <string>Untitled</string>
-        </attribute>
-        <layout class="QGridLayout" name="gridLayout_5">
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <property name="spacing">
-          <number>0</number>
-         </property>
-         <item row="0" column="0">
-          <widget class="QTextEdit" name="textEdit">
-           <property name="frameShape">
-            <enum>QFrame::NoFrame</enum>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
        <widget class="QWidget" name="quickadd_btn">
         <attribute name="title">
          <string/>
@@ -325,13 +296,19 @@
           <item>
            <widget class="QStackedWidget" name="nav_window">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="maximumSize">
+             <size>
+              <width>274</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>2</number>
             </property>
             <widget class="QWidget" name="explorer_win">
              <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -343,18 +320,13 @@
                </widget>
               </item>
               <item>
-               <widget class="QTreeWidget" name="filetree">
+               <widget class="QTreeView" name="filetree">
                 <property name="frameShape">
                  <enum>QFrame::NoFrame</enum>
                 </property>
-                <attribute name="headerVisible">
-                 <bool>false</bool>
+                <attribute name="headerDefaultSectionSize">
+                 <number>57</number>
                 </attribute>
-                <column>
-                 <property name="text">
-                  <string notr="true">1</string>
-                 </property>
-                </column>
                </widget>
               </item>
              </layout>
@@ -369,18 +341,13 @@
                </widget>
               </item>
               <item>
-               <widget class="QTreeWidget" name="reftree">
+               <widget class="QTreeView" name="reftree">
                 <property name="frameShape">
                  <enum>QFrame::NoFrame</enum>
                 </property>
-                <attribute name="headerVisible">
-                 <bool>false</bool>
+                <attribute name="headerDefaultSectionSize">
+                 <number>57</number>
                 </attribute>
-                <column>
-                 <property name="text">
-                  <string notr="true">1</string>
-                 </property>
-                </column>
                </widget>
               </item>
              </layout>
@@ -409,15 +376,429 @@
                  <enum>QFrame::Raised</enum>
                 </property>
                 <layout class="QGridLayout" name="gridLayout">
-                 <item row="0" column="0">
-                  <widget class="QLabel" name="label_7">
+                 <item row="13" column="0">
+                  <widget class="QLabel" name="label_14">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>133</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>133</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
                    <property name="text">
-                    <string>Placeholder</string>
+                    <string>Confirm File/Folder Move</string>
+                   </property>
+                   <property name="wordWrap">
+                    <bool>true</bool>
                    </property>
                   </widget>
                  </item>
-                 <item row="0" column="1">
-                  <widget class="QLineEdit" name="lineEdit"/>
+                 <item row="17" column="1">
+                  <widget class="QPushButton" name="applySettings_btn">
+                   <property name="text">
+                    <string>Apply Settings</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="11" column="0" colspan="2">
+                  <widget class="QLabel" name="label_13">
+                   <property name="text">
+                    <string>Notifications</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="5" column="0" colspan="2">
+                  <spacer name="verticalSpacer_6">
+                   <property name="orientation">
+                    <enum>Qt::Vertical</enum>
+                   </property>
+                   <property name="sizeType">
+                    <enum>QSizePolicy::Fixed</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>20</width>
+                     <height>10</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item row="3" column="1">
+                  <widget class="QCheckBox" name="enable_bracketAutoComplete">
+                   <property name="layoutDirection">
+                    <enum>Qt::RightToLeft</enum>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="10" column="0" colspan="2">
+                  <spacer name="verticalSpacer_5">
+                   <property name="orientation">
+                    <enum>Qt::Vertical</enum>
+                   </property>
+                   <property name="sizeType">
+                    <enum>QSizePolicy::Fixed</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>20</width>
+                     <height>10</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item row="1" column="0" colspan="2">
+                  <widget class="Line" name="line_3">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="12" column="0" colspan="2">
+                  <widget class="Line" name="line_5">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="15" column="1">
+                  <widget class="QCheckBox" name="enable_notifyCloseWithoutSave">
+                   <property name="layoutDirection">
+                    <enum>Qt::RightToLeft</enum>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="15" column="0">
+                  <widget class="QLabel" name="label_16">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>133</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>133</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Confirm Close Without Save</string>
+                   </property>
+                   <property name="wordWrap">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="0">
+                  <widget class="QLabel" name="label_7">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>133</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Theme</string>
+                   </property>
+                   <property name="wordWrap">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="16" column="0" colspan="2">
+                  <spacer name="verticalSpacer_8">
+                   <property name="orientation">
+                    <enum>Qt::Vertical</enum>
+                   </property>
+                   <property name="sizeType">
+                    <enum>QSizePolicy::Fixed</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>20</width>
+                     <height>10</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item row="8" column="1">
+                  <widget class="QCheckBox" name="enable_consoleWindow">
+                   <property name="layoutDirection">
+                    <enum>Qt::RightToLeft</enum>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="0" colspan="2">
+                  <widget class="QLabel" name="label_4">
+                   <property name="text">
+                    <string>Editor</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="1">
+                  <widget class="QCheckBox" name="enable_syntaxHighlighting">
+                   <property name="layoutDirection">
+                    <enum>Qt::RightToLeft</enum>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="checked">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="8" column="0">
+                  <widget class="QLabel" name="label_10">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>133</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>133</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Show Console Window</string>
+                   </property>
+                   <property name="wordWrap">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="6" column="0" colspan="2">
+                  <widget class="QLabel" name="label_9">
+                   <property name="text">
+                    <string>View/Layout</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="14" column="1">
+                  <widget class="QCheckBox" name="enable_notifyOnDelete">
+                   <property name="layoutDirection">
+                    <enum>Qt::RightToLeft</enum>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="0">
+                  <widget class="QLabel" name="label_6">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>133</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>133</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Auto-Complete Brackets</string>
+                   </property>
+                   <property name="wordWrap">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="0">
+                  <widget class="QLabel" name="label_5">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>133</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>133</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Syntax Highlighting</string>
+                   </property>
+                   <property name="wordWrap">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="14" column="0">
+                  <widget class="QLabel" name="label_15">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>133</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>133</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Confirm File/Folder Delete</string>
+                   </property>
+                   <property name="wordWrap">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="9" column="0">
+                  <widget class="QLabel" name="label_11">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>133</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>133</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Show Navigation Sidebar</string>
+                   </property>
+                   <property name="wordWrap">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="1">
+                  <widget class="QComboBox" name="select_themeMode">
+                   <property name="frame">
+                    <bool>true</bool>
+                   </property>
+                   <item>
+                    <property name="text">
+                     <string>Light</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Dark</string>
+                    </property>
+                   </item>
+                  </widget>
+                 </item>
+                 <item row="13" column="1">
+                  <widget class="QCheckBox" name="enable_notifyOnMove">
+                   <property name="layoutDirection">
+                    <enum>Qt::RightToLeft</enum>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="9" column="1">
+                  <widget class="QCheckBox" name="enable_navSidebar">
+                   <property name="layoutDirection">
+                    <enum>Qt::RightToLeft</enum>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="7" column="0" colspan="2">
+                  <widget class="Line" name="line_4">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="18" column="0" colspan="2">
+                  <spacer name="verticalSpacer_7">
+                   <property name="orientation">
+                    <enum>Qt::Vertical</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>20</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                  </spacer>
                  </item>
                 </layout>
                </widget>
@@ -681,35 +1062,24 @@
     <property name="title">
      <string>View</string>
     </property>
-    <widget class="QMenu" name="menuAppearance">
+    <widget class="QMenu" name="menuColor_palatte">
      <property name="title">
-      <string>Appearance</string>
+      <string>Color palatte</string>
      </property>
-     <widget class="QMenu" name="menuColor_palatte">
-      <property name="title">
-       <string>Color palatte</string>
-      </property>
-      <addaction name="actionLight"/>
-      <addaction name="actionDark"/>
-     </widget>
-     <addaction name="menuColor_palatte"/>
-     <addaction name="actionShow_Reference_2"/>
-     <addaction name="actionShow_console"/>
+     <addaction name="actionLight"/>
+     <addaction name="actionDark"/>
     </widget>
-    <widget class="QMenu" name="menuLayout">
-     <property name="title">
-      <string>Layout</string>
-     </property>
-     <addaction name="actionDefault"/>
-     <addaction name="actionAdd_custom"/>
-    </widget>
-    <addaction name="menuAppearance"/>
-    <addaction name="menuLayout"/>
+    <addaction name="menuColor_palatte"/>
+    <addaction name="actionShow_console"/>
+    <addaction name="actionShow_navbar"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
      <string>Help</string>
     </property>
+    <addaction name="actionHCI_GUI_Documentation"/>
+    <addaction name="actionMAX_BLE_HCI_Documentation"/>
+    <addaction name="actionBLE_Core_Spec"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -777,34 +1147,67 @@
     <string>Paste</string>
    </property>
   </action>
+  <action name="actionDefault">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Sidebar (Default)</string>
+   </property>
+  </action>
+  <action name="actionRefView">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Always Show Reference</string>
+   </property>
+  </action>
+  <action name="actionMAX_BLE_HCI_Documentation">
+   <property name="text">
+    <string>MAX BLE HCI Documentation</string>
+   </property>
+  </action>
+  <action name="actionBLE_Core_Spec">
+   <property name="text">
+    <string>BLE Core Spec</string>
+   </property>
+  </action>
+  <action name="actionHCI_GUI_Documentation">
+   <property name="text">
+    <string>HCI GUI Documentation</string>
+   </property>
+  </action>
   <action name="actionLight">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Light</string>
    </property>
   </action>
   <action name="actionDark">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Dark</string>
    </property>
   </action>
-  <action name="actionShow_Reference_2">
-   <property name="text">
-    <string>Show reference</string>
-   </property>
-  </action>
   <action name="actionShow_console">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Show console</string>
    </property>
   </action>
-  <action name="actionDefault">
-   <property name="text">
-    <string>Default</string>
+  <action name="actionShow_navbar">
+   <property name="checkable">
+    <bool>true</bool>
    </property>
-  </action>
-  <action name="actionAdd_custom">
    <property name="text">
-    <string>Add custom</string>
+    <string>Show navigation bar</string>
    </property>
   </action>
  </widget>

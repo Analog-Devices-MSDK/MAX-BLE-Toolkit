@@ -49,6 +49,11 @@ QTextEdit {
     background-color: rgb(40, 44, 52);
     color: rgb(222, 221, 218);
 }
+
+QCodeEditor {
+    background-color: rgb(40, 44, 52);
+    color: rgb(222, 221, 218);
+}
 /***********************| Common button style for all labels |***********************/
 QLabel{
     color: rgb(222, 221, 218);
@@ -97,7 +102,7 @@ QCheckBox::indicator:checked {
 }
 /***********************| custom style for lines |***********************/
 
-#line, #line_2 {
+#line, #line_2, #line_3, #line_4, #line_5 {
     background-color: rgb(52, 59, 72);
     width: 1;
 }
@@ -145,6 +150,10 @@ QCheckBox::indicator:checked {
 
 #MainWindow {
     background-color: rgb(33, 37, 43);
+}
+
+#main_frame {
+    background: rgb(33, 37, 43);
 }
 
 /***********************| custom style for scroll bar |***********************/
@@ -232,9 +241,11 @@ QTabWidget::pane {
     border-left: 0px;
     top: -1px;
 }
-
-
-
+QTabWidget::right-corner {
+    subcontrol-origin: padding;
+    right: 10px;
+    bottom: 2px;
+}
 QTabBar::tab {
     background-color: rgb(33, 37, 43);
     border: 1px solid rgb(52, 59, 72);
@@ -246,7 +257,7 @@ QTabBar::tab {
     max-width: 20ex;
     min-height: 3ex;
     max-height: 3ex;
-    padding: 0px;
+    padding: 1px 0px 1px 5px;
     margin-right: -1px
 }
 
@@ -278,7 +289,9 @@ QTabBar::tab:!selected {
 }
 
 QTabBar::close-button {
-    image: url(assets/images/icons/cil-x.png)
+    image: url(assets/images/icons/cil-x.png);
+    border-radius: 4px;
+    top: 1px;
 }
 QTabBar::close-button:hover {
     background:rgb(52, 59, 72);
@@ -313,4 +326,65 @@ QMenu::item {
 
 QMenu::item:selected {
     background-color: rgb(52, 59, 72);
+}
+
+/***********************| custom style for combo box |***********************/
+
+#select_themeMode {
+    background-color: rgb(52, 59, 72);
+    color: rgb(222, 221, 218);
+    border: 3px solid rgb(52, 59, 72);
+    border-radius: 4px;
+    padding: 1px 18px 1px 3px;
+}
+
+#select_themeMode:hover {
+    border: 3px solid rgb(119, 136, 187);
+}
+
+#select_themeMode::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position:  top right;
+    width: 15px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+#select_themeMode::down-arrow {
+    image: url(assets/images/icons/cil-arrow-bottom.png);
+}
+
+#select_themeMode QListView {
+    border: 3px solid rgb(40, 44, 52);
+    background-color: rgb(40, 44, 52);
+    color: rgb(222, 221, 218);
+    /* padding: 5px; */
+    outline: 0px;
+}
+
+
+/***********************| custom style for tree view |***********************/
+QTreeView {
+    background-color: transparent;
+    color: rgb(222, 221, 218);
+    show-decoration-selected: 0;
+}
+
+QTreeView::item {
+    background: transparent;
+    color: rgb(222, 221, 218);
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+}
+
+QTreeView::item:hover {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(52, 59, 72), stop: 1 rgb(40, 44, 52));
+}
+
+QTreeView::item:selected:active {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #6ea1f1, stop: 1 #567dbc);
+}
+
+QTreeView::item:selected:!active {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(52, 59, 72), stop: 1 rgb(40, 44, 52));
 }
