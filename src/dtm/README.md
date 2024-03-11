@@ -27,7 +27,11 @@ PER = (RX_OK) / (RX_OK + RX_CRC + RX_Timeout)
 
 
 # Dependencies
-The BLE-HCI backend is not available on PyPi and needs to be installed from source
+The BLE-HCI backend can be installed from PyPi or from source 
+```
+pip install max-ble-hci
+```
+
 The HCI can be found at [MAX-BLE-HCI](https://github.com/Analog-Devices-MSDK/MAX-BLE-HCI)
 
 ## Running from python directly
