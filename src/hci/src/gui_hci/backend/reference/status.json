@@ -1,0 +1,14 @@
+{
+    "SECTION_NAME" : "Status",
+    "READ_RSSI" : {
+        "TOOLTIP" : "Read the Received Signal Strength Indication (RSSI) from the Controller.",
+        "Parameters" : {
+            "Handle" : 2
+        },
+        "Returns" : {
+            "Status" : 1,
+            "Handle" : 2,
+            "RSSI" : 1
+        }
+    }
+}

@@ -1,0 +1,3951 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> program statement
+Rule 2     program -> statement
+Rule 3     statement -> command NEWLINE
+Rule 4     statement -> DEV command NEWLINE
+Rule 5     statement -> NEWLINE
+Rule 6     statement -> error NEWLINE
+Rule 7     command -> FOR ID ASSIGN expr TO expr optstep optlvlinc
+Rule 8     command -> FOR ID ASSIGN error TO expr optstep optlvlinc
+Rule 9     command -> FOR ID ASSIGN expr TO error optstep optlvlinc
+Rule 10    command -> FOR ID ASSIGN expr TO expr STEP error
+Rule 11    command -> IF boolexpr optlvlinc
+Rule 12    command -> IF expr optlvlinc
+Rule 13    command -> IF error optlvlinc
+Rule 14    command -> optlvldec ELSE IF boolexpr optlvlinc
+Rule 15    command -> optlvldec ELSE IF error optlvlinc
+Rule 16    command -> optlvldec ELSE optlvlinc
+Rule 17    command -> WHILE boolexpr optlvlinc
+Rule 18    command -> WHILE bool optlvlinc
+Rule 19    command -> WHILE error optlvlinc
+Rule 20    command -> ADD_DEV ID expr
+Rule 21    command -> ADD_DEV ID error
+Rule 22    command -> CMD
+Rule 23    command -> CMD paramlist
+Rule 24    command -> CMD error
+Rule 25    command -> WAIT expr
+Rule 26    command -> WAIT error
+Rule 27    command -> ID ASSIGN expr
+Rule 28    command -> ID ASSIGN error
+Rule 29    command -> STEPIN
+Rule 30    command -> STEPOUT
+Rule 31    command -> PRINT expr
+Rule 32    optstep -> STEP expr
+Rule 33    optstep -> empty
+Rule 34    optlvlinc -> STEPIN
+Rule 35    optlvlinc -> empty
+Rule 36    optlvldec -> STEPOUT
+Rule 37    optlvldec -> empty
+Rule 38    boolexpr -> relexpr
+Rule 39    boolexpr -> boolexpr AND boolexpr
+Rule 40    boolexpr -> boolexpr OR boolexpr
+Rule 41    boolexpr -> NOT boolexpr
+Rule 42    relexpr -> expr LT expr
+Rule 43    relexpr -> expr LTE expr
+Rule 44    relexpr -> expr GT expr
+Rule 45    relexpr -> expr GTE expr
+Rule 46    relexpr -> expr EQUAL expr
+Rule 47    relexpr -> expr NOTEQUAL expr
+Rule 48    expr -> expr PLUS expr
+Rule 49    expr -> expr MINUS expr
+Rule 50    expr -> expr MUL expr
+Rule 51    expr -> expr DIV expr
+Rule 52    expr -> expr MOD expr
+Rule 53    expr -> expr POWER expr
+Rule 54    expr -> expr BITWISEAND expr
+Rule 55    expr -> expr BITWISEOR expr
+Rule 56    expr -> expr BITWISEXOR expr
+Rule 57    expr -> expr BITWISELS INT
+Rule 58    expr -> expr BITWISERS INT
+Rule 59    expr -> BITWISENOT expr
+Rule 60    expr -> INT
+Rule 61    expr -> FLOAT
+Rule 62    expr -> STR
+Rule 63    expr -> ID
+Rule 64    expr -> bool
+Rule 65    expr -> LPAREN expr RPAREN
+Rule 66    expr -> MINUS expr
+Rule 67    bool -> TRUE
+Rule 68    bool -> FALSE
+Rule 69    paramlist -> paramlist SEP param
+Rule 70    paramlist -> param
+Rule 71    param -> expr
+Rule 72    param -> boolexpr
+Rule 73    empty -> <empty>
+
+Terminals, with rules where they appear
+
+ADD_DEV              : 20 21
+AND                  : 39
+ASSIGN               : 7 8 9 10 27 28
+BITWISEAND           : 54
+BITWISELS            : 57
+BITWISENOT           : 59
+BITWISEOR            : 55
+BITWISERS            : 58
+BITWISEXOR           : 56
+CMD                  : 22 23 24
+DEV                  : 4
+DIV                  : 51
+ELSE                 : 14 15 16
+EQUAL                : 46
+FALSE                : 68
+FLOAT                : 61
+FOR                  : 7 8 9 10
+GT                   : 44
+GTE                  : 45
+ID                   : 7 8 9 10 20 21 27 28 63
+IF                   : 11 12 13 14 15
+INT                  : 57 58 60
+LPAREN               : 65
+LT                   : 42
+LTE                  : 43
+MINUS                : 49 66
+MOD                  : 52
+MUL                  : 50
+NEWLINE              : 3 4 5 6
+NOT                  : 41
+NOTEQUAL             : 47
+OR                   : 40
+PLUS                 : 48
+POWER                : 53
+PRINT                : 31
+RPAREN               : 65
+SEP                  : 69
+STEP                 : 10 32
+STEPIN               : 29 34
+STEPOUT              : 30 36
+STR                  : 62
+TO                   : 7 8 9 10
+TRUE                 : 67
+WAIT                 : 25 26
+WHILE                : 17 18 19
+error                : 6 8 9 10 13 15 19 21 24 26 28
+
+Nonterminals, with rules where they appear
+
+bool                 : 18 64
+boolexpr             : 11 14 17 39 39 40 40 41 72
+command              : 3 4
+empty                : 33 35 37
+expr                 : 7 7 8 9 10 10 12 20 25 27 31 32 42 42 43 43 44 44 45 45 46 46 47 47 48 48 49 49 50 50 51 51 52 52 53 53 54 54 55 55 56 56 57 58 59 65 66 71
+optlvldec            : 14 15 16
+optlvlinc            : 7 8 9 11 12 13 14 15 16 17 18 19
+optstep              : 7 8 9
+param                : 69 70
+paramlist            : 23 69
+program              : 1 0
+relexpr              : 38
+statement            : 1 2
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . program statement
+    (2) program -> . statement
+    (3) statement -> . command NEWLINE
+    (4) statement -> . DEV command NEWLINE
+    (5) statement -> . NEWLINE
+    (6) statement -> . error NEWLINE
+    (7) command -> . FOR ID ASSIGN expr TO expr optstep optlvlinc
+    (8) command -> . FOR ID ASSIGN error TO expr optstep optlvlinc
+    (9) command -> . FOR ID ASSIGN expr TO error optstep optlvlinc
+    (10) command -> . FOR ID ASSIGN expr TO expr STEP error
+    (11) command -> . IF boolexpr optlvlinc
+    (12) command -> . IF expr optlvlinc
+    (13) command -> . IF error optlvlinc
+    (14) command -> . optlvldec ELSE IF boolexpr optlvlinc
+    (15) command -> . optlvldec ELSE IF error optlvlinc
+    (16) command -> . optlvldec ELSE optlvlinc
+    (17) command -> . WHILE boolexpr optlvlinc
+    (18) command -> . WHILE bool optlvlinc
+    (19) command -> . WHILE error optlvlinc
+    (20) command -> . ADD_DEV ID expr
+    (21) command -> . ADD_DEV ID error
+    (22) command -> . CMD
+    (23) command -> . CMD paramlist
+    (24) command -> . CMD error
+    (25) command -> . WAIT expr
+    (26) command -> . WAIT error
+    (27) command -> . ID ASSIGN expr
+    (28) command -> . ID ASSIGN error
+    (29) command -> . STEPIN
+    (30) command -> . STEPOUT
+    (31) command -> . PRINT expr
+    (36) optlvldec -> . STEPOUT
+    (37) optlvldec -> . empty
+    (73) empty -> .
+
+    DEV             shift and go to state 5
+    NEWLINE         shift and go to state 4
+    error           shift and go to state 6
+    FOR             shift and go to state 7
+    IF              shift and go to state 9
+    WHILE           shift and go to state 11
+    ADD_DEV         shift and go to state 12
+    CMD             shift and go to state 13
+    WAIT            shift and go to state 14
+    ID              shift and go to state 8
+    STEPIN          shift and go to state 15
+    STEPOUT         shift and go to state 16
+    PRINT           shift and go to state 17
+    ELSE            reduce using rule 73 (empty -> .)
+
+    program                        shift and go to state 1
+    statement                      shift and go to state 2
+    command                        shift and go to state 3
+    optlvldec                      shift and go to state 10
+    empty                          shift and go to state 18
+
+state 1
+
+    (0) S' -> program .
+    (1) program -> program . statement
+    (3) statement -> . command NEWLINE
+    (4) statement -> . DEV command NEWLINE
+    (5) statement -> . NEWLINE
+    (6) statement -> . error NEWLINE
+    (7) command -> . FOR ID ASSIGN expr TO expr optstep optlvlinc
+    (8) command -> . FOR ID ASSIGN error TO expr optstep optlvlinc
+    (9) command -> . FOR ID ASSIGN expr TO error optstep optlvlinc
+    (10) command -> . FOR ID ASSIGN expr TO expr STEP error
+    (11) command -> . IF boolexpr optlvlinc
+    (12) command -> . IF expr optlvlinc
+    (13) command -> . IF error optlvlinc
+    (14) command -> . optlvldec ELSE IF boolexpr optlvlinc
+    (15) command -> . optlvldec ELSE IF error optlvlinc
+    (16) command -> . optlvldec ELSE optlvlinc
+    (17) command -> . WHILE boolexpr optlvlinc
+    (18) command -> . WHILE bool optlvlinc
+    (19) command -> . WHILE error optlvlinc
+    (20) command -> . ADD_DEV ID expr
+    (21) command -> . ADD_DEV ID error
+    (22) command -> . CMD
+    (23) command -> . CMD paramlist
+    (24) command -> . CMD error
+    (25) command -> . WAIT expr
+    (26) command -> . WAIT error
+    (27) command -> . ID ASSIGN expr
+    (28) command -> . ID ASSIGN error
+    (29) command -> . STEPIN
+    (30) command -> . STEPOUT
+    (31) command -> . PRINT expr
+    (36) optlvldec -> . STEPOUT
+    (37) optlvldec -> . empty
+    (73) empty -> .
+
+    DEV             shift and go to state 5
+    NEWLINE         shift and go to state 4
+    error           shift and go to state 6
+    FOR             shift and go to state 7
+    IF              shift and go to state 9
+    WHILE           shift and go to state 11
+    ADD_DEV         shift and go to state 12
+    CMD             shift and go to state 13
+    WAIT            shift and go to state 14
+    ID              shift and go to state 8
+    STEPIN          shift and go to state 15
+    STEPOUT         shift and go to state 16
+    PRINT           shift and go to state 17
+    ELSE            reduce using rule 73 (empty -> .)
+
+    statement                      shift and go to state 19
+    command                        shift and go to state 3
+    optlvldec                      shift and go to state 10
+    empty                          shift and go to state 18
+
+state 2
+
+    (2) program -> statement .
+
+    DEV             reduce using rule 2 (program -> statement .)
+    NEWLINE         reduce using rule 2 (program -> statement .)
+    error           reduce using rule 2 (program -> statement .)
+    FOR             reduce using rule 2 (program -> statement .)
+    IF              reduce using rule 2 (program -> statement .)
+    WHILE           reduce using rule 2 (program -> statement .)
+    ADD_DEV         reduce using rule 2 (program -> statement .)
+    CMD             reduce using rule 2 (program -> statement .)
+    WAIT            reduce using rule 2 (program -> statement .)
+    ID              reduce using rule 2 (program -> statement .)
+    STEPIN          reduce using rule 2 (program -> statement .)
+    STEPOUT         reduce using rule 2 (program -> statement .)
+    PRINT           reduce using rule 2 (program -> statement .)
+    $end            reduce using rule 2 (program -> statement .)
+    ELSE            reduce using rule 2 (program -> statement .)
+
+
+state 3
+
+    (3) statement -> command . NEWLINE
+
+    NEWLINE         shift and go to state 20
+
+
+state 4
+
+    (5) statement -> NEWLINE .
+
+    DEV             reduce using rule 5 (statement -> NEWLINE .)
+    NEWLINE         reduce using rule 5 (statement -> NEWLINE .)
+    error           reduce using rule 5 (statement -> NEWLINE .)
+    FOR             reduce using rule 5 (statement -> NEWLINE .)
+    IF              reduce using rule 5 (statement -> NEWLINE .)
+    WHILE           reduce using rule 5 (statement -> NEWLINE .)
+    ADD_DEV         reduce using rule 5 (statement -> NEWLINE .)
+    CMD             reduce using rule 5 (statement -> NEWLINE .)
+    WAIT            reduce using rule 5 (statement -> NEWLINE .)
+    ID              reduce using rule 5 (statement -> NEWLINE .)
+    STEPIN          reduce using rule 5 (statement -> NEWLINE .)
+    STEPOUT         reduce using rule 5 (statement -> NEWLINE .)
+    PRINT           reduce using rule 5 (statement -> NEWLINE .)
+    $end            reduce using rule 5 (statement -> NEWLINE .)
+    ELSE            reduce using rule 5 (statement -> NEWLINE .)
+
+
+state 5
+
+    (4) statement -> DEV . command NEWLINE
+    (7) command -> . FOR ID ASSIGN expr TO expr optstep optlvlinc
+    (8) command -> . FOR ID ASSIGN error TO expr optstep optlvlinc
+    (9) command -> . FOR ID ASSIGN expr TO error optstep optlvlinc
+    (10) command -> . FOR ID ASSIGN expr TO expr STEP error
+    (11) command -> . IF boolexpr optlvlinc
+    (12) command -> . IF expr optlvlinc
+    (13) command -> . IF error optlvlinc
+    (14) command -> . optlvldec ELSE IF boolexpr optlvlinc
+    (15) command -> . optlvldec ELSE IF error optlvlinc
+    (16) command -> . optlvldec ELSE optlvlinc
+    (17) command -> . WHILE boolexpr optlvlinc
+    (18) command -> . WHILE bool optlvlinc
+    (19) command -> . WHILE error optlvlinc
+    (20) command -> . ADD_DEV ID expr
+    (21) command -> . ADD_DEV ID error
+    (22) command -> . CMD
+    (23) command -> . CMD paramlist
+    (24) command -> . CMD error
+    (25) command -> . WAIT expr
+    (26) command -> . WAIT error
+    (27) command -> . ID ASSIGN expr
+    (28) command -> . ID ASSIGN error
+    (29) command -> . STEPIN
+    (30) command -> . STEPOUT
+    (31) command -> . PRINT expr
+    (36) optlvldec -> . STEPOUT
+    (37) optlvldec -> . empty
+    (73) empty -> .
+
+    FOR             shift and go to state 7
+    IF              shift and go to state 9
+    WHILE           shift and go to state 11
+    ADD_DEV         shift and go to state 12
+    CMD             shift and go to state 13
+    WAIT            shift and go to state 14
+    ID              shift and go to state 8
+    STEPIN          shift and go to state 15
+    STEPOUT         shift and go to state 16
+    PRINT           shift and go to state 17
+    ELSE            reduce using rule 73 (empty -> .)
+
+    command                        shift and go to state 21
+    optlvldec                      shift and go to state 10
+    empty                          shift and go to state 18
+
+state 6
+
+    (6) statement -> error . NEWLINE
+
+    NEWLINE         shift and go to state 22
+
+
+state 7
+
+    (7) command -> FOR . ID ASSIGN expr TO expr optstep optlvlinc
+    (8) command -> FOR . ID ASSIGN error TO expr optstep optlvlinc
+    (9) command -> FOR . ID ASSIGN expr TO error optstep optlvlinc
+    (10) command -> FOR . ID ASSIGN expr TO expr STEP error
+
+    ID              shift and go to state 23
+
+
+state 8
+
+    (27) command -> ID . ASSIGN expr
+    (28) command -> ID . ASSIGN error
+
+    ASSIGN          shift and go to state 24
+
+
+state 9
+
+    (11) command -> IF . boolexpr optlvlinc
+    (12) command -> IF . expr optlvlinc
+    (13) command -> IF . error optlvlinc
+    (38) boolexpr -> . relexpr
+    (39) boolexpr -> . boolexpr AND boolexpr
+    (40) boolexpr -> . boolexpr OR boolexpr
+    (41) boolexpr -> . NOT boolexpr
+    (48) expr -> . expr PLUS expr
+    (49) expr -> . expr MINUS expr
+    (50) expr -> . expr MUL expr
+    (51) expr -> . expr DIV expr
+    (52) expr -> . expr MOD expr
+    (53) expr -> . expr POWER expr
+    (54) expr -> . expr BITWISEAND expr
+    (55) expr -> . expr BITWISEOR expr
+    (56) expr -> . expr BITWISEXOR expr
+    (57) expr -> . expr BITWISELS INT
+    (58) expr -> . expr BITWISERS INT
+    (59) expr -> . BITWISENOT expr
+    (60) expr -> . INT
+    (61) expr -> . FLOAT
+    (62) expr -> . STR
+    (63) expr -> . ID
+    (64) expr -> . bool
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (42) relexpr -> . expr LT expr
+    (43) relexpr -> . expr LTE expr
+    (44) relexpr -> . expr GT expr
+    (45) relexpr -> . expr GTE expr
+    (46) relexpr -> . expr EQUAL expr
+    (47) relexpr -> . expr NOTEQUAL expr
+    (67) bool -> . TRUE
+    (68) bool -> . FALSE
+
+    error           shift and go to state 27
+    NOT             shift and go to state 29
+    BITWISENOT      shift and go to state 32
+    INT             shift and go to state 31
+    FLOAT           shift and go to state 33
+    STR             shift and go to state 34
+    ID              shift and go to state 35
+    LPAREN          shift and go to state 37
+    MINUS           shift and go to state 30
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    boolexpr                       shift and go to state 25
+    expr                           shift and go to state 26
+    relexpr                        shift and go to state 28
+    bool                           shift and go to state 36
+
+state 10
+
+    (14) command -> optlvldec . ELSE IF boolexpr optlvlinc
+    (15) command -> optlvldec . ELSE IF error optlvlinc
+    (16) command -> optlvldec . ELSE optlvlinc
+
+    ELSE            shift and go to state 40
+
+
+state 11
+
+    (17) command -> WHILE . boolexpr optlvlinc
+    (18) command -> WHILE . bool optlvlinc
+    (19) command -> WHILE . error optlvlinc
+    (38) boolexpr -> . relexpr
+    (39) boolexpr -> . boolexpr AND boolexpr
+    (40) boolexpr -> . boolexpr OR boolexpr
+    (41) boolexpr -> . NOT boolexpr
+    (67) bool -> . TRUE
+    (68) bool -> . FALSE
+    (42) relexpr -> . expr LT expr
+    (43) relexpr -> . expr LTE expr
+    (44) relexpr -> . expr GT expr
+    (45) relexpr -> . expr GTE expr
+    (46) relexpr -> . expr EQUAL expr
+    (47) relexpr -> . expr NOTEQUAL expr
+    (48) expr -> . expr PLUS expr
+    (49) expr -> . expr MINUS expr
+    (50) expr -> . expr MUL expr
+    (51) expr -> . expr DIV expr
+    (52) expr -> . expr MOD expr
+    (53) expr -> . expr POWER expr
+    (54) expr -> . expr BITWISEAND expr
+    (55) expr -> . expr BITWISEOR expr
+    (56) expr -> . expr BITWISEXOR expr
+    (57) expr -> . expr BITWISELS INT
+    (58) expr -> . expr BITWISERS INT
+    (59) expr -> . BITWISENOT expr
+    (60) expr -> . INT
+    (61) expr -> . FLOAT
+    (62) expr -> . STR
+    (63) expr -> . ID
+    (64) expr -> . bool
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+
+    error           shift and go to state 43
+    NOT             shift and go to state 29
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+    BITWISENOT      shift and go to state 32
+    INT             shift and go to state 31
+    FLOAT           shift and go to state 33
+    STR             shift and go to state 34
+    ID              shift and go to state 35
+    LPAREN          shift and go to state 37
+    MINUS           shift and go to state 30
+
+    boolexpr                       shift and go to state 41
+    bool                           shift and go to state 42
+    relexpr                        shift and go to state 28
+    expr                           shift and go to state 44
+
+state 12
+
+    (20) command -> ADD_DEV . ID expr
+    (21) command -> ADD_DEV . ID error
+
+    ID              shift and go to state 45
+
+
+state 13
+
+    (22) command -> CMD .
+    (23) command -> CMD . paramlist
+    (24) command -> CMD . error
+    (69) paramlist -> . paramlist SEP param
+    (70) paramlist -> . param
+    (71) param -> . expr
+    (72) param -> . boolexpr
+    (48) expr -> . expr PLUS expr
+    (49) expr -> . expr MINUS expr
+    (50) expr -> . expr MUL expr
+    (51) expr -> . expr DIV expr
+    (52) expr -> . expr MOD expr
+    (53) expr -> . expr POWER expr
+    (54) expr -> . expr BITWISEAND expr
+    (55) expr -> . expr BITWISEOR expr
+    (56) expr -> . expr BITWISEXOR expr
+    (57) expr -> . expr BITWISELS INT
+    (58) expr -> . expr BITWISERS INT
+    (59) expr -> . BITWISENOT expr
+    (60) expr -> . INT
+    (61) expr -> . FLOAT
+    (62) expr -> . STR
+    (63) expr -> . ID
+    (64) expr -> . bool
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (38) boolexpr -> . relexpr
+    (39) boolexpr -> . boolexpr AND boolexpr
+    (40) boolexpr -> . boolexpr OR boolexpr
+    (41) boolexpr -> . NOT boolexpr
+    (67) bool -> . TRUE
+    (68) bool -> . FALSE
+    (42) relexpr -> . expr LT expr
+    (43) relexpr -> . expr LTE expr
+    (44) relexpr -> . expr GT expr
+    (45) relexpr -> . expr GTE expr
+    (46) relexpr -> . expr EQUAL expr
+    (47) relexpr -> . expr NOTEQUAL expr
+
+    NEWLINE         reduce using rule 22 (command -> CMD .)
+    error           shift and go to state 47
+    BITWISENOT      shift and go to state 32
+    INT             shift and go to state 31
+    FLOAT           shift and go to state 33
+    STR             shift and go to state 34
+    ID              shift and go to state 35
+    LPAREN          shift and go to state 37
+    MINUS           shift and go to state 30
+    NOT             shift and go to state 29
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    paramlist                      shift and go to state 46
+    param                          shift and go to state 48
+    expr                           shift and go to state 49
+    boolexpr                       shift and go to state 50
+    bool                           shift and go to state 36
+    relexpr                        shift and go to state 28
+
+state 14
+
+    (25) command -> WAIT . expr
+    (26) command -> WAIT . error
+    (48) expr -> . expr PLUS expr
+    (49) expr -> . expr MINUS expr
+    (50) expr -> . expr MUL expr
+    (51) expr -> . expr DIV expr
+    (52) expr -> . expr MOD expr
+    (53) expr -> . expr POWER expr
+    (54) expr -> . expr BITWISEAND expr
+    (55) expr -> . expr BITWISEOR expr
+    (56) expr -> . expr BITWISEXOR expr
+    (57) expr -> . expr BITWISELS INT
+    (58) expr -> . expr BITWISERS INT
+    (59) expr -> . BITWISENOT expr
+    (60) expr -> . INT
+    (61) expr -> . FLOAT
+    (62) expr -> . STR
+    (63) expr -> . ID
+    (64) expr -> . bool
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (67) bool -> . TRUE
+    (68) bool -> . FALSE
+
+    error           shift and go to state 52
+    BITWISENOT      shift and go to state 32
+    INT             shift and go to state 31
+    FLOAT           shift and go to state 33
+    STR             shift and go to state 34
+    ID              shift and go to state 35
+    LPAREN          shift and go to state 37
+    MINUS           shift and go to state 30
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    expr                           shift and go to state 51
+    bool                           shift and go to state 36
+
+state 15
+
+    (29) command -> STEPIN .
+
+    NEWLINE         reduce using rule 29 (command -> STEPIN .)
+
+
+state 16
+
+    (30) command -> STEPOUT .
+    (36) optlvldec -> STEPOUT .
+
+    NEWLINE         reduce using rule 30 (command -> STEPOUT .)
+    ELSE            reduce using rule 36 (optlvldec -> STEPOUT .)
+
+
+state 17
+
+    (31) command -> PRINT . expr
+    (48) expr -> . expr PLUS expr
+    (49) expr -> . expr MINUS expr
+    (50) expr -> . expr MUL expr
+    (51) expr -> . expr DIV expr
+    (52) expr -> . expr MOD expr
+    (53) expr -> . expr POWER expr
+    (54) expr -> . expr BITWISEAND expr
+    (55) expr -> . expr BITWISEOR expr
+    (56) expr -> . expr BITWISEXOR expr
+    (57) expr -> . expr BITWISELS INT
+    (58) expr -> . expr BITWISERS INT
+    (59) expr -> . BITWISENOT expr
+    (60) expr -> . INT
+    (61) expr -> . FLOAT
+    (62) expr -> . STR
+    (63) expr -> . ID
+    (64) expr -> . bool
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (67) bool -> . TRUE
+    (68) bool -> . FALSE
+
+    BITWISENOT      shift and go to state 32
+    INT             shift and go to state 31
+    FLOAT           shift and go to state 33
+    STR             shift and go to state 34
+    ID              shift and go to state 35
+    LPAREN          shift and go to state 37
+    MINUS           shift and go to state 30
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    expr                           shift and go to state 53
+    bool                           shift and go to state 36
+
+state 18
+
+    (37) optlvldec -> empty .
+
+    ELSE            reduce using rule 37 (optlvldec -> empty .)
+
+
+state 19
+
+    (1) program -> program statement .
+
+    DEV             reduce using rule 1 (program -> program statement .)
+    NEWLINE         reduce using rule 1 (program -> program statement .)
+    error           reduce using rule 1 (program -> program statement .)
+    FOR             reduce using rule 1 (program -> program statement .)
+    IF              reduce using rule 1 (program -> program statement .)
+    WHILE           reduce using rule 1 (program -> program statement .)
+    ADD_DEV         reduce using rule 1 (program -> program statement .)
+    CMD             reduce using rule 1 (program -> program statement .)
+    WAIT            reduce using rule 1 (program -> program statement .)
+    ID              reduce using rule 1 (program -> program statement .)
+    STEPIN          reduce using rule 1 (program -> program statement .)
+    STEPOUT         reduce using rule 1 (program -> program statement .)
+    PRINT           reduce using rule 1 (program -> program statement .)
+    $end            reduce using rule 1 (program -> program statement .)
+    ELSE            reduce using rule 1 (program -> program statement .)
+
+
+state 20
+
+    (3) statement -> command NEWLINE .
+
+    DEV             reduce using rule 3 (statement -> command NEWLINE .)
+    NEWLINE         reduce using rule 3 (statement -> command NEWLINE .)
+    error           reduce using rule 3 (statement -> command NEWLINE .)
+    FOR             reduce using rule 3 (statement -> command NEWLINE .)
+    IF              reduce using rule 3 (statement -> command NEWLINE .)
+    WHILE           reduce using rule 3 (statement -> command NEWLINE .)
+    ADD_DEV         reduce using rule 3 (statement -> command NEWLINE .)
+    CMD             reduce using rule 3 (statement -> command NEWLINE .)
+    WAIT            reduce using rule 3 (statement -> command NEWLINE .)
+    ID              reduce using rule 3 (statement -> command NEWLINE .)
+    STEPIN          reduce using rule 3 (statement -> command NEWLINE .)
+    STEPOUT         reduce using rule 3 (statement -> command NEWLINE .)
+    PRINT           reduce using rule 3 (statement -> command NEWLINE .)
+    $end            reduce using rule 3 (statement -> command NEWLINE .)
+    ELSE            reduce using rule 3 (statement -> command NEWLINE .)
+
+
+state 21
+
+    (4) statement -> DEV command . NEWLINE
+
+    NEWLINE         shift and go to state 54
+
+
+state 22
+
+    (6) statement -> error NEWLINE .
+
+    DEV             reduce using rule 6 (statement -> error NEWLINE .)
+    NEWLINE         reduce using rule 6 (statement -> error NEWLINE .)
+    error           reduce using rule 6 (statement -> error NEWLINE .)
+    FOR             reduce using rule 6 (statement -> error NEWLINE .)
+    IF              reduce using rule 6 (statement -> error NEWLINE .)
+    WHILE           reduce using rule 6 (statement -> error NEWLINE .)
+    ADD_DEV         reduce using rule 6 (statement -> error NEWLINE .)
+    CMD             reduce using rule 6 (statement -> error NEWLINE .)
+    WAIT            reduce using rule 6 (statement -> error NEWLINE .)
+    ID              reduce using rule 6 (statement -> error NEWLINE .)
+    STEPIN          reduce using rule 6 (statement -> error NEWLINE .)
+    STEPOUT         reduce using rule 6 (statement -> error NEWLINE .)
+    PRINT           reduce using rule 6 (statement -> error NEWLINE .)
+    $end            reduce using rule 6 (statement -> error NEWLINE .)
+    ELSE            reduce using rule 6 (statement -> error NEWLINE .)
+
+
+state 23
+
+    (7) command -> FOR ID . ASSIGN expr TO expr optstep optlvlinc
+    (8) command -> FOR ID . ASSIGN error TO expr optstep optlvlinc
+    (9) command -> FOR ID . ASSIGN expr TO error optstep optlvlinc
+    (10) command -> FOR ID . ASSIGN expr TO expr STEP error
+
+    ASSIGN          shift and go to state 55
+
+
+state 24
+
+    (27) command -> ID ASSIGN . expr
+    (28) command -> ID ASSIGN . error
+    (48) expr -> . expr PLUS expr
+    (49) expr -> . expr MINUS expr
+    (50) expr -> . expr MUL expr
+    (51) expr -> . expr DIV expr
+    (52) expr -> . expr MOD expr
+    (53) expr -> . expr POWER expr
+    (54) expr -> . expr BITWISEAND expr
+    (55) expr -> . expr BITWISEOR expr
+    (56) expr -> . expr BITWISEXOR expr
+    (57) expr -> . expr BITWISELS INT
+    (58) expr -> . expr BITWISERS INT
+    (59) expr -> . BITWISENOT expr
+    (60) expr -> . INT
+    (61) expr -> . FLOAT
+    (62) expr -> . STR
+    (63) expr -> . ID
+    (64) expr -> . bool
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (67) bool -> . TRUE
+    (68) bool -> . FALSE
+
+    error           shift and go to state 57
+    BITWISENOT      shift and go to state 32
+    INT             shift and go to state 31
+    FLOAT           shift and go to state 33
+    STR             shift and go to state 34
+    ID              shift and go to state 35
+    LPAREN          shift and go to state 37
+    MINUS           shift and go to state 30
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    expr                           shift and go to state 56
+    bool                           shift and go to state 36
+
+state 25
+
+    (11) command -> IF boolexpr . optlvlinc
+    (39) boolexpr -> boolexpr . AND boolexpr
+    (40) boolexpr -> boolexpr . OR boolexpr
+    (34) optlvlinc -> . STEPIN
+    (35) optlvlinc -> . empty
+    (73) empty -> .
+
+    AND             shift and go to state 59
+    OR              shift and go to state 60
+    STEPIN          shift and go to state 61
+    NEWLINE         reduce using rule 73 (empty -> .)
+
+    optlvlinc                      shift and go to state 58
+    empty                          shift and go to state 62
+
+state 26
+
+    (12) command -> IF expr . optlvlinc
+    (48) expr -> expr . PLUS expr
+    (49) expr -> expr . MINUS expr
+    (50) expr -> expr . MUL expr
+    (51) expr -> expr . DIV expr
+    (52) expr -> expr . MOD expr
+    (53) expr -> expr . POWER expr
+    (54) expr -> expr . BITWISEAND expr
+    (55) expr -> expr . BITWISEOR expr
+    (56) expr -> expr . BITWISEXOR expr
+    (57) expr -> expr . BITWISELS INT
+    (58) expr -> expr . BITWISERS INT
+    (42) relexpr -> expr . LT expr
+    (43) relexpr -> expr . LTE expr
+    (44) relexpr -> expr . GT expr
+    (45) relexpr -> expr . GTE expr
+    (46) relexpr -> expr . EQUAL expr
+    (47) relexpr -> expr . NOTEQUAL expr
+    (34) optlvlinc -> . STEPIN
+    (35) optlvlinc -> . empty
+    (73) empty -> .
+
+    PLUS            shift and go to state 64
+    MINUS           shift and go to state 65
+    MUL             shift and go to state 66
+    DIV             shift and go to state 67
+    MOD             shift and go to state 68
+    POWER           shift and go to state 69
+    BITWISEAND      shift and go to state 70
+    BITWISEOR       shift and go to state 71
+    BITWISEXOR      shift and go to state 72
+    BITWISELS       shift and go to state 73
+    BITWISERS       shift and go to state 74
+    LT              shift and go to state 75
+    LTE             shift and go to state 76
+    GT              shift and go to state 77
+    GTE             shift and go to state 78
+    EQUAL           shift and go to state 79
+    NOTEQUAL        shift and go to state 80
+    STEPIN          shift and go to state 61
+    NEWLINE         reduce using rule 73 (empty -> .)
+
+    optlvlinc                      shift and go to state 63
+    empty                          shift and go to state 62
+
+state 27
+
+    (13) command -> IF error . optlvlinc
+    (34) optlvlinc -> . STEPIN
+    (35) optlvlinc -> . empty
+    (73) empty -> .
+
+    STEPIN          shift and go to state 61
+    NEWLINE         reduce using rule 73 (empty -> .)
+
+    optlvlinc                      shift and go to state 81
+    empty                          shift and go to state 62
+
+state 28
+
+    (38) boolexpr -> relexpr .
+
+    AND             reduce using rule 38 (boolexpr -> relexpr .)
+    OR              reduce using rule 38 (boolexpr -> relexpr .)
+    STEPIN          reduce using rule 38 (boolexpr -> relexpr .)
+    NEWLINE         reduce using rule 38 (boolexpr -> relexpr .)
+    SEP             reduce using rule 38 (boolexpr -> relexpr .)
+
+
+state 29
+
+    (41) boolexpr -> NOT . boolexpr
+    (38) boolexpr -> . relexpr
+    (39) boolexpr -> . boolexpr AND boolexpr
+    (40) boolexpr -> . boolexpr OR boolexpr
+    (41) boolexpr -> . NOT boolexpr
+    (42) relexpr -> . expr LT expr
+    (43) relexpr -> . expr LTE expr
+    (44) relexpr -> . expr GT expr
+    (45) relexpr -> . expr GTE expr
+    (46) relexpr -> . expr EQUAL expr
+    (47) relexpr -> . expr NOTEQUAL expr
+    (48) expr -> . expr PLUS expr
+    (49) expr -> . expr MINUS expr
+    (50) expr -> . expr MUL expr
+    (51) expr -> . expr DIV expr
+    (52) expr -> . expr MOD expr
+    (53) expr -> . expr POWER expr
+    (54) expr -> . expr BITWISEAND expr
+    (55) expr -> . expr BITWISEOR expr
+    (56) expr -> . expr BITWISEXOR expr
+    (57) expr -> . expr BITWISELS INT
+    (58) expr -> . expr BITWISERS INT
+    (59) expr -> . BITWISENOT expr
+    (60) expr -> . INT
+    (61) expr -> . FLOAT
+    (62) expr -> . STR
+    (63) expr -> . ID
+    (64) expr -> . bool
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (67) bool -> . TRUE
+    (68) bool -> . FALSE
+
+    NOT             shift and go to state 29
+    BITWISENOT      shift and go to state 32
+    INT             shift and go to state 31
+    FLOAT           shift and go to state 33
+    STR             shift and go to state 34
+    ID              shift and go to state 35
+    LPAREN          shift and go to state 37
+    MINUS           shift and go to state 30
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    boolexpr                       shift and go to state 82
+    relexpr                        shift and go to state 28
+    expr                           shift and go to state 44
+    bool                           shift and go to state 36
+
+state 30
+
+    (66) expr -> MINUS . expr
+    (48) expr -> . expr PLUS expr
+    (49) expr -> . expr MINUS expr
+    (50) expr -> . expr MUL expr
+    (51) expr -> . expr DIV expr
+    (52) expr -> . expr MOD expr
+    (53) expr -> . expr POWER expr
+    (54) expr -> . expr BITWISEAND expr
+    (55) expr -> . expr BITWISEOR expr
+    (56) expr -> . expr BITWISEXOR expr
+    (57) expr -> . expr BITWISELS INT
+    (58) expr -> . expr BITWISERS INT
+    (59) expr -> . BITWISENOT expr
+    (60) expr -> . INT
+    (61) expr -> . FLOAT
+    (62) expr -> . STR
+    (63) expr -> . ID
+    (64) expr -> . bool
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (67) bool -> . TRUE
+    (68) bool -> . FALSE
+
+    BITWISENOT      shift and go to state 32
+    INT             shift and go to state 31
+    FLOAT           shift and go to state 33
+    STR             shift and go to state 34
+    ID              shift and go to state 35
+    LPAREN          shift and go to state 37
+    MINUS           shift and go to state 30
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    expr                           shift and go to state 83
+    bool                           shift and go to state 36
+
+state 31
+
+    (60) expr -> INT .
+
+    PLUS            reduce using rule 60 (expr -> INT .)
+    MINUS           reduce using rule 60 (expr -> INT .)
+    MUL             reduce using rule 60 (expr -> INT .)
+    DIV             reduce using rule 60 (expr -> INT .)
+    MOD             reduce using rule 60 (expr -> INT .)
+    POWER           reduce using rule 60 (expr -> INT .)
+    BITWISEAND      reduce using rule 60 (expr -> INT .)
+    BITWISEOR       reduce using rule 60 (expr -> INT .)
+    BITWISEXOR      reduce using rule 60 (expr -> INT .)
+    BITWISELS       reduce using rule 60 (expr -> INT .)
+    BITWISERS       reduce using rule 60 (expr -> INT .)
+    LT              reduce using rule 60 (expr -> INT .)
+    LTE             reduce using rule 60 (expr -> INT .)
+    GT              reduce using rule 60 (expr -> INT .)
+    GTE             reduce using rule 60 (expr -> INT .)
+    EQUAL           reduce using rule 60 (expr -> INT .)
+    NOTEQUAL        reduce using rule 60 (expr -> INT .)
+    STEPIN          reduce using rule 60 (expr -> INT .)
+    NEWLINE         reduce using rule 60 (expr -> INT .)
+    SEP             reduce using rule 60 (expr -> INT .)
+    RPAREN          reduce using rule 60 (expr -> INT .)
+    TO              reduce using rule 60 (expr -> INT .)
+    AND             reduce using rule 60 (expr -> INT .)
+    OR              reduce using rule 60 (expr -> INT .)
+    STEP            reduce using rule 60 (expr -> INT .)
+
+
+state 32
+
+    (59) expr -> BITWISENOT . expr
+    (48) expr -> . expr PLUS expr
+    (49) expr -> . expr MINUS expr
+    (50) expr -> . expr MUL expr
+    (51) expr -> . expr DIV expr
+    (52) expr -> . expr MOD expr
+    (53) expr -> . expr POWER expr
+    (54) expr -> . expr BITWISEAND expr
+    (55) expr -> . expr BITWISEOR expr
+    (56) expr -> . expr BITWISEXOR expr
+    (57) expr -> . expr BITWISELS INT
+    (58) expr -> . expr BITWISERS INT
+    (59) expr -> . BITWISENOT expr
+    (60) expr -> . INT
+    (61) expr -> . FLOAT
+    (62) expr -> . STR
+    (63) expr -> . ID
+    (64) expr -> . bool
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (67) bool -> . TRUE
+    (68) bool -> . FALSE
+
+    BITWISENOT      shift and go to state 32
+    INT             shift and go to state 31
+    FLOAT           shift and go to state 33
+    STR             shift and go to state 34
+    ID              shift and go to state 35
+    LPAREN          shift and go to state 37
+    MINUS           shift and go to state 30
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    expr                           shift and go to state 84
+    bool                           shift and go to state 36
+
+state 33
+
+    (61) expr -> FLOAT .
+
+    PLUS            reduce using rule 61 (expr -> FLOAT .)
+    MINUS           reduce using rule 61 (expr -> FLOAT .)
+    MUL             reduce using rule 61 (expr -> FLOAT .)
+    DIV             reduce using rule 61 (expr -> FLOAT .)
+    MOD             reduce using rule 61 (expr -> FLOAT .)
+    POWER           reduce using rule 61 (expr -> FLOAT .)
+    BITWISEAND      reduce using rule 61 (expr -> FLOAT .)
+    BITWISEOR       reduce using rule 61 (expr -> FLOAT .)
+    BITWISEXOR      reduce using rule 61 (expr -> FLOAT .)
+    BITWISELS       reduce using rule 61 (expr -> FLOAT .)
+    BITWISERS       reduce using rule 61 (expr -> FLOAT .)
+    LT              reduce using rule 61 (expr -> FLOAT .)
+    LTE             reduce using rule 61 (expr -> FLOAT .)
+    GT              reduce using rule 61 (expr -> FLOAT .)
+    GTE             reduce using rule 61 (expr -> FLOAT .)
+    EQUAL           reduce using rule 61 (expr -> FLOAT .)
+    NOTEQUAL        reduce using rule 61 (expr -> FLOAT .)
+    STEPIN          reduce using rule 61 (expr -> FLOAT .)
+    NEWLINE         reduce using rule 61 (expr -> FLOAT .)
+    SEP             reduce using rule 61 (expr -> FLOAT .)
+    RPAREN          reduce using rule 61 (expr -> FLOAT .)
+    TO              reduce using rule 61 (expr -> FLOAT .)
+    AND             reduce using rule 61 (expr -> FLOAT .)
+    OR              reduce using rule 61 (expr -> FLOAT .)
+    STEP            reduce using rule 61 (expr -> FLOAT .)
+
+
+state 34
+
+    (62) expr -> STR .
+
+    PLUS            reduce using rule 62 (expr -> STR .)
+    MINUS           reduce using rule 62 (expr -> STR .)
+    MUL             reduce using rule 62 (expr -> STR .)
+    DIV             reduce using rule 62 (expr -> STR .)
+    MOD             reduce using rule 62 (expr -> STR .)
+    POWER           reduce using rule 62 (expr -> STR .)
+    BITWISEAND      reduce using rule 62 (expr -> STR .)
+    BITWISEOR       reduce using rule 62 (expr -> STR .)
+    BITWISEXOR      reduce using rule 62 (expr -> STR .)
+    BITWISELS       reduce using rule 62 (expr -> STR .)
+    BITWISERS       reduce using rule 62 (expr -> STR .)
+    LT              reduce using rule 62 (expr -> STR .)
+    LTE             reduce using rule 62 (expr -> STR .)
+    GT              reduce using rule 62 (expr -> STR .)
+    GTE             reduce using rule 62 (expr -> STR .)
+    EQUAL           reduce using rule 62 (expr -> STR .)
+    NOTEQUAL        reduce using rule 62 (expr -> STR .)
+    STEPIN          reduce using rule 62 (expr -> STR .)
+    NEWLINE         reduce using rule 62 (expr -> STR .)
+    SEP             reduce using rule 62 (expr -> STR .)
+    RPAREN          reduce using rule 62 (expr -> STR .)
+    TO              reduce using rule 62 (expr -> STR .)
+    AND             reduce using rule 62 (expr -> STR .)
+    OR              reduce using rule 62 (expr -> STR .)
+    STEP            reduce using rule 62 (expr -> STR .)
+
+
+state 35
+
+    (63) expr -> ID .
+
+    PLUS            reduce using rule 63 (expr -> ID .)
+    MINUS           reduce using rule 63 (expr -> ID .)
+    MUL             reduce using rule 63 (expr -> ID .)
+    DIV             reduce using rule 63 (expr -> ID .)
+    MOD             reduce using rule 63 (expr -> ID .)
+    POWER           reduce using rule 63 (expr -> ID .)
+    BITWISEAND      reduce using rule 63 (expr -> ID .)
+    BITWISEOR       reduce using rule 63 (expr -> ID .)
+    BITWISEXOR      reduce using rule 63 (expr -> ID .)
+    BITWISELS       reduce using rule 63 (expr -> ID .)
+    BITWISERS       reduce using rule 63 (expr -> ID .)
+    LT              reduce using rule 63 (expr -> ID .)
+    LTE             reduce using rule 63 (expr -> ID .)
+    GT              reduce using rule 63 (expr -> ID .)
+    GTE             reduce using rule 63 (expr -> ID .)
+    EQUAL           reduce using rule 63 (expr -> ID .)
+    NOTEQUAL        reduce using rule 63 (expr -> ID .)
+    STEPIN          reduce using rule 63 (expr -> ID .)
+    NEWLINE         reduce using rule 63 (expr -> ID .)
+    SEP             reduce using rule 63 (expr -> ID .)
+    RPAREN          reduce using rule 63 (expr -> ID .)
+    TO              reduce using rule 63 (expr -> ID .)
+    AND             reduce using rule 63 (expr -> ID .)
+    OR              reduce using rule 63 (expr -> ID .)
+    STEP            reduce using rule 63 (expr -> ID .)
+
+
+state 36
+
+    (64) expr -> bool .
+
+    PLUS            reduce using rule 64 (expr -> bool .)
+    MINUS           reduce using rule 64 (expr -> bool .)
+    MUL             reduce using rule 64 (expr -> bool .)
+    DIV             reduce using rule 64 (expr -> bool .)
+    MOD             reduce using rule 64 (expr -> bool .)
+    POWER           reduce using rule 64 (expr -> bool .)
+    BITWISEAND      reduce using rule 64 (expr -> bool .)
+    BITWISEOR       reduce using rule 64 (expr -> bool .)
+    BITWISEXOR      reduce using rule 64 (expr -> bool .)
+    BITWISELS       reduce using rule 64 (expr -> bool .)
+    BITWISERS       reduce using rule 64 (expr -> bool .)
+    LT              reduce using rule 64 (expr -> bool .)
+    LTE             reduce using rule 64 (expr -> bool .)
+    GT              reduce using rule 64 (expr -> bool .)
+    GTE             reduce using rule 64 (expr -> bool .)
+    EQUAL           reduce using rule 64 (expr -> bool .)
+    NOTEQUAL        reduce using rule 64 (expr -> bool .)
+    STEPIN          reduce using rule 64 (expr -> bool .)
+    NEWLINE         reduce using rule 64 (expr -> bool .)
+    SEP             reduce using rule 64 (expr -> bool .)
+    RPAREN          reduce using rule 64 (expr -> bool .)
+    TO              reduce using rule 64 (expr -> bool .)
+    AND             reduce using rule 64 (expr -> bool .)
+    OR              reduce using rule 64 (expr -> bool .)
+    STEP            reduce using rule 64 (expr -> bool .)
+
+
+state 37
+
+    (65) expr -> LPAREN . expr RPAREN
+    (48) expr -> . expr PLUS expr
+    (49) expr -> . expr MINUS expr
+    (50) expr -> . expr MUL expr
+    (51) expr -> . expr DIV expr
+    (52) expr -> . expr MOD expr
+    (53) expr -> . expr POWER expr
+    (54) expr -> . expr BITWISEAND expr
+    (55) expr -> . expr BITWISEOR expr
+    (56) expr -> . expr BITWISEXOR expr
+    (57) expr -> . expr BITWISELS INT
+    (58) expr -> . expr BITWISERS INT
+    (59) expr -> . BITWISENOT expr
+    (60) expr -> . INT
+    (61) expr -> . FLOAT
+    (62) expr -> . STR
+    (63) expr -> . ID
+    (64) expr -> . bool
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (67) bool -> . TRUE
+    (68) bool -> . FALSE
+
+    BITWISENOT      shift and go to state 32
+    INT             shift and go to state 31
+    FLOAT           shift and go to state 33
+    STR             shift and go to state 34
+    ID              shift and go to state 35
+    LPAREN          shift and go to state 37
+    MINUS           shift and go to state 30
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    expr                           shift and go to state 85
+    bool                           shift and go to state 36
+
+state 38
+
+    (67) bool -> TRUE .
+
+    PLUS            reduce using rule 67 (bool -> TRUE .)
+    MINUS           reduce using rule 67 (bool -> TRUE .)
+    MUL             reduce using rule 67 (bool -> TRUE .)
+    DIV             reduce using rule 67 (bool -> TRUE .)
+    MOD             reduce using rule 67 (bool -> TRUE .)
+    POWER           reduce using rule 67 (bool -> TRUE .)
+    BITWISEAND      reduce using rule 67 (bool -> TRUE .)
+    BITWISEOR       reduce using rule 67 (bool -> TRUE .)
+    BITWISEXOR      reduce using rule 67 (bool -> TRUE .)
+    BITWISELS       reduce using rule 67 (bool -> TRUE .)
+    BITWISERS       reduce using rule 67 (bool -> TRUE .)
+    LT              reduce using rule 67 (bool -> TRUE .)
+    LTE             reduce using rule 67 (bool -> TRUE .)
+    GT              reduce using rule 67 (bool -> TRUE .)
+    GTE             reduce using rule 67 (bool -> TRUE .)
+    EQUAL           reduce using rule 67 (bool -> TRUE .)
+    NOTEQUAL        reduce using rule 67 (bool -> TRUE .)
+    STEPIN          reduce using rule 67 (bool -> TRUE .)
+    NEWLINE         reduce using rule 67 (bool -> TRUE .)
+    SEP             reduce using rule 67 (bool -> TRUE .)
+    RPAREN          reduce using rule 67 (bool -> TRUE .)
+    TO              reduce using rule 67 (bool -> TRUE .)
+    AND             reduce using rule 67 (bool -> TRUE .)
+    OR              reduce using rule 67 (bool -> TRUE .)
+    STEP            reduce using rule 67 (bool -> TRUE .)
+
+
+state 39
+
+    (68) bool -> FALSE .
+
+    PLUS            reduce using rule 68 (bool -> FALSE .)
+    MINUS           reduce using rule 68 (bool -> FALSE .)
+    MUL             reduce using rule 68 (bool -> FALSE .)
+    DIV             reduce using rule 68 (bool -> FALSE .)
+    MOD             reduce using rule 68 (bool -> FALSE .)
+    POWER           reduce using rule 68 (bool -> FALSE .)
+    BITWISEAND      reduce using rule 68 (bool -> FALSE .)
+    BITWISEOR       reduce using rule 68 (bool -> FALSE .)
+    BITWISEXOR      reduce using rule 68 (bool -> FALSE .)
+    BITWISELS       reduce using rule 68 (bool -> FALSE .)
+    BITWISERS       reduce using rule 68 (bool -> FALSE .)
+    LT              reduce using rule 68 (bool -> FALSE .)
+    LTE             reduce using rule 68 (bool -> FALSE .)
+    GT              reduce using rule 68 (bool -> FALSE .)
+    GTE             reduce using rule 68 (bool -> FALSE .)
+    EQUAL           reduce using rule 68 (bool -> FALSE .)
+    NOTEQUAL        reduce using rule 68 (bool -> FALSE .)
+    STEPIN          reduce using rule 68 (bool -> FALSE .)
+    NEWLINE         reduce using rule 68 (bool -> FALSE .)
+    SEP             reduce using rule 68 (bool -> FALSE .)
+    RPAREN          reduce using rule 68 (bool -> FALSE .)
+    TO              reduce using rule 68 (bool -> FALSE .)
+    AND             reduce using rule 68 (bool -> FALSE .)
+    OR              reduce using rule 68 (bool -> FALSE .)
+    STEP            reduce using rule 68 (bool -> FALSE .)
+
+
+state 40
+
+    (14) command -> optlvldec ELSE . IF boolexpr optlvlinc
+    (15) command -> optlvldec ELSE . IF error optlvlinc
+    (16) command -> optlvldec ELSE . optlvlinc
+    (34) optlvlinc -> . STEPIN
+    (35) optlvlinc -> . empty
+    (73) empty -> .
+
+    IF              shift and go to state 86
+    STEPIN          shift and go to state 61
+    NEWLINE         reduce using rule 73 (empty -> .)
+
+    optlvlinc                      shift and go to state 87
+    empty                          shift and go to state 62
+
+state 41
+
+    (17) command -> WHILE boolexpr . optlvlinc
+    (39) boolexpr -> boolexpr . AND boolexpr
+    (40) boolexpr -> boolexpr . OR boolexpr
+    (34) optlvlinc -> . STEPIN
+    (35) optlvlinc -> . empty
+    (73) empty -> .
+
+    AND             shift and go to state 59
+    OR              shift and go to state 60
+    STEPIN          shift and go to state 61
+    NEWLINE         reduce using rule 73 (empty -> .)
+
+    optlvlinc                      shift and go to state 88
+    empty                          shift and go to state 62
+
+state 42
+
+    (18) command -> WHILE bool . optlvlinc
+    (64) expr -> bool .
+    (34) optlvlinc -> . STEPIN
+    (35) optlvlinc -> . empty
+    (73) empty -> .
+
+    LT              reduce using rule 64 (expr -> bool .)
+    LTE             reduce using rule 64 (expr -> bool .)
+    GT              reduce using rule 64 (expr -> bool .)
+    GTE             reduce using rule 64 (expr -> bool .)
+    EQUAL           reduce using rule 64 (expr -> bool .)
+    NOTEQUAL        reduce using rule 64 (expr -> bool .)
+    PLUS            reduce using rule 64 (expr -> bool .)
+    MINUS           reduce using rule 64 (expr -> bool .)
+    MUL             reduce using rule 64 (expr -> bool .)
+    DIV             reduce using rule 64 (expr -> bool .)
+    MOD             reduce using rule 64 (expr -> bool .)
+    POWER           reduce using rule 64 (expr -> bool .)
+    BITWISEAND      reduce using rule 64 (expr -> bool .)
+    BITWISEOR       reduce using rule 64 (expr -> bool .)
+    BITWISEXOR      reduce using rule 64 (expr -> bool .)
+    BITWISELS       reduce using rule 64 (expr -> bool .)
+    BITWISERS       reduce using rule 64 (expr -> bool .)
+    STEPIN          shift and go to state 61
+    NEWLINE         reduce using rule 73 (empty -> .)
+
+    optlvlinc                      shift and go to state 89
+    empty                          shift and go to state 62
+
+state 43
+
+    (19) command -> WHILE error . optlvlinc
+    (34) optlvlinc -> . STEPIN
+    (35) optlvlinc -> . empty
+    (73) empty -> .
+
+    STEPIN          shift and go to state 61
+    NEWLINE         reduce using rule 73 (empty -> .)
+
+    optlvlinc                      shift and go to state 90
+    empty                          shift and go to state 62
+
+state 44
+
+    (42) relexpr -> expr . LT expr
+    (43) relexpr -> expr . LTE expr
+    (44) relexpr -> expr . GT expr
+    (45) relexpr -> expr . GTE expr
+    (46) relexpr -> expr . EQUAL expr
+    (47) relexpr -> expr . NOTEQUAL expr
+    (48) expr -> expr . PLUS expr
+    (49) expr -> expr . MINUS expr
+    (50) expr -> expr . MUL expr
+    (51) expr -> expr . DIV expr
+    (52) expr -> expr . MOD expr
+    (53) expr -> expr . POWER expr
+    (54) expr -> expr . BITWISEAND expr
+    (55) expr -> expr . BITWISEOR expr
+    (56) expr -> expr . BITWISEXOR expr
+    (57) expr -> expr . BITWISELS INT
+    (58) expr -> expr . BITWISERS INT
+
+    LT              shift and go to state 75
+    LTE             shift and go to state 76
+    GT              shift and go to state 77
+    GTE             shift and go to state 78
+    EQUAL           shift and go to state 79
+    NOTEQUAL        shift and go to state 80
+    PLUS            shift and go to state 64
+    MINUS           shift and go to state 65
+    MUL             shift and go to state 66
+    DIV             shift and go to state 67
+    MOD             shift and go to state 68
+    POWER           shift and go to state 69
+    BITWISEAND      shift and go to state 70
+    BITWISEOR       shift and go to state 71
+    BITWISEXOR      shift and go to state 72
+    BITWISELS       shift and go to state 73
+    BITWISERS       shift and go to state 74
+
+
+state 45
+
+    (20) command -> ADD_DEV ID . expr
+    (21) command -> ADD_DEV ID . error
+    (48) expr -> . expr PLUS expr
+    (49) expr -> . expr MINUS expr
+    (50) expr -> . expr MUL expr
+    (51) expr -> . expr DIV expr
+    (52) expr -> . expr MOD expr
+    (53) expr -> . expr POWER expr
+    (54) expr -> . expr BITWISEAND expr
+    (55) expr -> . expr BITWISEOR expr
+    (56) expr -> . expr BITWISEXOR expr
+    (57) expr -> . expr BITWISELS INT
+    (58) expr -> . expr BITWISERS INT
+    (59) expr -> . BITWISENOT expr
+    (60) expr -> . INT
+    (61) expr -> . FLOAT
+    (62) expr -> . STR
+    (63) expr -> . ID
+    (64) expr -> . bool
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (67) bool -> . TRUE
+    (68) bool -> . FALSE
+
+    error           shift and go to state 92
+    BITWISENOT      shift and go to state 32
+    INT             shift and go to state 31
+    FLOAT           shift and go to state 33
+    STR             shift and go to state 34
+    ID              shift and go to state 35
+    LPAREN          shift and go to state 37
+    MINUS           shift and go to state 30
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    expr                           shift and go to state 91
+    bool                           shift and go to state 36
+
+state 46
+
+    (23) command -> CMD paramlist .
+    (69) paramlist -> paramlist . SEP param
+
+    NEWLINE         reduce using rule 23 (command -> CMD paramlist .)
+    SEP             shift and go to state 93
+
+
+state 47
+
+    (24) command -> CMD error .
+
+    NEWLINE         reduce using rule 24 (command -> CMD error .)
+
+
+state 48
+
+    (70) paramlist -> param .
+
+    SEP             reduce using rule 70 (paramlist -> param .)
+    NEWLINE         reduce using rule 70 (paramlist -> param .)
+
+
+state 49
+
+    (71) param -> expr .
+    (48) expr -> expr . PLUS expr
+    (49) expr -> expr . MINUS expr
+    (50) expr -> expr . MUL expr
+    (51) expr -> expr . DIV expr
+    (52) expr -> expr . MOD expr
+    (53) expr -> expr . POWER expr
+    (54) expr -> expr . BITWISEAND expr
+    (55) expr -> expr . BITWISEOR expr
+    (56) expr -> expr . BITWISEXOR expr
+    (57) expr -> expr . BITWISELS INT
+    (58) expr -> expr . BITWISERS INT
+    (42) relexpr -> expr . LT expr
+    (43) relexpr -> expr . LTE expr
+    (44) relexpr -> expr . GT expr
+    (45) relexpr -> expr . GTE expr
+    (46) relexpr -> expr . EQUAL expr
+    (47) relexpr -> expr . NOTEQUAL expr
+
+    SEP             reduce using rule 71 (param -> expr .)
+    NEWLINE         reduce using rule 71 (param -> expr .)
+    PLUS            shift and go to state 64
+    MINUS           shift and go to state 65
+    MUL             shift and go to state 66
+    DIV             shift and go to state 67
+    MOD             shift and go to state 68
+    POWER           shift and go to state 69
+    BITWISEAND      shift and go to state 70
+    BITWISEOR       shift and go to state 71
+    BITWISEXOR      shift and go to state 72
+    BITWISELS       shift and go to state 73
+    BITWISERS       shift and go to state 74
+    LT              shift and go to state 75
+    LTE             shift and go to state 76
+    GT              shift and go to state 77
+    GTE             shift and go to state 78
+    EQUAL           shift and go to state 79
+    NOTEQUAL        shift and go to state 80
+
+
+state 50
+
+    (72) param -> boolexpr .
+    (39) boolexpr -> boolexpr . AND boolexpr
+    (40) boolexpr -> boolexpr . OR boolexpr
+
+    SEP             reduce using rule 72 (param -> boolexpr .)
+    NEWLINE         reduce using rule 72 (param -> boolexpr .)
+    AND             shift and go to state 59
+    OR              shift and go to state 60
+
+
+state 51
+
+    (25) command -> WAIT expr .
+    (48) expr -> expr . PLUS expr
+    (49) expr -> expr . MINUS expr
+    (50) expr -> expr . MUL expr
+    (51) expr -> expr . DIV expr
+    (52) expr -> expr . MOD expr
+    (53) expr -> expr . POWER expr
+    (54) expr -> expr . BITWISEAND expr
+    (55) expr -> expr . BITWISEOR expr
+    (56) expr -> expr . BITWISEXOR expr
+    (57) expr -> expr . BITWISELS INT
+    (58) expr -> expr . BITWISERS INT
+
+    NEWLINE         reduce using rule 25 (command -> WAIT expr .)
+    PLUS            shift and go to state 64
+    MINUS           shift and go to state 65
+    MUL             shift and go to state 66
+    DIV             shift and go to state 67
+    MOD             shift and go to state 68
+    POWER           shift and go to state 69
+    BITWISEAND      shift and go to state 70
+    BITWISEOR       shift and go to state 71
+    BITWISEXOR      shift and go to state 72
+    BITWISELS       shift and go to state 73
+    BITWISERS       shift and go to state 74
+
+
+state 52
+
+    (26) command -> WAIT error .
+
+    NEWLINE         reduce using rule 26 (command -> WAIT error .)
+
+
+state 53
+
+    (31) command -> PRINT expr .
+    (48) expr -> expr . PLUS expr
+    (49) expr -> expr . MINUS expr
+    (50) expr -> expr . MUL expr
+    (51) expr -> expr . DIV expr
+    (52) expr -> expr . MOD expr
+    (53) expr -> expr . POWER expr
+    (54) expr -> expr . BITWISEAND expr
+    (55) expr -> expr . BITWISEOR expr
+    (56) expr -> expr . BITWISEXOR expr
+    (57) expr -> expr . BITWISELS INT
+    (58) expr -> expr . BITWISERS INT
+
+    NEWLINE         reduce using rule 31 (command -> PRINT expr .)
+    PLUS            shift and go to state 64
+    MINUS           shift and go to state 65
+    MUL             shift and go to state 66
+    DIV             shift and go to state 67
+    MOD             shift and go to state 68
+    POWER           shift and go to state 69
+    BITWISEAND      shift and go to state 70
+    BITWISEOR       shift and go to state 71
+    BITWISEXOR      shift and go to state 72
+    BITWISELS       shift and go to state 73
+    BITWISERS       shift and go to state 74
+
+
+state 54
+
+    (4) statement -> DEV command NEWLINE .
+
+    DEV             reduce using rule 4 (statement -> DEV command NEWLINE .)
+    NEWLINE         reduce using rule 4 (statement -> DEV command NEWLINE .)
+    error           reduce using rule 4 (statement -> DEV command NEWLINE .)
+    FOR             reduce using rule 4 (statement -> DEV command NEWLINE .)
+    IF              reduce using rule 4 (statement -> DEV command NEWLINE .)
+    WHILE           reduce using rule 4 (statement -> DEV command NEWLINE .)
+    ADD_DEV         reduce using rule 4 (statement -> DEV command NEWLINE .)
+    CMD             reduce using rule 4 (statement -> DEV command NEWLINE .)
+    WAIT            reduce using rule 4 (statement -> DEV command NEWLINE .)
+    ID              reduce using rule 4 (statement -> DEV command NEWLINE .)
+    STEPIN          reduce using rule 4 (statement -> DEV command NEWLINE .)
+    STEPOUT         reduce using rule 4 (statement -> DEV command NEWLINE .)
+    PRINT           reduce using rule 4 (statement -> DEV command NEWLINE .)
+    $end            reduce using rule 4 (statement -> DEV command NEWLINE .)
+    ELSE            reduce using rule 4 (statement -> DEV command NEWLINE .)
+
+
+state 55
+
+    (7) command -> FOR ID ASSIGN . expr TO expr optstep optlvlinc
+    (8) command -> FOR ID ASSIGN . error TO expr optstep optlvlinc
+    (9) command -> FOR ID ASSIGN . expr TO error optstep optlvlinc
+    (10) command -> FOR ID ASSIGN . expr TO expr STEP error
+    (48) expr -> . expr PLUS expr
+    (49) expr -> . expr MINUS expr
+    (50) expr -> . expr MUL expr
+    (51) expr -> . expr DIV expr
+    (52) expr -> . expr MOD expr
+    (53) expr -> . expr POWER expr
+    (54) expr -> . expr BITWISEAND expr
+    (55) expr -> . expr BITWISEOR expr
+    (56) expr -> . expr BITWISEXOR expr
+    (57) expr -> . expr BITWISELS INT
+    (58) expr -> . expr BITWISERS INT
+    (59) expr -> . BITWISENOT expr
+    (60) expr -> . INT
+    (61) expr -> . FLOAT
+    (62) expr -> . STR
+    (63) expr -> . ID
+    (64) expr -> . bool
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (67) bool -> . TRUE
+    (68) bool -> . FALSE
+
+    error           shift and go to state 95
+    BITWISENOT      shift and go to state 32
+    INT             shift and go to state 31
+    FLOAT           shift and go to state 33
+    STR             shift and go to state 34
+    ID              shift and go to state 35
+    LPAREN          shift and go to state 37
+    MINUS           shift and go to state 30
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    expr                           shift and go to state 94
+    bool                           shift and go to state 36
+
+state 56
+
+    (27) command -> ID ASSIGN expr .
+    (48) expr -> expr . PLUS expr
+    (49) expr -> expr . MINUS expr
+    (50) expr -> expr . MUL expr
+    (51) expr -> expr . DIV expr
+    (52) expr -> expr . MOD expr
+    (53) expr -> expr . POWER expr
+    (54) expr -> expr . BITWISEAND expr
+    (55) expr -> expr . BITWISEOR expr
+    (56) expr -> expr . BITWISEXOR expr
+    (57) expr -> expr . BITWISELS INT
+    (58) expr -> expr . BITWISERS INT
+
+    NEWLINE         reduce using rule 27 (command -> ID ASSIGN expr .)
+    PLUS            shift and go to state 64
+    MINUS           shift and go to state 65
+    MUL             shift and go to state 66
+    DIV             shift and go to state 67
+    MOD             shift and go to state 68
+    POWER           shift and go to state 69
+    BITWISEAND      shift and go to state 70
+    BITWISEOR       shift and go to state 71
+    BITWISEXOR      shift and go to state 72
+    BITWISELS       shift and go to state 73
+    BITWISERS       shift and go to state 74
+
+
+state 57
+
+    (28) command -> ID ASSIGN error .
+
+    NEWLINE         reduce using rule 28 (command -> ID ASSIGN error .)
+
+
+state 58
+
+    (11) command -> IF boolexpr optlvlinc .
+
+    NEWLINE         reduce using rule 11 (command -> IF boolexpr optlvlinc .)
+
+
+state 59
+
+    (39) boolexpr -> boolexpr AND . boolexpr
+    (38) boolexpr -> . relexpr
+    (39) boolexpr -> . boolexpr AND boolexpr
+    (40) boolexpr -> . boolexpr OR boolexpr
+    (41) boolexpr -> . NOT boolexpr
+    (42) relexpr -> . expr LT expr
+    (43) relexpr -> . expr LTE expr
+    (44) relexpr -> . expr GT expr
+    (45) relexpr -> . expr GTE expr
+    (46) relexpr -> . expr EQUAL expr
+    (47) relexpr -> . expr NOTEQUAL expr
+    (48) expr -> . expr PLUS expr
+    (49) expr -> . expr MINUS expr
+    (50) expr -> . expr MUL expr
+    (51) expr -> . expr DIV expr
+    (52) expr -> . expr MOD expr
+    (53) expr -> . expr POWER expr
+    (54) expr -> . expr BITWISEAND expr
+    (55) expr -> . expr BITWISEOR expr
+    (56) expr -> . expr BITWISEXOR expr
+    (57) expr -> . expr BITWISELS INT
+    (58) expr -> . expr BITWISERS INT
+    (59) expr -> . BITWISENOT expr
+    (60) expr -> . INT
+    (61) expr -> . FLOAT
+    (62) expr -> . STR
+    (63) expr -> . ID
+    (64) expr -> . bool
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (67) bool -> . TRUE
+    (68) bool -> . FALSE
+
+    NOT             shift and go to state 29
+    BITWISENOT      shift and go to state 32
+    INT             shift and go to state 31
+    FLOAT           shift and go to state 33
+    STR             shift and go to state 34
+    ID              shift and go to state 35
+    LPAREN          shift and go to state 37
+    MINUS           shift and go to state 30
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    boolexpr                       shift and go to state 96
+    relexpr                        shift and go to state 28
+    expr                           shift and go to state 44
+    bool                           shift and go to state 36
+
+state 60
+
+    (40) boolexpr -> boolexpr OR . boolexpr
+    (38) boolexpr -> . relexpr
+    (39) boolexpr -> . boolexpr AND boolexpr
+    (40) boolexpr -> . boolexpr OR boolexpr
+    (41) boolexpr -> . NOT boolexpr
+    (42) relexpr -> . expr LT expr
+    (43) relexpr -> . expr LTE expr
+    (44) relexpr -> . expr GT expr
+    (45) relexpr -> . expr GTE expr
+    (46) relexpr -> . expr EQUAL expr
+    (47) relexpr -> . expr NOTEQUAL expr
+    (48) expr -> . expr PLUS expr
+    (49) expr -> . expr MINUS expr
+    (50) expr -> . expr MUL expr
+    (51) expr -> . expr DIV expr
+    (52) expr -> . expr MOD expr
+    (53) expr -> . expr POWER expr
+    (54) expr -> . expr BITWISEAND expr
+    (55) expr -> . expr BITWISEOR expr
+    (56) expr -> . expr BITWISEXOR expr
+    (57) expr -> . expr BITWISELS INT
+    (58) expr -> . expr BITWISERS INT
+    (59) expr -> . BITWISENOT expr
+    (60) expr -> . INT
+    (61) expr -> . FLOAT
+    (62) expr -> . STR
+    (63) expr -> . ID
+    (64) expr -> . bool
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (67) bool -> . TRUE
+    (68) bool -> . FALSE
+
+    NOT             shift and go to state 29
+    BITWISENOT      shift and go to state 32
+    INT             shift and go to state 31
+    FLOAT           shift and go to state 33
+    STR             shift and go to state 34
+    ID              shift and go to state 35
+    LPAREN          shift and go to state 37
+    MINUS           shift and go to state 30
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    boolexpr                       shift and go to state 97
+    relexpr                        shift and go to state 28
+    expr                           shift and go to state 44
+    bool                           shift and go to state 36
+
+state 61
+
+    (34) optlvlinc -> STEPIN .
+
+    NEWLINE         reduce using rule 34 (optlvlinc -> STEPIN .)
+
+
+state 62
+
+    (35) optlvlinc -> empty .
+
+    NEWLINE         reduce using rule 35 (optlvlinc -> empty .)
+
+
+state 63
+
+    (12) command -> IF expr optlvlinc .
+
+    NEWLINE         reduce using rule 12 (command -> IF expr optlvlinc .)
+
+
+state 64
+
+    (48) expr -> expr PLUS . expr
+    (48) expr -> . expr PLUS expr
+    (49) expr -> . expr MINUS expr
+    (50) expr -> . expr MUL expr
+    (51) expr -> . expr DIV expr
+    (52) expr -> . expr MOD expr
+    (53) expr -> . expr POWER expr
+    (54) expr -> . expr BITWISEAND expr
+    (55) expr -> . expr BITWISEOR expr
+    (56) expr -> . expr BITWISEXOR expr
+    (57) expr -> . expr BITWISELS INT
+    (58) expr -> . expr BITWISERS INT
+    (59) expr -> . BITWISENOT expr
+    (60) expr -> . INT
+    (61) expr -> . FLOAT
+    (62) expr -> . STR
+    (63) expr -> . ID
+    (64) expr -> . bool
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (67) bool -> . TRUE
+    (68) bool -> . FALSE
+
+    BITWISENOT      shift and go to state 32
+    INT             shift and go to state 31
+    FLOAT           shift and go to state 33
+    STR             shift and go to state 34
+    ID              shift and go to state 35
+    LPAREN          shift and go to state 37
+    MINUS           shift and go to state 30
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    expr                           shift and go to state 98
+    bool                           shift and go to state 36
+
+state 65
+
+    (49) expr -> expr MINUS . expr
+    (48) expr -> . expr PLUS expr
+    (49) expr -> . expr MINUS expr
+    (50) expr -> . expr MUL expr
+    (51) expr -> . expr DIV expr
+    (52) expr -> . expr MOD expr
+    (53) expr -> . expr POWER expr
+    (54) expr -> . expr BITWISEAND expr
+    (55) expr -> . expr BITWISEOR expr
+    (56) expr -> . expr BITWISEXOR expr
+    (57) expr -> . expr BITWISELS INT
+    (58) expr -> . expr BITWISERS INT
+    (59) expr -> . BITWISENOT expr
+    (60) expr -> . INT
+    (61) expr -> . FLOAT
+    (62) expr -> . STR
+    (63) expr -> . ID
+    (64) expr -> . bool
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (67) bool -> . TRUE
+    (68) bool -> . FALSE
+
+    BITWISENOT      shift and go to state 32
+    INT             shift and go to state 31
+    FLOAT           shift and go to state 33
+    STR             shift and go to state 34
+    ID              shift and go to state 35
+    LPAREN          shift and go to state 37
+    MINUS           shift and go to state 30
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    expr                           shift and go to state 99
+    bool                           shift and go to state 36
+
+state 66
+
+    (50) expr -> expr MUL . expr
+    (48) expr -> . expr PLUS expr
+    (49) expr -> . expr MINUS expr
+    (50) expr -> . expr MUL expr
+    (51) expr -> . expr DIV expr
+    (52) expr -> . expr MOD expr
+    (53) expr -> . expr POWER expr
+    (54) expr -> . expr BITWISEAND expr
+    (55) expr -> . expr BITWISEOR expr
+    (56) expr -> . expr BITWISEXOR expr
+    (57) expr -> . expr BITWISELS INT
+    (58) expr -> . expr BITWISERS INT
+    (59) expr -> . BITWISENOT expr
+    (60) expr -> . INT
+    (61) expr -> . FLOAT
+    (62) expr -> . STR
+    (63) expr -> . ID
+    (64) expr -> . bool
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (67) bool -> . TRUE
+    (68) bool -> . FALSE
+
+    BITWISENOT      shift and go to state 32
+    INT             shift and go to state 31
+    FLOAT           shift and go to state 33
+    STR             shift and go to state 34
+    ID              shift and go to state 35
+    LPAREN          shift and go to state 37
+    MINUS           shift and go to state 30
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    expr                           shift and go to state 100
+    bool                           shift and go to state 36
+
+state 67
+
+    (51) expr -> expr DIV . expr
+    (48) expr -> . expr PLUS expr
+    (49) expr -> . expr MINUS expr
+    (50) expr -> . expr MUL expr
+    (51) expr -> . expr DIV expr
+    (52) expr -> . expr MOD expr
+    (53) expr -> . expr POWER expr
+    (54) expr -> . expr BITWISEAND expr
+    (55) expr -> . expr BITWISEOR expr
+    (56) expr -> . expr BITWISEXOR expr
+    (57) expr -> . expr BITWISELS INT
+    (58) expr -> . expr BITWISERS INT
+    (59) expr -> . BITWISENOT expr
+    (60) expr -> . INT
+    (61) expr -> . FLOAT
+    (62) expr -> . STR
+    (63) expr -> . ID
+    (64) expr -> . bool
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (67) bool -> . TRUE
+    (68) bool -> . FALSE
+
+    BITWISENOT      shift and go to state 32
+    INT             shift and go to state 31
+    FLOAT           shift and go to state 33
+    STR             shift and go to state 34
+    ID              shift and go to state 35
+    LPAREN          shift and go to state 37
+    MINUS           shift and go to state 30
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    expr                           shift and go to state 101
+    bool                           shift and go to state 36
+
+state 68
+
+    (52) expr -> expr MOD . expr
+    (48) expr -> . expr PLUS expr
+    (49) expr -> . expr MINUS expr
+    (50) expr -> . expr MUL expr
+    (51) expr -> . expr DIV expr
+    (52) expr -> . expr MOD expr
+    (53) expr -> . expr POWER expr
+    (54) expr -> . expr BITWISEAND expr
+    (55) expr -> . expr BITWISEOR expr
+    (56) expr -> . expr BITWISEXOR expr
+    (57) expr -> . expr BITWISELS INT
+    (58) expr -> . expr BITWISERS INT
+    (59) expr -> . BITWISENOT expr
+    (60) expr -> . INT
+    (61) expr -> . FLOAT
+    (62) expr -> . STR
+    (63) expr -> . ID
+    (64) expr -> . bool
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (67) bool -> . TRUE
+    (68) bool -> . FALSE
+
+    BITWISENOT      shift and go to state 32
+    INT             shift and go to state 31
+    FLOAT           shift and go to state 33
+    STR             shift and go to state 34
+    ID              shift and go to state 35
+    LPAREN          shift and go to state 37
+    MINUS           shift and go to state 30
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    expr                           shift and go to state 102
+    bool                           shift and go to state 36
+
+state 69
+
+    (53) expr -> expr POWER . expr
+    (48) expr -> . expr PLUS expr
+    (49) expr -> . expr MINUS expr
+    (50) expr -> . expr MUL expr
+    (51) expr -> . expr DIV expr
+    (52) expr -> . expr MOD expr
+    (53) expr -> . expr POWER expr
+    (54) expr -> . expr BITWISEAND expr
+    (55) expr -> . expr BITWISEOR expr
+    (56) expr -> . expr BITWISEXOR expr
+    (57) expr -> . expr BITWISELS INT
+    (58) expr -> . expr BITWISERS INT
+    (59) expr -> . BITWISENOT expr
+    (60) expr -> . INT
+    (61) expr -> . FLOAT
+    (62) expr -> . STR
+    (63) expr -> . ID
+    (64) expr -> . bool
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (67) bool -> . TRUE
+    (68) bool -> . FALSE
+
+    BITWISENOT      shift and go to state 32
+    INT             shift and go to state 31
+    FLOAT           shift and go to state 33
+    STR             shift and go to state 34
+    ID              shift and go to state 35
+    LPAREN          shift and go to state 37
+    MINUS           shift and go to state 30
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    expr                           shift and go to state 103
+    bool                           shift and go to state 36
+
+state 70
+
+    (54) expr -> expr BITWISEAND . expr
+    (48) expr -> . expr PLUS expr
+    (49) expr -> . expr MINUS expr
+    (50) expr -> . expr MUL expr
+    (51) expr -> . expr DIV expr
+    (52) expr -> . expr MOD expr
+    (53) expr -> . expr POWER expr
+    (54) expr -> . expr BITWISEAND expr
+    (55) expr -> . expr BITWISEOR expr
+    (56) expr -> . expr BITWISEXOR expr
+    (57) expr -> . expr BITWISELS INT
+    (58) expr -> . expr BITWISERS INT
+    (59) expr -> . BITWISENOT expr
+    (60) expr -> . INT
+    (61) expr -> . FLOAT
+    (62) expr -> . STR
+    (63) expr -> . ID
+    (64) expr -> . bool
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (67) bool -> . TRUE
+    (68) bool -> . FALSE
+
+    BITWISENOT      shift and go to state 32
+    INT             shift and go to state 31
+    FLOAT           shift and go to state 33
+    STR             shift and go to state 34
+    ID              shift and go to state 35
+    LPAREN          shift and go to state 37
+    MINUS           shift and go to state 30
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    expr                           shift and go to state 104
+    bool                           shift and go to state 36
+
+state 71
+
+    (55) expr -> expr BITWISEOR . expr
+    (48) expr -> . expr PLUS expr
+    (49) expr -> . expr MINUS expr
+    (50) expr -> . expr MUL expr
+    (51) expr -> . expr DIV expr
+    (52) expr -> . expr MOD expr
+    (53) expr -> . expr POWER expr
+    (54) expr -> . expr BITWISEAND expr
+    (55) expr -> . expr BITWISEOR expr
+    (56) expr -> . expr BITWISEXOR expr
+    (57) expr -> . expr BITWISELS INT
+    (58) expr -> . expr BITWISERS INT
+    (59) expr -> . BITWISENOT expr
+    (60) expr -> . INT
+    (61) expr -> . FLOAT
+    (62) expr -> . STR
+    (63) expr -> . ID
+    (64) expr -> . bool
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (67) bool -> . TRUE
+    (68) bool -> . FALSE
+
+    BITWISENOT      shift and go to state 32
+    INT             shift and go to state 31
+    FLOAT           shift and go to state 33
+    STR             shift and go to state 34
+    ID              shift and go to state 35
+    LPAREN          shift and go to state 37
+    MINUS           shift and go to state 30
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    expr                           shift and go to state 105
+    bool                           shift and go to state 36
+
+state 72
+
+    (56) expr -> expr BITWISEXOR . expr
+    (48) expr -> . expr PLUS expr
+    (49) expr -> . expr MINUS expr
+    (50) expr -> . expr MUL expr
+    (51) expr -> . expr DIV expr
+    (52) expr -> . expr MOD expr
+    (53) expr -> . expr POWER expr
+    (54) expr -> . expr BITWISEAND expr
+    (55) expr -> . expr BITWISEOR expr
+    (56) expr -> . expr BITWISEXOR expr
+    (57) expr -> . expr BITWISELS INT
+    (58) expr -> . expr BITWISERS INT
+    (59) expr -> . BITWISENOT expr
+    (60) expr -> . INT
+    (61) expr -> . FLOAT
+    (62) expr -> . STR
+    (63) expr -> . ID
+    (64) expr -> . bool
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (67) bool -> . TRUE
+    (68) bool -> . FALSE
+
+    BITWISENOT      shift and go to state 32
+    INT             shift and go to state 31
+    FLOAT           shift and go to state 33
+    STR             shift and go to state 34
+    ID              shift and go to state 35
+    LPAREN          shift and go to state 37
+    MINUS           shift and go to state 30
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    expr                           shift and go to state 106
+    bool                           shift and go to state 36
+
+state 73
+
+    (57) expr -> expr BITWISELS . INT
+
+    INT             shift and go to state 107
+
+
+state 74
+
+    (58) expr -> expr BITWISERS . INT
+
+    INT             shift and go to state 108
+
+
+state 75
+
+    (42) relexpr -> expr LT . expr
+    (48) expr -> . expr PLUS expr
+    (49) expr -> . expr MINUS expr
+    (50) expr -> . expr MUL expr
+    (51) expr -> . expr DIV expr
+    (52) expr -> . expr MOD expr
+    (53) expr -> . expr POWER expr
+    (54) expr -> . expr BITWISEAND expr
+    (55) expr -> . expr BITWISEOR expr
+    (56) expr -> . expr BITWISEXOR expr
+    (57) expr -> . expr BITWISELS INT
+    (58) expr -> . expr BITWISERS INT
+    (59) expr -> . BITWISENOT expr
+    (60) expr -> . INT
+    (61) expr -> . FLOAT
+    (62) expr -> . STR
+    (63) expr -> . ID
+    (64) expr -> . bool
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (67) bool -> . TRUE
+    (68) bool -> . FALSE
+
+    BITWISENOT      shift and go to state 32
+    INT             shift and go to state 31
+    FLOAT           shift and go to state 33
+    STR             shift and go to state 34
+    ID              shift and go to state 35
+    LPAREN          shift and go to state 37
+    MINUS           shift and go to state 30
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    expr                           shift and go to state 109
+    bool                           shift and go to state 36
+
+state 76
+
+    (43) relexpr -> expr LTE . expr
+    (48) expr -> . expr PLUS expr
+    (49) expr -> . expr MINUS expr
+    (50) expr -> . expr MUL expr
+    (51) expr -> . expr DIV expr
+    (52) expr -> . expr MOD expr
+    (53) expr -> . expr POWER expr
+    (54) expr -> . expr BITWISEAND expr
+    (55) expr -> . expr BITWISEOR expr
+    (56) expr -> . expr BITWISEXOR expr
+    (57) expr -> . expr BITWISELS INT
+    (58) expr -> . expr BITWISERS INT
+    (59) expr -> . BITWISENOT expr
+    (60) expr -> . INT
+    (61) expr -> . FLOAT
+    (62) expr -> . STR
+    (63) expr -> . ID
+    (64) expr -> . bool
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (67) bool -> . TRUE
+    (68) bool -> . FALSE
+
+    BITWISENOT      shift and go to state 32
+    INT             shift and go to state 31
+    FLOAT           shift and go to state 33
+    STR             shift and go to state 34
+    ID              shift and go to state 35
+    LPAREN          shift and go to state 37
+    MINUS           shift and go to state 30
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    expr                           shift and go to state 110
+    bool                           shift and go to state 36
+
+state 77
+
+    (44) relexpr -> expr GT . expr
+    (48) expr -> . expr PLUS expr
+    (49) expr -> . expr MINUS expr
+    (50) expr -> . expr MUL expr
+    (51) expr -> . expr DIV expr
+    (52) expr -> . expr MOD expr
+    (53) expr -> . expr POWER expr
+    (54) expr -> . expr BITWISEAND expr
+    (55) expr -> . expr BITWISEOR expr
+    (56) expr -> . expr BITWISEXOR expr
+    (57) expr -> . expr BITWISELS INT
+    (58) expr -> . expr BITWISERS INT
+    (59) expr -> . BITWISENOT expr
+    (60) expr -> . INT
+    (61) expr -> . FLOAT
+    (62) expr -> . STR
+    (63) expr -> . ID
+    (64) expr -> . bool
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (67) bool -> . TRUE
+    (68) bool -> . FALSE
+
+    BITWISENOT      shift and go to state 32
+    INT             shift and go to state 31
+    FLOAT           shift and go to state 33
+    STR             shift and go to state 34
+    ID              shift and go to state 35
+    LPAREN          shift and go to state 37
+    MINUS           shift and go to state 30
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    expr                           shift and go to state 111
+    bool                           shift and go to state 36
+
+state 78
+
+    (45) relexpr -> expr GTE . expr
+    (48) expr -> . expr PLUS expr
+    (49) expr -> . expr MINUS expr
+    (50) expr -> . expr MUL expr
+    (51) expr -> . expr DIV expr
+    (52) expr -> . expr MOD expr
+    (53) expr -> . expr POWER expr
+    (54) expr -> . expr BITWISEAND expr
+    (55) expr -> . expr BITWISEOR expr
+    (56) expr -> . expr BITWISEXOR expr
+    (57) expr -> . expr BITWISELS INT
+    (58) expr -> . expr BITWISERS INT
+    (59) expr -> . BITWISENOT expr
+    (60) expr -> . INT
+    (61) expr -> . FLOAT
+    (62) expr -> . STR
+    (63) expr -> . ID
+    (64) expr -> . bool
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (67) bool -> . TRUE
+    (68) bool -> . FALSE
+
+    BITWISENOT      shift and go to state 32
+    INT             shift and go to state 31
+    FLOAT           shift and go to state 33
+    STR             shift and go to state 34
+    ID              shift and go to state 35
+    LPAREN          shift and go to state 37
+    MINUS           shift and go to state 30
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    expr                           shift and go to state 112
+    bool                           shift and go to state 36
+
+state 79
+
+    (46) relexpr -> expr EQUAL . expr
+    (48) expr -> . expr PLUS expr
+    (49) expr -> . expr MINUS expr
+    (50) expr -> . expr MUL expr
+    (51) expr -> . expr DIV expr
+    (52) expr -> . expr MOD expr
+    (53) expr -> . expr POWER expr
+    (54) expr -> . expr BITWISEAND expr
+    (55) expr -> . expr BITWISEOR expr
+    (56) expr -> . expr BITWISEXOR expr
+    (57) expr -> . expr BITWISELS INT
+    (58) expr -> . expr BITWISERS INT
+    (59) expr -> . BITWISENOT expr
+    (60) expr -> . INT
+    (61) expr -> . FLOAT
+    (62) expr -> . STR
+    (63) expr -> . ID
+    (64) expr -> . bool
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (67) bool -> . TRUE
+    (68) bool -> . FALSE
+
+    BITWISENOT      shift and go to state 32
+    INT             shift and go to state 31
+    FLOAT           shift and go to state 33
+    STR             shift and go to state 34
+    ID              shift and go to state 35
+    LPAREN          shift and go to state 37
+    MINUS           shift and go to state 30
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    expr                           shift and go to state 113
+    bool                           shift and go to state 36
+
+state 80
+
+    (47) relexpr -> expr NOTEQUAL . expr
+    (48) expr -> . expr PLUS expr
+    (49) expr -> . expr MINUS expr
+    (50) expr -> . expr MUL expr
+    (51) expr -> . expr DIV expr
+    (52) expr -> . expr MOD expr
+    (53) expr -> . expr POWER expr
+    (54) expr -> . expr BITWISEAND expr
+    (55) expr -> . expr BITWISEOR expr
+    (56) expr -> . expr BITWISEXOR expr
+    (57) expr -> . expr BITWISELS INT
+    (58) expr -> . expr BITWISERS INT
+    (59) expr -> . BITWISENOT expr
+    (60) expr -> . INT
+    (61) expr -> . FLOAT
+    (62) expr -> . STR
+    (63) expr -> . ID
+    (64) expr -> . bool
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (67) bool -> . TRUE
+    (68) bool -> . FALSE
+
+    BITWISENOT      shift and go to state 32
+    INT             shift and go to state 31
+    FLOAT           shift and go to state 33
+    STR             shift and go to state 34
+    ID              shift and go to state 35
+    LPAREN          shift and go to state 37
+    MINUS           shift and go to state 30
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    expr                           shift and go to state 114
+    bool                           shift and go to state 36
+
+state 81
+
+    (13) command -> IF error optlvlinc .
+
+    NEWLINE         reduce using rule 13 (command -> IF error optlvlinc .)
+
+
+state 82
+
+    (41) boolexpr -> NOT boolexpr .
+    (39) boolexpr -> boolexpr . AND boolexpr
+    (40) boolexpr -> boolexpr . OR boolexpr
+
+    AND             reduce using rule 41 (boolexpr -> NOT boolexpr .)
+    OR              reduce using rule 41 (boolexpr -> NOT boolexpr .)
+    STEPIN          reduce using rule 41 (boolexpr -> NOT boolexpr .)
+    NEWLINE         reduce using rule 41 (boolexpr -> NOT boolexpr .)
+    SEP             reduce using rule 41 (boolexpr -> NOT boolexpr .)
+
+  ! AND             [ shift and go to state 59 ]
+  ! OR              [ shift and go to state 60 ]
+
+
+state 83
+
+    (66) expr -> MINUS expr .
+    (48) expr -> expr . PLUS expr
+    (49) expr -> expr . MINUS expr
+    (50) expr -> expr . MUL expr
+    (51) expr -> expr . DIV expr
+    (52) expr -> expr . MOD expr
+    (53) expr -> expr . POWER expr
+    (54) expr -> expr . BITWISEAND expr
+    (55) expr -> expr . BITWISEOR expr
+    (56) expr -> expr . BITWISEXOR expr
+    (57) expr -> expr . BITWISELS INT
+    (58) expr -> expr . BITWISERS INT
+
+    PLUS            reduce using rule 66 (expr -> MINUS expr .)
+    MINUS           reduce using rule 66 (expr -> MINUS expr .)
+    MUL             reduce using rule 66 (expr -> MINUS expr .)
+    DIV             reduce using rule 66 (expr -> MINUS expr .)
+    MOD             reduce using rule 66 (expr -> MINUS expr .)
+    POWER           reduce using rule 66 (expr -> MINUS expr .)
+    BITWISEAND      reduce using rule 66 (expr -> MINUS expr .)
+    BITWISEOR       reduce using rule 66 (expr -> MINUS expr .)
+    BITWISEXOR      reduce using rule 66 (expr -> MINUS expr .)
+    BITWISELS       reduce using rule 66 (expr -> MINUS expr .)
+    BITWISERS       reduce using rule 66 (expr -> MINUS expr .)
+    LT              reduce using rule 66 (expr -> MINUS expr .)
+    LTE             reduce using rule 66 (expr -> MINUS expr .)
+    GT              reduce using rule 66 (expr -> MINUS expr .)
+    GTE             reduce using rule 66 (expr -> MINUS expr .)
+    EQUAL           reduce using rule 66 (expr -> MINUS expr .)
+    NOTEQUAL        reduce using rule 66 (expr -> MINUS expr .)
+    STEPIN          reduce using rule 66 (expr -> MINUS expr .)
+    NEWLINE         reduce using rule 66 (expr -> MINUS expr .)
+    SEP             reduce using rule 66 (expr -> MINUS expr .)
+    RPAREN          reduce using rule 66 (expr -> MINUS expr .)
+    TO              reduce using rule 66 (expr -> MINUS expr .)
+    AND             reduce using rule 66 (expr -> MINUS expr .)
+    OR              reduce using rule 66 (expr -> MINUS expr .)
+    STEP            reduce using rule 66 (expr -> MINUS expr .)
+
+  ! PLUS            [ shift and go to state 64 ]
+  ! MINUS           [ shift and go to state 65 ]
+  ! MUL             [ shift and go to state 66 ]
+  ! DIV             [ shift and go to state 67 ]
+  ! MOD             [ shift and go to state 68 ]
+  ! POWER           [ shift and go to state 69 ]
+  ! BITWISEAND      [ shift and go to state 70 ]
+  ! BITWISEOR       [ shift and go to state 71 ]
+  ! BITWISEXOR      [ shift and go to state 72 ]
+  ! BITWISELS       [ shift and go to state 73 ]
+  ! BITWISERS       [ shift and go to state 74 ]
+
+
+state 84
+
+    (59) expr -> BITWISENOT expr .
+    (48) expr -> expr . PLUS expr
+    (49) expr -> expr . MINUS expr
+    (50) expr -> expr . MUL expr
+    (51) expr -> expr . DIV expr
+    (52) expr -> expr . MOD expr
+    (53) expr -> expr . POWER expr
+    (54) expr -> expr . BITWISEAND expr
+    (55) expr -> expr . BITWISEOR expr
+    (56) expr -> expr . BITWISEXOR expr
+    (57) expr -> expr . BITWISELS INT
+    (58) expr -> expr . BITWISERS INT
+
+    PLUS            reduce using rule 59 (expr -> BITWISENOT expr .)
+    MINUS           reduce using rule 59 (expr -> BITWISENOT expr .)
+    MUL             reduce using rule 59 (expr -> BITWISENOT expr .)
+    DIV             reduce using rule 59 (expr -> BITWISENOT expr .)
+    MOD             reduce using rule 59 (expr -> BITWISENOT expr .)
+    POWER           reduce using rule 59 (expr -> BITWISENOT expr .)
+    BITWISEAND      reduce using rule 59 (expr -> BITWISENOT expr .)
+    BITWISEOR       reduce using rule 59 (expr -> BITWISENOT expr .)
+    BITWISEXOR      reduce using rule 59 (expr -> BITWISENOT expr .)
+    BITWISELS       reduce using rule 59 (expr -> BITWISENOT expr .)
+    BITWISERS       reduce using rule 59 (expr -> BITWISENOT expr .)
+    LT              reduce using rule 59 (expr -> BITWISENOT expr .)
+    LTE             reduce using rule 59 (expr -> BITWISENOT expr .)
+    GT              reduce using rule 59 (expr -> BITWISENOT expr .)
+    GTE             reduce using rule 59 (expr -> BITWISENOT expr .)
+    EQUAL           reduce using rule 59 (expr -> BITWISENOT expr .)
+    NOTEQUAL        reduce using rule 59 (expr -> BITWISENOT expr .)
+    STEPIN          reduce using rule 59 (expr -> BITWISENOT expr .)
+    NEWLINE         reduce using rule 59 (expr -> BITWISENOT expr .)
+    SEP             reduce using rule 59 (expr -> BITWISENOT expr .)
+    RPAREN          reduce using rule 59 (expr -> BITWISENOT expr .)
+    TO              reduce using rule 59 (expr -> BITWISENOT expr .)
+    AND             reduce using rule 59 (expr -> BITWISENOT expr .)
+    OR              reduce using rule 59 (expr -> BITWISENOT expr .)
+    STEP            reduce using rule 59 (expr -> BITWISENOT expr .)
+
+  ! PLUS            [ shift and go to state 64 ]
+  ! MINUS           [ shift and go to state 65 ]
+  ! MUL             [ shift and go to state 66 ]
+  ! DIV             [ shift and go to state 67 ]
+  ! MOD             [ shift and go to state 68 ]
+  ! POWER           [ shift and go to state 69 ]
+  ! BITWISEAND      [ shift and go to state 70 ]
+  ! BITWISEOR       [ shift and go to state 71 ]
+  ! BITWISEXOR      [ shift and go to state 72 ]
+  ! BITWISELS       [ shift and go to state 73 ]
+  ! BITWISERS       [ shift and go to state 74 ]
+
+
+state 85
+
+    (65) expr -> LPAREN expr . RPAREN
+    (48) expr -> expr . PLUS expr
+    (49) expr -> expr . MINUS expr
+    (50) expr -> expr . MUL expr
+    (51) expr -> expr . DIV expr
+    (52) expr -> expr . MOD expr
+    (53) expr -> expr . POWER expr
+    (54) expr -> expr . BITWISEAND expr
+    (55) expr -> expr . BITWISEOR expr
+    (56) expr -> expr . BITWISEXOR expr
+    (57) expr -> expr . BITWISELS INT
+    (58) expr -> expr . BITWISERS INT
+
+    RPAREN          shift and go to state 115
+    PLUS            shift and go to state 64
+    MINUS           shift and go to state 65
+    MUL             shift and go to state 66
+    DIV             shift and go to state 67
+    MOD             shift and go to state 68
+    POWER           shift and go to state 69
+    BITWISEAND      shift and go to state 70
+    BITWISEOR       shift and go to state 71
+    BITWISEXOR      shift and go to state 72
+    BITWISELS       shift and go to state 73
+    BITWISERS       shift and go to state 74
+
+
+state 86
+
+    (14) command -> optlvldec ELSE IF . boolexpr optlvlinc
+    (15) command -> optlvldec ELSE IF . error optlvlinc
+    (38) boolexpr -> . relexpr
+    (39) boolexpr -> . boolexpr AND boolexpr
+    (40) boolexpr -> . boolexpr OR boolexpr
+    (41) boolexpr -> . NOT boolexpr
+    (42) relexpr -> . expr LT expr
+    (43) relexpr -> . expr LTE expr
+    (44) relexpr -> . expr GT expr
+    (45) relexpr -> . expr GTE expr
+    (46) relexpr -> . expr EQUAL expr
+    (47) relexpr -> . expr NOTEQUAL expr
+    (48) expr -> . expr PLUS expr
+    (49) expr -> . expr MINUS expr
+    (50) expr -> . expr MUL expr
+    (51) expr -> . expr DIV expr
+    (52) expr -> . expr MOD expr
+    (53) expr -> . expr POWER expr
+    (54) expr -> . expr BITWISEAND expr
+    (55) expr -> . expr BITWISEOR expr
+    (56) expr -> . expr BITWISEXOR expr
+    (57) expr -> . expr BITWISELS INT
+    (58) expr -> . expr BITWISERS INT
+    (59) expr -> . BITWISENOT expr
+    (60) expr -> . INT
+    (61) expr -> . FLOAT
+    (62) expr -> . STR
+    (63) expr -> . ID
+    (64) expr -> . bool
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (67) bool -> . TRUE
+    (68) bool -> . FALSE
+
+    error           shift and go to state 117
+    NOT             shift and go to state 29
+    BITWISENOT      shift and go to state 32
+    INT             shift and go to state 31
+    FLOAT           shift and go to state 33
+    STR             shift and go to state 34
+    ID              shift and go to state 35
+    LPAREN          shift and go to state 37
+    MINUS           shift and go to state 30
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    boolexpr                       shift and go to state 116
+    relexpr                        shift and go to state 28
+    expr                           shift and go to state 44
+    bool                           shift and go to state 36
+
+state 87
+
+    (16) command -> optlvldec ELSE optlvlinc .
+
+    NEWLINE         reduce using rule 16 (command -> optlvldec ELSE optlvlinc .)
+
+
+state 88
+
+    (17) command -> WHILE boolexpr optlvlinc .
+
+    NEWLINE         reduce using rule 17 (command -> WHILE boolexpr optlvlinc .)
+
+
+state 89
+
+    (18) command -> WHILE bool optlvlinc .
+
+    NEWLINE         reduce using rule 18 (command -> WHILE bool optlvlinc .)
+
+
+state 90
+
+    (19) command -> WHILE error optlvlinc .
+
+    NEWLINE         reduce using rule 19 (command -> WHILE error optlvlinc .)
+
+
+state 91
+
+    (20) command -> ADD_DEV ID expr .
+    (48) expr -> expr . PLUS expr
+    (49) expr -> expr . MINUS expr
+    (50) expr -> expr . MUL expr
+    (51) expr -> expr . DIV expr
+    (52) expr -> expr . MOD expr
+    (53) expr -> expr . POWER expr
+    (54) expr -> expr . BITWISEAND expr
+    (55) expr -> expr . BITWISEOR expr
+    (56) expr -> expr . BITWISEXOR expr
+    (57) expr -> expr . BITWISELS INT
+    (58) expr -> expr . BITWISERS INT
+
+    NEWLINE         reduce using rule 20 (command -> ADD_DEV ID expr .)
+    PLUS            shift and go to state 64
+    MINUS           shift and go to state 65
+    MUL             shift and go to state 66
+    DIV             shift and go to state 67
+    MOD             shift and go to state 68
+    POWER           shift and go to state 69
+    BITWISEAND      shift and go to state 70
+    BITWISEOR       shift and go to state 71
+    BITWISEXOR      shift and go to state 72
+    BITWISELS       shift and go to state 73
+    BITWISERS       shift and go to state 74
+
+
+state 92
+
+    (21) command -> ADD_DEV ID error .
+
+    NEWLINE         reduce using rule 21 (command -> ADD_DEV ID error .)
+
+
+state 93
+
+    (69) paramlist -> paramlist SEP . param
+    (71) param -> . expr
+    (72) param -> . boolexpr
+    (48) expr -> . expr PLUS expr
+    (49) expr -> . expr MINUS expr
+    (50) expr -> . expr MUL expr
+    (51) expr -> . expr DIV expr
+    (52) expr -> . expr MOD expr
+    (53) expr -> . expr POWER expr
+    (54) expr -> . expr BITWISEAND expr
+    (55) expr -> . expr BITWISEOR expr
+    (56) expr -> . expr BITWISEXOR expr
+    (57) expr -> . expr BITWISELS INT
+    (58) expr -> . expr BITWISERS INT
+    (59) expr -> . BITWISENOT expr
+    (60) expr -> . INT
+    (61) expr -> . FLOAT
+    (62) expr -> . STR
+    (63) expr -> . ID
+    (64) expr -> . bool
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (38) boolexpr -> . relexpr
+    (39) boolexpr -> . boolexpr AND boolexpr
+    (40) boolexpr -> . boolexpr OR boolexpr
+    (41) boolexpr -> . NOT boolexpr
+    (67) bool -> . TRUE
+    (68) bool -> . FALSE
+    (42) relexpr -> . expr LT expr
+    (43) relexpr -> . expr LTE expr
+    (44) relexpr -> . expr GT expr
+    (45) relexpr -> . expr GTE expr
+    (46) relexpr -> . expr EQUAL expr
+    (47) relexpr -> . expr NOTEQUAL expr
+
+    BITWISENOT      shift and go to state 32
+    INT             shift and go to state 31
+    FLOAT           shift and go to state 33
+    STR             shift and go to state 34
+    ID              shift and go to state 35
+    LPAREN          shift and go to state 37
+    MINUS           shift and go to state 30
+    NOT             shift and go to state 29
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    param                          shift and go to state 118
+    expr                           shift and go to state 49
+    boolexpr                       shift and go to state 50
+    bool                           shift and go to state 36
+    relexpr                        shift and go to state 28
+
+state 94
+
+    (7) command -> FOR ID ASSIGN expr . TO expr optstep optlvlinc
+    (9) command -> FOR ID ASSIGN expr . TO error optstep optlvlinc
+    (10) command -> FOR ID ASSIGN expr . TO expr STEP error
+    (48) expr -> expr . PLUS expr
+    (49) expr -> expr . MINUS expr
+    (50) expr -> expr . MUL expr
+    (51) expr -> expr . DIV expr
+    (52) expr -> expr . MOD expr
+    (53) expr -> expr . POWER expr
+    (54) expr -> expr . BITWISEAND expr
+    (55) expr -> expr . BITWISEOR expr
+    (56) expr -> expr . BITWISEXOR expr
+    (57) expr -> expr . BITWISELS INT
+    (58) expr -> expr . BITWISERS INT
+
+    TO              shift and go to state 119
+    PLUS            shift and go to state 64
+    MINUS           shift and go to state 65
+    MUL             shift and go to state 66
+    DIV             shift and go to state 67
+    MOD             shift and go to state 68
+    POWER           shift and go to state 69
+    BITWISEAND      shift and go to state 70
+    BITWISEOR       shift and go to state 71
+    BITWISEXOR      shift and go to state 72
+    BITWISELS       shift and go to state 73
+    BITWISERS       shift and go to state 74
+
+
+state 95
+
+    (8) command -> FOR ID ASSIGN error . TO expr optstep optlvlinc
+
+    TO              shift and go to state 120
+
+
+state 96
+
+    (39) boolexpr -> boolexpr AND boolexpr .
+    (39) boolexpr -> boolexpr . AND boolexpr
+    (40) boolexpr -> boolexpr . OR boolexpr
+
+    AND             reduce using rule 39 (boolexpr -> boolexpr AND boolexpr .)
+    OR              reduce using rule 39 (boolexpr -> boolexpr AND boolexpr .)
+    STEPIN          reduce using rule 39 (boolexpr -> boolexpr AND boolexpr .)
+    NEWLINE         reduce using rule 39 (boolexpr -> boolexpr AND boolexpr .)
+    SEP             reduce using rule 39 (boolexpr -> boolexpr AND boolexpr .)
+
+  ! AND             [ shift and go to state 59 ]
+  ! OR              [ shift and go to state 60 ]
+
+
+state 97
+
+    (40) boolexpr -> boolexpr OR boolexpr .
+    (39) boolexpr -> boolexpr . AND boolexpr
+    (40) boolexpr -> boolexpr . OR boolexpr
+
+    AND             reduce using rule 40 (boolexpr -> boolexpr OR boolexpr .)
+    OR              reduce using rule 40 (boolexpr -> boolexpr OR boolexpr .)
+    STEPIN          reduce using rule 40 (boolexpr -> boolexpr OR boolexpr .)
+    NEWLINE         reduce using rule 40 (boolexpr -> boolexpr OR boolexpr .)
+    SEP             reduce using rule 40 (boolexpr -> boolexpr OR boolexpr .)
+
+  ! AND             [ shift and go to state 59 ]
+  ! OR              [ shift and go to state 60 ]
+
+
+state 98
+
+    (48) expr -> expr PLUS expr .
+    (48) expr -> expr . PLUS expr
+    (49) expr -> expr . MINUS expr
+    (50) expr -> expr . MUL expr
+    (51) expr -> expr . DIV expr
+    (52) expr -> expr . MOD expr
+    (53) expr -> expr . POWER expr
+    (54) expr -> expr . BITWISEAND expr
+    (55) expr -> expr . BITWISEOR expr
+    (56) expr -> expr . BITWISEXOR expr
+    (57) expr -> expr . BITWISELS INT
+    (58) expr -> expr . BITWISERS INT
+
+    PLUS            reduce using rule 48 (expr -> expr PLUS expr .)
+    MINUS           reduce using rule 48 (expr -> expr PLUS expr .)
+    BITWISELS       reduce using rule 48 (expr -> expr PLUS expr .)
+    BITWISERS       reduce using rule 48 (expr -> expr PLUS expr .)
+    LT              reduce using rule 48 (expr -> expr PLUS expr .)
+    LTE             reduce using rule 48 (expr -> expr PLUS expr .)
+    GT              reduce using rule 48 (expr -> expr PLUS expr .)
+    GTE             reduce using rule 48 (expr -> expr PLUS expr .)
+    EQUAL           reduce using rule 48 (expr -> expr PLUS expr .)
+    NOTEQUAL        reduce using rule 48 (expr -> expr PLUS expr .)
+    STEPIN          reduce using rule 48 (expr -> expr PLUS expr .)
+    NEWLINE         reduce using rule 48 (expr -> expr PLUS expr .)
+    SEP             reduce using rule 48 (expr -> expr PLUS expr .)
+    RPAREN          reduce using rule 48 (expr -> expr PLUS expr .)
+    TO              reduce using rule 48 (expr -> expr PLUS expr .)
+    AND             reduce using rule 48 (expr -> expr PLUS expr .)
+    OR              reduce using rule 48 (expr -> expr PLUS expr .)
+    STEP            reduce using rule 48 (expr -> expr PLUS expr .)
+    MUL             shift and go to state 66
+    DIV             shift and go to state 67
+    MOD             shift and go to state 68
+    POWER           shift and go to state 69
+    BITWISEAND      shift and go to state 70
+    BITWISEOR       shift and go to state 71
+    BITWISEXOR      shift and go to state 72
+
+  ! MUL             [ reduce using rule 48 (expr -> expr PLUS expr .) ]
+  ! DIV             [ reduce using rule 48 (expr -> expr PLUS expr .) ]
+  ! MOD             [ reduce using rule 48 (expr -> expr PLUS expr .) ]
+  ! POWER           [ reduce using rule 48 (expr -> expr PLUS expr .) ]
+  ! BITWISEAND      [ reduce using rule 48 (expr -> expr PLUS expr .) ]
+  ! BITWISEOR       [ reduce using rule 48 (expr -> expr PLUS expr .) ]
+  ! BITWISEXOR      [ reduce using rule 48 (expr -> expr PLUS expr .) ]
+  ! PLUS            [ shift and go to state 64 ]
+  ! MINUS           [ shift and go to state 65 ]
+  ! BITWISELS       [ shift and go to state 73 ]
+  ! BITWISERS       [ shift and go to state 74 ]
+
+
+state 99
+
+    (49) expr -> expr MINUS expr .
+    (48) expr -> expr . PLUS expr
+    (49) expr -> expr . MINUS expr
+    (50) expr -> expr . MUL expr
+    (51) expr -> expr . DIV expr
+    (52) expr -> expr . MOD expr
+    (53) expr -> expr . POWER expr
+    (54) expr -> expr . BITWISEAND expr
+    (55) expr -> expr . BITWISEOR expr
+    (56) expr -> expr . BITWISEXOR expr
+    (57) expr -> expr . BITWISELS INT
+    (58) expr -> expr . BITWISERS INT
+
+    PLUS            reduce using rule 49 (expr -> expr MINUS expr .)
+    MINUS           reduce using rule 49 (expr -> expr MINUS expr .)
+    BITWISELS       reduce using rule 49 (expr -> expr MINUS expr .)
+    BITWISERS       reduce using rule 49 (expr -> expr MINUS expr .)
+    LT              reduce using rule 49 (expr -> expr MINUS expr .)
+    LTE             reduce using rule 49 (expr -> expr MINUS expr .)
+    GT              reduce using rule 49 (expr -> expr MINUS expr .)
+    GTE             reduce using rule 49 (expr -> expr MINUS expr .)
+    EQUAL           reduce using rule 49 (expr -> expr MINUS expr .)
+    NOTEQUAL        reduce using rule 49 (expr -> expr MINUS expr .)
+    STEPIN          reduce using rule 49 (expr -> expr MINUS expr .)
+    NEWLINE         reduce using rule 49 (expr -> expr MINUS expr .)
+    SEP             reduce using rule 49 (expr -> expr MINUS expr .)
+    RPAREN          reduce using rule 49 (expr -> expr MINUS expr .)
+    TO              reduce using rule 49 (expr -> expr MINUS expr .)
+    AND             reduce using rule 49 (expr -> expr MINUS expr .)
+    OR              reduce using rule 49 (expr -> expr MINUS expr .)
+    STEP            reduce using rule 49 (expr -> expr MINUS expr .)
+    MUL             shift and go to state 66
+    DIV             shift and go to state 67
+    MOD             shift and go to state 68
+    POWER           shift and go to state 69
+    BITWISEAND      shift and go to state 70
+    BITWISEOR       shift and go to state 71
+    BITWISEXOR      shift and go to state 72
+
+  ! MUL             [ reduce using rule 49 (expr -> expr MINUS expr .) ]
+  ! DIV             [ reduce using rule 49 (expr -> expr MINUS expr .) ]
+  ! MOD             [ reduce using rule 49 (expr -> expr MINUS expr .) ]
+  ! POWER           [ reduce using rule 49 (expr -> expr MINUS expr .) ]
+  ! BITWISEAND      [ reduce using rule 49 (expr -> expr MINUS expr .) ]
+  ! BITWISEOR       [ reduce using rule 49 (expr -> expr MINUS expr .) ]
+  ! BITWISEXOR      [ reduce using rule 49 (expr -> expr MINUS expr .) ]
+  ! PLUS            [ shift and go to state 64 ]
+  ! MINUS           [ shift and go to state 65 ]
+  ! BITWISELS       [ shift and go to state 73 ]
+  ! BITWISERS       [ shift and go to state 74 ]
+
+
+state 100
+
+    (50) expr -> expr MUL expr .
+    (48) expr -> expr . PLUS expr
+    (49) expr -> expr . MINUS expr
+    (50) expr -> expr . MUL expr
+    (51) expr -> expr . DIV expr
+    (52) expr -> expr . MOD expr
+    (53) expr -> expr . POWER expr
+    (54) expr -> expr . BITWISEAND expr
+    (55) expr -> expr . BITWISEOR expr
+    (56) expr -> expr . BITWISEXOR expr
+    (57) expr -> expr . BITWISELS INT
+    (58) expr -> expr . BITWISERS INT
+
+    PLUS            reduce using rule 50 (expr -> expr MUL expr .)
+    MINUS           reduce using rule 50 (expr -> expr MUL expr .)
+    MUL             reduce using rule 50 (expr -> expr MUL expr .)
+    DIV             reduce using rule 50 (expr -> expr MUL expr .)
+    MOD             reduce using rule 50 (expr -> expr MUL expr .)
+    BITWISEAND      reduce using rule 50 (expr -> expr MUL expr .)
+    BITWISEOR       reduce using rule 50 (expr -> expr MUL expr .)
+    BITWISEXOR      reduce using rule 50 (expr -> expr MUL expr .)
+    BITWISELS       reduce using rule 50 (expr -> expr MUL expr .)
+    BITWISERS       reduce using rule 50 (expr -> expr MUL expr .)
+    LT              reduce using rule 50 (expr -> expr MUL expr .)
+    LTE             reduce using rule 50 (expr -> expr MUL expr .)
+    GT              reduce using rule 50 (expr -> expr MUL expr .)
+    GTE             reduce using rule 50 (expr -> expr MUL expr .)
+    EQUAL           reduce using rule 50 (expr -> expr MUL expr .)
+    NOTEQUAL        reduce using rule 50 (expr -> expr MUL expr .)
+    STEPIN          reduce using rule 50 (expr -> expr MUL expr .)
+    NEWLINE         reduce using rule 50 (expr -> expr MUL expr .)
+    SEP             reduce using rule 50 (expr -> expr MUL expr .)
+    RPAREN          reduce using rule 50 (expr -> expr MUL expr .)
+    TO              reduce using rule 50 (expr -> expr MUL expr .)
+    AND             reduce using rule 50 (expr -> expr MUL expr .)
+    OR              reduce using rule 50 (expr -> expr MUL expr .)
+    STEP            reduce using rule 50 (expr -> expr MUL expr .)
+    POWER           shift and go to state 69
+
+  ! POWER           [ reduce using rule 50 (expr -> expr MUL expr .) ]
+  ! PLUS            [ shift and go to state 64 ]
+  ! MINUS           [ shift and go to state 65 ]
+  ! MUL             [ shift and go to state 66 ]
+  ! DIV             [ shift and go to state 67 ]
+  ! MOD             [ shift and go to state 68 ]
+  ! BITWISEAND      [ shift and go to state 70 ]
+  ! BITWISEOR       [ shift and go to state 71 ]
+  ! BITWISEXOR      [ shift and go to state 72 ]
+  ! BITWISELS       [ shift and go to state 73 ]
+  ! BITWISERS       [ shift and go to state 74 ]
+
+
+state 101
+
+    (51) expr -> expr DIV expr .
+    (48) expr -> expr . PLUS expr
+    (49) expr -> expr . MINUS expr
+    (50) expr -> expr . MUL expr
+    (51) expr -> expr . DIV expr
+    (52) expr -> expr . MOD expr
+    (53) expr -> expr . POWER expr
+    (54) expr -> expr . BITWISEAND expr
+    (55) expr -> expr . BITWISEOR expr
+    (56) expr -> expr . BITWISEXOR expr
+    (57) expr -> expr . BITWISELS INT
+    (58) expr -> expr . BITWISERS INT
+
+    PLUS            reduce using rule 51 (expr -> expr DIV expr .)
+    MINUS           reduce using rule 51 (expr -> expr DIV expr .)
+    MUL             reduce using rule 51 (expr -> expr DIV expr .)
+    DIV             reduce using rule 51 (expr -> expr DIV expr .)
+    MOD             reduce using rule 51 (expr -> expr DIV expr .)
+    BITWISEAND      reduce using rule 51 (expr -> expr DIV expr .)
+    BITWISEOR       reduce using rule 51 (expr -> expr DIV expr .)
+    BITWISEXOR      reduce using rule 51 (expr -> expr DIV expr .)
+    BITWISELS       reduce using rule 51 (expr -> expr DIV expr .)
+    BITWISERS       reduce using rule 51 (expr -> expr DIV expr .)
+    LT              reduce using rule 51 (expr -> expr DIV expr .)
+    LTE             reduce using rule 51 (expr -> expr DIV expr .)
+    GT              reduce using rule 51 (expr -> expr DIV expr .)
+    GTE             reduce using rule 51 (expr -> expr DIV expr .)
+    EQUAL           reduce using rule 51 (expr -> expr DIV expr .)
+    NOTEQUAL        reduce using rule 51 (expr -> expr DIV expr .)
+    STEPIN          reduce using rule 51 (expr -> expr DIV expr .)
+    NEWLINE         reduce using rule 51 (expr -> expr DIV expr .)
+    SEP             reduce using rule 51 (expr -> expr DIV expr .)
+    RPAREN          reduce using rule 51 (expr -> expr DIV expr .)
+    TO              reduce using rule 51 (expr -> expr DIV expr .)
+    AND             reduce using rule 51 (expr -> expr DIV expr .)
+    OR              reduce using rule 51 (expr -> expr DIV expr .)
+    STEP            reduce using rule 51 (expr -> expr DIV expr .)
+    POWER           shift and go to state 69
+
+  ! POWER           [ reduce using rule 51 (expr -> expr DIV expr .) ]
+  ! PLUS            [ shift and go to state 64 ]
+  ! MINUS           [ shift and go to state 65 ]
+  ! MUL             [ shift and go to state 66 ]
+  ! DIV             [ shift and go to state 67 ]
+  ! MOD             [ shift and go to state 68 ]
+  ! BITWISEAND      [ shift and go to state 70 ]
+  ! BITWISEOR       [ shift and go to state 71 ]
+  ! BITWISEXOR      [ shift and go to state 72 ]
+  ! BITWISELS       [ shift and go to state 73 ]
+  ! BITWISERS       [ shift and go to state 74 ]
+
+
+state 102
+
+    (52) expr -> expr MOD expr .
+    (48) expr -> expr . PLUS expr
+    (49) expr -> expr . MINUS expr
+    (50) expr -> expr . MUL expr
+    (51) expr -> expr . DIV expr
+    (52) expr -> expr . MOD expr
+    (53) expr -> expr . POWER expr
+    (54) expr -> expr . BITWISEAND expr
+    (55) expr -> expr . BITWISEOR expr
+    (56) expr -> expr . BITWISEXOR expr
+    (57) expr -> expr . BITWISELS INT
+    (58) expr -> expr . BITWISERS INT
+
+    PLUS            reduce using rule 52 (expr -> expr MOD expr .)
+    MINUS           reduce using rule 52 (expr -> expr MOD expr .)
+    MUL             reduce using rule 52 (expr -> expr MOD expr .)
+    DIV             reduce using rule 52 (expr -> expr MOD expr .)
+    MOD             reduce using rule 52 (expr -> expr MOD expr .)
+    BITWISEAND      reduce using rule 52 (expr -> expr MOD expr .)
+    BITWISEOR       reduce using rule 52 (expr -> expr MOD expr .)
+    BITWISEXOR      reduce using rule 52 (expr -> expr MOD expr .)
+    BITWISELS       reduce using rule 52 (expr -> expr MOD expr .)
+    BITWISERS       reduce using rule 52 (expr -> expr MOD expr .)
+    LT              reduce using rule 52 (expr -> expr MOD expr .)
+    LTE             reduce using rule 52 (expr -> expr MOD expr .)
+    GT              reduce using rule 52 (expr -> expr MOD expr .)
+    GTE             reduce using rule 52 (expr -> expr MOD expr .)
+    EQUAL           reduce using rule 52 (expr -> expr MOD expr .)
+    NOTEQUAL        reduce using rule 52 (expr -> expr MOD expr .)
+    STEPIN          reduce using rule 52 (expr -> expr MOD expr .)
+    NEWLINE         reduce using rule 52 (expr -> expr MOD expr .)
+    SEP             reduce using rule 52 (expr -> expr MOD expr .)
+    RPAREN          reduce using rule 52 (expr -> expr MOD expr .)
+    TO              reduce using rule 52 (expr -> expr MOD expr .)
+    AND             reduce using rule 52 (expr -> expr MOD expr .)
+    OR              reduce using rule 52 (expr -> expr MOD expr .)
+    STEP            reduce using rule 52 (expr -> expr MOD expr .)
+    POWER           shift and go to state 69
+
+  ! POWER           [ reduce using rule 52 (expr -> expr MOD expr .) ]
+  ! PLUS            [ shift and go to state 64 ]
+  ! MINUS           [ shift and go to state 65 ]
+  ! MUL             [ shift and go to state 66 ]
+  ! DIV             [ shift and go to state 67 ]
+  ! MOD             [ shift and go to state 68 ]
+  ! BITWISEAND      [ shift and go to state 70 ]
+  ! BITWISEOR       [ shift and go to state 71 ]
+  ! BITWISEXOR      [ shift and go to state 72 ]
+  ! BITWISELS       [ shift and go to state 73 ]
+  ! BITWISERS       [ shift and go to state 74 ]
+
+
+state 103
+
+    (53) expr -> expr POWER expr .
+    (48) expr -> expr . PLUS expr
+    (49) expr -> expr . MINUS expr
+    (50) expr -> expr . MUL expr
+    (51) expr -> expr . DIV expr
+    (52) expr -> expr . MOD expr
+    (53) expr -> expr . POWER expr
+    (54) expr -> expr . BITWISEAND expr
+    (55) expr -> expr . BITWISEOR expr
+    (56) expr -> expr . BITWISEXOR expr
+    (57) expr -> expr . BITWISELS INT
+    (58) expr -> expr . BITWISERS INT
+
+    PLUS            reduce using rule 53 (expr -> expr POWER expr .)
+    MINUS           reduce using rule 53 (expr -> expr POWER expr .)
+    MUL             reduce using rule 53 (expr -> expr POWER expr .)
+    DIV             reduce using rule 53 (expr -> expr POWER expr .)
+    MOD             reduce using rule 53 (expr -> expr POWER expr .)
+    POWER           reduce using rule 53 (expr -> expr POWER expr .)
+    BITWISEAND      reduce using rule 53 (expr -> expr POWER expr .)
+    BITWISEOR       reduce using rule 53 (expr -> expr POWER expr .)
+    BITWISEXOR      reduce using rule 53 (expr -> expr POWER expr .)
+    BITWISELS       reduce using rule 53 (expr -> expr POWER expr .)
+    BITWISERS       reduce using rule 53 (expr -> expr POWER expr .)
+    LT              reduce using rule 53 (expr -> expr POWER expr .)
+    LTE             reduce using rule 53 (expr -> expr POWER expr .)
+    GT              reduce using rule 53 (expr -> expr POWER expr .)
+    GTE             reduce using rule 53 (expr -> expr POWER expr .)
+    EQUAL           reduce using rule 53 (expr -> expr POWER expr .)
+    NOTEQUAL        reduce using rule 53 (expr -> expr POWER expr .)
+    STEPIN          reduce using rule 53 (expr -> expr POWER expr .)
+    NEWLINE         reduce using rule 53 (expr -> expr POWER expr .)
+    SEP             reduce using rule 53 (expr -> expr POWER expr .)
+    RPAREN          reduce using rule 53 (expr -> expr POWER expr .)
+    TO              reduce using rule 53 (expr -> expr POWER expr .)
+    AND             reduce using rule 53 (expr -> expr POWER expr .)
+    OR              reduce using rule 53 (expr -> expr POWER expr .)
+    STEP            reduce using rule 53 (expr -> expr POWER expr .)
+
+  ! PLUS            [ shift and go to state 64 ]
+  ! MINUS           [ shift and go to state 65 ]
+  ! MUL             [ shift and go to state 66 ]
+  ! DIV             [ shift and go to state 67 ]
+  ! MOD             [ shift and go to state 68 ]
+  ! POWER           [ shift and go to state 69 ]
+  ! BITWISEAND      [ shift and go to state 70 ]
+  ! BITWISEOR       [ shift and go to state 71 ]
+  ! BITWISEXOR      [ shift and go to state 72 ]
+  ! BITWISELS       [ shift and go to state 73 ]
+  ! BITWISERS       [ shift and go to state 74 ]
+
+
+state 104
+
+    (54) expr -> expr BITWISEAND expr .
+    (48) expr -> expr . PLUS expr
+    (49) expr -> expr . MINUS expr
+    (50) expr -> expr . MUL expr
+    (51) expr -> expr . DIV expr
+    (52) expr -> expr . MOD expr
+    (53) expr -> expr . POWER expr
+    (54) expr -> expr . BITWISEAND expr
+    (55) expr -> expr . BITWISEOR expr
+    (56) expr -> expr . BITWISEXOR expr
+    (57) expr -> expr . BITWISELS INT
+    (58) expr -> expr . BITWISERS INT
+
+    PLUS            reduce using rule 54 (expr -> expr BITWISEAND expr .)
+    MINUS           reduce using rule 54 (expr -> expr BITWISEAND expr .)
+    MUL             reduce using rule 54 (expr -> expr BITWISEAND expr .)
+    DIV             reduce using rule 54 (expr -> expr BITWISEAND expr .)
+    MOD             reduce using rule 54 (expr -> expr BITWISEAND expr .)
+    BITWISEAND      reduce using rule 54 (expr -> expr BITWISEAND expr .)
+    BITWISEOR       reduce using rule 54 (expr -> expr BITWISEAND expr .)
+    BITWISEXOR      reduce using rule 54 (expr -> expr BITWISEAND expr .)
+    BITWISELS       reduce using rule 54 (expr -> expr BITWISEAND expr .)
+    BITWISERS       reduce using rule 54 (expr -> expr BITWISEAND expr .)
+    LT              reduce using rule 54 (expr -> expr BITWISEAND expr .)
+    LTE             reduce using rule 54 (expr -> expr BITWISEAND expr .)
+    GT              reduce using rule 54 (expr -> expr BITWISEAND expr .)
+    GTE             reduce using rule 54 (expr -> expr BITWISEAND expr .)
+    EQUAL           reduce using rule 54 (expr -> expr BITWISEAND expr .)
+    NOTEQUAL        reduce using rule 54 (expr -> expr BITWISEAND expr .)
+    STEPIN          reduce using rule 54 (expr -> expr BITWISEAND expr .)
+    NEWLINE         reduce using rule 54 (expr -> expr BITWISEAND expr .)
+    SEP             reduce using rule 54 (expr -> expr BITWISEAND expr .)
+    RPAREN          reduce using rule 54 (expr -> expr BITWISEAND expr .)
+    TO              reduce using rule 54 (expr -> expr BITWISEAND expr .)
+    AND             reduce using rule 54 (expr -> expr BITWISEAND expr .)
+    OR              reduce using rule 54 (expr -> expr BITWISEAND expr .)
+    STEP            reduce using rule 54 (expr -> expr BITWISEAND expr .)
+    POWER           shift and go to state 69
+
+  ! POWER           [ reduce using rule 54 (expr -> expr BITWISEAND expr .) ]
+  ! PLUS            [ shift and go to state 64 ]
+  ! MINUS           [ shift and go to state 65 ]
+  ! MUL             [ shift and go to state 66 ]
+  ! DIV             [ shift and go to state 67 ]
+  ! MOD             [ shift and go to state 68 ]
+  ! BITWISEAND      [ shift and go to state 70 ]
+  ! BITWISEOR       [ shift and go to state 71 ]
+  ! BITWISEXOR      [ shift and go to state 72 ]
+  ! BITWISELS       [ shift and go to state 73 ]
+  ! BITWISERS       [ shift and go to state 74 ]
+
+
+state 105
+
+    (55) expr -> expr BITWISEOR expr .
+    (48) expr -> expr . PLUS expr
+    (49) expr -> expr . MINUS expr
+    (50) expr -> expr . MUL expr
+    (51) expr -> expr . DIV expr
+    (52) expr -> expr . MOD expr
+    (53) expr -> expr . POWER expr
+    (54) expr -> expr . BITWISEAND expr
+    (55) expr -> expr . BITWISEOR expr
+    (56) expr -> expr . BITWISEXOR expr
+    (57) expr -> expr . BITWISELS INT
+    (58) expr -> expr . BITWISERS INT
+
+    PLUS            reduce using rule 55 (expr -> expr BITWISEOR expr .)
+    MINUS           reduce using rule 55 (expr -> expr BITWISEOR expr .)
+    MUL             reduce using rule 55 (expr -> expr BITWISEOR expr .)
+    DIV             reduce using rule 55 (expr -> expr BITWISEOR expr .)
+    MOD             reduce using rule 55 (expr -> expr BITWISEOR expr .)
+    BITWISEAND      reduce using rule 55 (expr -> expr BITWISEOR expr .)
+    BITWISEOR       reduce using rule 55 (expr -> expr BITWISEOR expr .)
+    BITWISEXOR      reduce using rule 55 (expr -> expr BITWISEOR expr .)
+    BITWISELS       reduce using rule 55 (expr -> expr BITWISEOR expr .)
+    BITWISERS       reduce using rule 55 (expr -> expr BITWISEOR expr .)
+    LT              reduce using rule 55 (expr -> expr BITWISEOR expr .)
+    LTE             reduce using rule 55 (expr -> expr BITWISEOR expr .)
+    GT              reduce using rule 55 (expr -> expr BITWISEOR expr .)
+    GTE             reduce using rule 55 (expr -> expr BITWISEOR expr .)
+    EQUAL           reduce using rule 55 (expr -> expr BITWISEOR expr .)
+    NOTEQUAL        reduce using rule 55 (expr -> expr BITWISEOR expr .)
+    STEPIN          reduce using rule 55 (expr -> expr BITWISEOR expr .)
+    NEWLINE         reduce using rule 55 (expr -> expr BITWISEOR expr .)
+    SEP             reduce using rule 55 (expr -> expr BITWISEOR expr .)
+    RPAREN          reduce using rule 55 (expr -> expr BITWISEOR expr .)
+    TO              reduce using rule 55 (expr -> expr BITWISEOR expr .)
+    AND             reduce using rule 55 (expr -> expr BITWISEOR expr .)
+    OR              reduce using rule 55 (expr -> expr BITWISEOR expr .)
+    STEP            reduce using rule 55 (expr -> expr BITWISEOR expr .)
+    POWER           shift and go to state 69
+
+  ! POWER           [ reduce using rule 55 (expr -> expr BITWISEOR expr .) ]
+  ! PLUS            [ shift and go to state 64 ]
+  ! MINUS           [ shift and go to state 65 ]
+  ! MUL             [ shift and go to state 66 ]
+  ! DIV             [ shift and go to state 67 ]
+  ! MOD             [ shift and go to state 68 ]
+  ! BITWISEAND      [ shift and go to state 70 ]
+  ! BITWISEOR       [ shift and go to state 71 ]
+  ! BITWISEXOR      [ shift and go to state 72 ]
+  ! BITWISELS       [ shift and go to state 73 ]
+  ! BITWISERS       [ shift and go to state 74 ]
+
+
+state 106
+
+    (56) expr -> expr BITWISEXOR expr .
+    (48) expr -> expr . PLUS expr
+    (49) expr -> expr . MINUS expr
+    (50) expr -> expr . MUL expr
+    (51) expr -> expr . DIV expr
+    (52) expr -> expr . MOD expr
+    (53) expr -> expr . POWER expr
+    (54) expr -> expr . BITWISEAND expr
+    (55) expr -> expr . BITWISEOR expr
+    (56) expr -> expr . BITWISEXOR expr
+    (57) expr -> expr . BITWISELS INT
+    (58) expr -> expr . BITWISERS INT
+
+    PLUS            reduce using rule 56 (expr -> expr BITWISEXOR expr .)
+    MINUS           reduce using rule 56 (expr -> expr BITWISEXOR expr .)
+    MUL             reduce using rule 56 (expr -> expr BITWISEXOR expr .)
+    DIV             reduce using rule 56 (expr -> expr BITWISEXOR expr .)
+    MOD             reduce using rule 56 (expr -> expr BITWISEXOR expr .)
+    BITWISEAND      reduce using rule 56 (expr -> expr BITWISEXOR expr .)
+    BITWISEOR       reduce using rule 56 (expr -> expr BITWISEXOR expr .)
+    BITWISEXOR      reduce using rule 56 (expr -> expr BITWISEXOR expr .)
+    BITWISELS       reduce using rule 56 (expr -> expr BITWISEXOR expr .)
+    BITWISERS       reduce using rule 56 (expr -> expr BITWISEXOR expr .)
+    LT              reduce using rule 56 (expr -> expr BITWISEXOR expr .)
+    LTE             reduce using rule 56 (expr -> expr BITWISEXOR expr .)
+    GT              reduce using rule 56 (expr -> expr BITWISEXOR expr .)
+    GTE             reduce using rule 56 (expr -> expr BITWISEXOR expr .)
+    EQUAL           reduce using rule 56 (expr -> expr BITWISEXOR expr .)
+    NOTEQUAL        reduce using rule 56 (expr -> expr BITWISEXOR expr .)
+    STEPIN          reduce using rule 56 (expr -> expr BITWISEXOR expr .)
+    NEWLINE         reduce using rule 56 (expr -> expr BITWISEXOR expr .)
+    SEP             reduce using rule 56 (expr -> expr BITWISEXOR expr .)
+    RPAREN          reduce using rule 56 (expr -> expr BITWISEXOR expr .)
+    TO              reduce using rule 56 (expr -> expr BITWISEXOR expr .)
+    AND             reduce using rule 56 (expr -> expr BITWISEXOR expr .)
+    OR              reduce using rule 56 (expr -> expr BITWISEXOR expr .)
+    STEP            reduce using rule 56 (expr -> expr BITWISEXOR expr .)
+    POWER           shift and go to state 69
+
+  ! POWER           [ reduce using rule 56 (expr -> expr BITWISEXOR expr .) ]
+  ! PLUS            [ shift and go to state 64 ]
+  ! MINUS           [ shift and go to state 65 ]
+  ! MUL             [ shift and go to state 66 ]
+  ! DIV             [ shift and go to state 67 ]
+  ! MOD             [ shift and go to state 68 ]
+  ! BITWISEAND      [ shift and go to state 70 ]
+  ! BITWISEOR       [ shift and go to state 71 ]
+  ! BITWISEXOR      [ shift and go to state 72 ]
+  ! BITWISELS       [ shift and go to state 73 ]
+  ! BITWISERS       [ shift and go to state 74 ]
+
+
+state 107
+
+    (57) expr -> expr BITWISELS INT .
+
+    PLUS            reduce using rule 57 (expr -> expr BITWISELS INT .)
+    MINUS           reduce using rule 57 (expr -> expr BITWISELS INT .)
+    MUL             reduce using rule 57 (expr -> expr BITWISELS INT .)
+    DIV             reduce using rule 57 (expr -> expr BITWISELS INT .)
+    MOD             reduce using rule 57 (expr -> expr BITWISELS INT .)
+    POWER           reduce using rule 57 (expr -> expr BITWISELS INT .)
+    BITWISEAND      reduce using rule 57 (expr -> expr BITWISELS INT .)
+    BITWISEOR       reduce using rule 57 (expr -> expr BITWISELS INT .)
+    BITWISEXOR      reduce using rule 57 (expr -> expr BITWISELS INT .)
+    BITWISELS       reduce using rule 57 (expr -> expr BITWISELS INT .)
+    BITWISERS       reduce using rule 57 (expr -> expr BITWISELS INT .)
+    LT              reduce using rule 57 (expr -> expr BITWISELS INT .)
+    LTE             reduce using rule 57 (expr -> expr BITWISELS INT .)
+    GT              reduce using rule 57 (expr -> expr BITWISELS INT .)
+    GTE             reduce using rule 57 (expr -> expr BITWISELS INT .)
+    EQUAL           reduce using rule 57 (expr -> expr BITWISELS INT .)
+    NOTEQUAL        reduce using rule 57 (expr -> expr BITWISELS INT .)
+    STEPIN          reduce using rule 57 (expr -> expr BITWISELS INT .)
+    NEWLINE         reduce using rule 57 (expr -> expr BITWISELS INT .)
+    SEP             reduce using rule 57 (expr -> expr BITWISELS INT .)
+    RPAREN          reduce using rule 57 (expr -> expr BITWISELS INT .)
+    TO              reduce using rule 57 (expr -> expr BITWISELS INT .)
+    AND             reduce using rule 57 (expr -> expr BITWISELS INT .)
+    OR              reduce using rule 57 (expr -> expr BITWISELS INT .)
+    STEP            reduce using rule 57 (expr -> expr BITWISELS INT .)
+
+
+state 108
+
+    (58) expr -> expr BITWISERS INT .
+
+    PLUS            reduce using rule 58 (expr -> expr BITWISERS INT .)
+    MINUS           reduce using rule 58 (expr -> expr BITWISERS INT .)
+    MUL             reduce using rule 58 (expr -> expr BITWISERS INT .)
+    DIV             reduce using rule 58 (expr -> expr BITWISERS INT .)
+    MOD             reduce using rule 58 (expr -> expr BITWISERS INT .)
+    POWER           reduce using rule 58 (expr -> expr BITWISERS INT .)
+    BITWISEAND      reduce using rule 58 (expr -> expr BITWISERS INT .)
+    BITWISEOR       reduce using rule 58 (expr -> expr BITWISERS INT .)
+    BITWISEXOR      reduce using rule 58 (expr -> expr BITWISERS INT .)
+    BITWISELS       reduce using rule 58 (expr -> expr BITWISERS INT .)
+    BITWISERS       reduce using rule 58 (expr -> expr BITWISERS INT .)
+    LT              reduce using rule 58 (expr -> expr BITWISERS INT .)
+    LTE             reduce using rule 58 (expr -> expr BITWISERS INT .)
+    GT              reduce using rule 58 (expr -> expr BITWISERS INT .)
+    GTE             reduce using rule 58 (expr -> expr BITWISERS INT .)
+    EQUAL           reduce using rule 58 (expr -> expr BITWISERS INT .)
+    NOTEQUAL        reduce using rule 58 (expr -> expr BITWISERS INT .)
+    STEPIN          reduce using rule 58 (expr -> expr BITWISERS INT .)
+    NEWLINE         reduce using rule 58 (expr -> expr BITWISERS INT .)
+    SEP             reduce using rule 58 (expr -> expr BITWISERS INT .)
+    RPAREN          reduce using rule 58 (expr -> expr BITWISERS INT .)
+    TO              reduce using rule 58 (expr -> expr BITWISERS INT .)
+    AND             reduce using rule 58 (expr -> expr BITWISERS INT .)
+    OR              reduce using rule 58 (expr -> expr BITWISERS INT .)
+    STEP            reduce using rule 58 (expr -> expr BITWISERS INT .)
+
+
+state 109
+
+    (42) relexpr -> expr LT expr .
+    (48) expr -> expr . PLUS expr
+    (49) expr -> expr . MINUS expr
+    (50) expr -> expr . MUL expr
+    (51) expr -> expr . DIV expr
+    (52) expr -> expr . MOD expr
+    (53) expr -> expr . POWER expr
+    (54) expr -> expr . BITWISEAND expr
+    (55) expr -> expr . BITWISEOR expr
+    (56) expr -> expr . BITWISEXOR expr
+    (57) expr -> expr . BITWISELS INT
+    (58) expr -> expr . BITWISERS INT
+
+    AND             reduce using rule 42 (relexpr -> expr LT expr .)
+    OR              reduce using rule 42 (relexpr -> expr LT expr .)
+    STEPIN          reduce using rule 42 (relexpr -> expr LT expr .)
+    NEWLINE         reduce using rule 42 (relexpr -> expr LT expr .)
+    SEP             reduce using rule 42 (relexpr -> expr LT expr .)
+    PLUS            shift and go to state 64
+    MINUS           shift and go to state 65
+    MUL             shift and go to state 66
+    DIV             shift and go to state 67
+    MOD             shift and go to state 68
+    POWER           shift and go to state 69
+    BITWISEAND      shift and go to state 70
+    BITWISEOR       shift and go to state 71
+    BITWISEXOR      shift and go to state 72
+    BITWISELS       shift and go to state 73
+    BITWISERS       shift and go to state 74
+
+
+state 110
+
+    (43) relexpr -> expr LTE expr .
+    (48) expr -> expr . PLUS expr
+    (49) expr -> expr . MINUS expr
+    (50) expr -> expr . MUL expr
+    (51) expr -> expr . DIV expr
+    (52) expr -> expr . MOD expr
+    (53) expr -> expr . POWER expr
+    (54) expr -> expr . BITWISEAND expr
+    (55) expr -> expr . BITWISEOR expr
+    (56) expr -> expr . BITWISEXOR expr
+    (57) expr -> expr . BITWISELS INT
+    (58) expr -> expr . BITWISERS INT
+
+    AND             reduce using rule 43 (relexpr -> expr LTE expr .)
+    OR              reduce using rule 43 (relexpr -> expr LTE expr .)
+    STEPIN          reduce using rule 43 (relexpr -> expr LTE expr .)
+    NEWLINE         reduce using rule 43 (relexpr -> expr LTE expr .)
+    SEP             reduce using rule 43 (relexpr -> expr LTE expr .)
+    PLUS            shift and go to state 64
+    MINUS           shift and go to state 65
+    MUL             shift and go to state 66
+    DIV             shift and go to state 67
+    MOD             shift and go to state 68
+    POWER           shift and go to state 69
+    BITWISEAND      shift and go to state 70
+    BITWISEOR       shift and go to state 71
+    BITWISEXOR      shift and go to state 72
+    BITWISELS       shift and go to state 73
+    BITWISERS       shift and go to state 74
+
+
+state 111
+
+    (44) relexpr -> expr GT expr .
+    (48) expr -> expr . PLUS expr
+    (49) expr -> expr . MINUS expr
+    (50) expr -> expr . MUL expr
+    (51) expr -> expr . DIV expr
+    (52) expr -> expr . MOD expr
+    (53) expr -> expr . POWER expr
+    (54) expr -> expr . BITWISEAND expr
+    (55) expr -> expr . BITWISEOR expr
+    (56) expr -> expr . BITWISEXOR expr
+    (57) expr -> expr . BITWISELS INT
+    (58) expr -> expr . BITWISERS INT
+
+    AND             reduce using rule 44 (relexpr -> expr GT expr .)
+    OR              reduce using rule 44 (relexpr -> expr GT expr .)
+    STEPIN          reduce using rule 44 (relexpr -> expr GT expr .)
+    NEWLINE         reduce using rule 44 (relexpr -> expr GT expr .)
+    SEP             reduce using rule 44 (relexpr -> expr GT expr .)
+    PLUS            shift and go to state 64
+    MINUS           shift and go to state 65
+    MUL             shift and go to state 66
+    DIV             shift and go to state 67
+    MOD             shift and go to state 68
+    POWER           shift and go to state 69
+    BITWISEAND      shift and go to state 70
+    BITWISEOR       shift and go to state 71
+    BITWISEXOR      shift and go to state 72
+    BITWISELS       shift and go to state 73
+    BITWISERS       shift and go to state 74
+
+
+state 112
+
+    (45) relexpr -> expr GTE expr .
+    (48) expr -> expr . PLUS expr
+    (49) expr -> expr . MINUS expr
+    (50) expr -> expr . MUL expr
+    (51) expr -> expr . DIV expr
+    (52) expr -> expr . MOD expr
+    (53) expr -> expr . POWER expr
+    (54) expr -> expr . BITWISEAND expr
+    (55) expr -> expr . BITWISEOR expr
+    (56) expr -> expr . BITWISEXOR expr
+    (57) expr -> expr . BITWISELS INT
+    (58) expr -> expr . BITWISERS INT
+
+    AND             reduce using rule 45 (relexpr -> expr GTE expr .)
+    OR              reduce using rule 45 (relexpr -> expr GTE expr .)
+    STEPIN          reduce using rule 45 (relexpr -> expr GTE expr .)
+    NEWLINE         reduce using rule 45 (relexpr -> expr GTE expr .)
+    SEP             reduce using rule 45 (relexpr -> expr GTE expr .)
+    PLUS            shift and go to state 64
+    MINUS           shift and go to state 65
+    MUL             shift and go to state 66
+    DIV             shift and go to state 67
+    MOD             shift and go to state 68
+    POWER           shift and go to state 69
+    BITWISEAND      shift and go to state 70
+    BITWISEOR       shift and go to state 71
+    BITWISEXOR      shift and go to state 72
+    BITWISELS       shift and go to state 73
+    BITWISERS       shift and go to state 74
+
+
+state 113
+
+    (46) relexpr -> expr EQUAL expr .
+    (48) expr -> expr . PLUS expr
+    (49) expr -> expr . MINUS expr
+    (50) expr -> expr . MUL expr
+    (51) expr -> expr . DIV expr
+    (52) expr -> expr . MOD expr
+    (53) expr -> expr . POWER expr
+    (54) expr -> expr . BITWISEAND expr
+    (55) expr -> expr . BITWISEOR expr
+    (56) expr -> expr . BITWISEXOR expr
+    (57) expr -> expr . BITWISELS INT
+    (58) expr -> expr . BITWISERS INT
+
+    AND             reduce using rule 46 (relexpr -> expr EQUAL expr .)
+    OR              reduce using rule 46 (relexpr -> expr EQUAL expr .)
+    STEPIN          reduce using rule 46 (relexpr -> expr EQUAL expr .)
+    NEWLINE         reduce using rule 46 (relexpr -> expr EQUAL expr .)
+    SEP             reduce using rule 46 (relexpr -> expr EQUAL expr .)
+    PLUS            shift and go to state 64
+    MINUS           shift and go to state 65
+    MUL             shift and go to state 66
+    DIV             shift and go to state 67
+    MOD             shift and go to state 68
+    POWER           shift and go to state 69
+    BITWISEAND      shift and go to state 70
+    BITWISEOR       shift and go to state 71
+    BITWISEXOR      shift and go to state 72
+    BITWISELS       shift and go to state 73
+    BITWISERS       shift and go to state 74
+
+
+state 114
+
+    (47) relexpr -> expr NOTEQUAL expr .
+    (48) expr -> expr . PLUS expr
+    (49) expr -> expr . MINUS expr
+    (50) expr -> expr . MUL expr
+    (51) expr -> expr . DIV expr
+    (52) expr -> expr . MOD expr
+    (53) expr -> expr . POWER expr
+    (54) expr -> expr . BITWISEAND expr
+    (55) expr -> expr . BITWISEOR expr
+    (56) expr -> expr . BITWISEXOR expr
+    (57) expr -> expr . BITWISELS INT
+    (58) expr -> expr . BITWISERS INT
+
+    AND             reduce using rule 47 (relexpr -> expr NOTEQUAL expr .)
+    OR              reduce using rule 47 (relexpr -> expr NOTEQUAL expr .)
+    STEPIN          reduce using rule 47 (relexpr -> expr NOTEQUAL expr .)
+    NEWLINE         reduce using rule 47 (relexpr -> expr NOTEQUAL expr .)
+    SEP             reduce using rule 47 (relexpr -> expr NOTEQUAL expr .)
+    PLUS            shift and go to state 64
+    MINUS           shift and go to state 65
+    MUL             shift and go to state 66
+    DIV             shift and go to state 67
+    MOD             shift and go to state 68
+    POWER           shift and go to state 69
+    BITWISEAND      shift and go to state 70
+    BITWISEOR       shift and go to state 71
+    BITWISEXOR      shift and go to state 72
+    BITWISELS       shift and go to state 73
+    BITWISERS       shift and go to state 74
+
+
+state 115
+
+    (65) expr -> LPAREN expr RPAREN .
+
+    PLUS            reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    MINUS           reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    MUL             reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    DIV             reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    MOD             reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    POWER           reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    BITWISEAND      reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    BITWISEOR       reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    BITWISEXOR      reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    BITWISELS       reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    BITWISERS       reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    LT              reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    LTE             reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    GT              reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    GTE             reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    EQUAL           reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    NOTEQUAL        reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    STEPIN          reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    NEWLINE         reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    SEP             reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    RPAREN          reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    TO              reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    AND             reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    OR              reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+    STEP            reduce using rule 65 (expr -> LPAREN expr RPAREN .)
+
+
+state 116
+
+    (14) command -> optlvldec ELSE IF boolexpr . optlvlinc
+    (39) boolexpr -> boolexpr . AND boolexpr
+    (40) boolexpr -> boolexpr . OR boolexpr
+    (34) optlvlinc -> . STEPIN
+    (35) optlvlinc -> . empty
+    (73) empty -> .
+
+    AND             shift and go to state 59
+    OR              shift and go to state 60
+    STEPIN          shift and go to state 61
+    NEWLINE         reduce using rule 73 (empty -> .)
+
+    optlvlinc                      shift and go to state 121
+    empty                          shift and go to state 62
+
+state 117
+
+    (15) command -> optlvldec ELSE IF error . optlvlinc
+    (34) optlvlinc -> . STEPIN
+    (35) optlvlinc -> . empty
+    (73) empty -> .
+
+    STEPIN          shift and go to state 61
+    NEWLINE         reduce using rule 73 (empty -> .)
+
+    optlvlinc                      shift and go to state 122
+    empty                          shift and go to state 62
+
+state 118
+
+    (69) paramlist -> paramlist SEP param .
+
+    SEP             reduce using rule 69 (paramlist -> paramlist SEP param .)
+    NEWLINE         reduce using rule 69 (paramlist -> paramlist SEP param .)
+
+
+state 119
+
+    (7) command -> FOR ID ASSIGN expr TO . expr optstep optlvlinc
+    (9) command -> FOR ID ASSIGN expr TO . error optstep optlvlinc
+    (10) command -> FOR ID ASSIGN expr TO . expr STEP error
+    (48) expr -> . expr PLUS expr
+    (49) expr -> . expr MINUS expr
+    (50) expr -> . expr MUL expr
+    (51) expr -> . expr DIV expr
+    (52) expr -> . expr MOD expr
+    (53) expr -> . expr POWER expr
+    (54) expr -> . expr BITWISEAND expr
+    (55) expr -> . expr BITWISEOR expr
+    (56) expr -> . expr BITWISEXOR expr
+    (57) expr -> . expr BITWISELS INT
+    (58) expr -> . expr BITWISERS INT
+    (59) expr -> . BITWISENOT expr
+    (60) expr -> . INT
+    (61) expr -> . FLOAT
+    (62) expr -> . STR
+    (63) expr -> . ID
+    (64) expr -> . bool
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (67) bool -> . TRUE
+    (68) bool -> . FALSE
+
+    error           shift and go to state 124
+    BITWISENOT      shift and go to state 32
+    INT             shift and go to state 31
+    FLOAT           shift and go to state 33
+    STR             shift and go to state 34
+    ID              shift and go to state 35
+    LPAREN          shift and go to state 37
+    MINUS           shift and go to state 30
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    expr                           shift and go to state 123
+    bool                           shift and go to state 36
+
+state 120
+
+    (8) command -> FOR ID ASSIGN error TO . expr optstep optlvlinc
+    (48) expr -> . expr PLUS expr
+    (49) expr -> . expr MINUS expr
+    (50) expr -> . expr MUL expr
+    (51) expr -> . expr DIV expr
+    (52) expr -> . expr MOD expr
+    (53) expr -> . expr POWER expr
+    (54) expr -> . expr BITWISEAND expr
+    (55) expr -> . expr BITWISEOR expr
+    (56) expr -> . expr BITWISEXOR expr
+    (57) expr -> . expr BITWISELS INT
+    (58) expr -> . expr BITWISERS INT
+    (59) expr -> . BITWISENOT expr
+    (60) expr -> . INT
+    (61) expr -> . FLOAT
+    (62) expr -> . STR
+    (63) expr -> . ID
+    (64) expr -> . bool
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (67) bool -> . TRUE
+    (68) bool -> . FALSE
+
+    BITWISENOT      shift and go to state 32
+    INT             shift and go to state 31
+    FLOAT           shift and go to state 33
+    STR             shift and go to state 34
+    ID              shift and go to state 35
+    LPAREN          shift and go to state 37
+    MINUS           shift and go to state 30
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    expr                           shift and go to state 125
+    bool                           shift and go to state 36
+
+state 121
+
+    (14) command -> optlvldec ELSE IF boolexpr optlvlinc .
+
+    NEWLINE         reduce using rule 14 (command -> optlvldec ELSE IF boolexpr optlvlinc .)
+
+
+state 122
+
+    (15) command -> optlvldec ELSE IF error optlvlinc .
+
+    NEWLINE         reduce using rule 15 (command -> optlvldec ELSE IF error optlvlinc .)
+
+
+state 123
+
+    (7) command -> FOR ID ASSIGN expr TO expr . optstep optlvlinc
+    (10) command -> FOR ID ASSIGN expr TO expr . STEP error
+    (48) expr -> expr . PLUS expr
+    (49) expr -> expr . MINUS expr
+    (50) expr -> expr . MUL expr
+    (51) expr -> expr . DIV expr
+    (52) expr -> expr . MOD expr
+    (53) expr -> expr . POWER expr
+    (54) expr -> expr . BITWISEAND expr
+    (55) expr -> expr . BITWISEOR expr
+    (56) expr -> expr . BITWISEXOR expr
+    (57) expr -> expr . BITWISELS INT
+    (58) expr -> expr . BITWISERS INT
+    (32) optstep -> . STEP expr
+    (33) optstep -> . empty
+    (73) empty -> .
+
+    STEP            shift and go to state 127
+    PLUS            shift and go to state 64
+    MINUS           shift and go to state 65
+    MUL             shift and go to state 66
+    DIV             shift and go to state 67
+    MOD             shift and go to state 68
+    POWER           shift and go to state 69
+    BITWISEAND      shift and go to state 70
+    BITWISEOR       shift and go to state 71
+    BITWISEXOR      shift and go to state 72
+    BITWISELS       shift and go to state 73
+    BITWISERS       shift and go to state 74
+    STEPIN          reduce using rule 73 (empty -> .)
+    NEWLINE         reduce using rule 73 (empty -> .)
+
+    optstep                        shift and go to state 126
+    empty                          shift and go to state 128
+
+state 124
+
+    (9) command -> FOR ID ASSIGN expr TO error . optstep optlvlinc
+    (32) optstep -> . STEP expr
+    (33) optstep -> . empty
+    (73) empty -> .
+
+    STEP            shift and go to state 130
+    STEPIN          reduce using rule 73 (empty -> .)
+    NEWLINE         reduce using rule 73 (empty -> .)
+
+    optstep                        shift and go to state 129
+    empty                          shift and go to state 128
+
+state 125
+
+    (8) command -> FOR ID ASSIGN error TO expr . optstep optlvlinc
+    (48) expr -> expr . PLUS expr
+    (49) expr -> expr . MINUS expr
+    (50) expr -> expr . MUL expr
+    (51) expr -> expr . DIV expr
+    (52) expr -> expr . MOD expr
+    (53) expr -> expr . POWER expr
+    (54) expr -> expr . BITWISEAND expr
+    (55) expr -> expr . BITWISEOR expr
+    (56) expr -> expr . BITWISEXOR expr
+    (57) expr -> expr . BITWISELS INT
+    (58) expr -> expr . BITWISERS INT
+    (32) optstep -> . STEP expr
+    (33) optstep -> . empty
+    (73) empty -> .
+
+    PLUS            shift and go to state 64
+    MINUS           shift and go to state 65
+    MUL             shift and go to state 66
+    DIV             shift and go to state 67
+    MOD             shift and go to state 68
+    POWER           shift and go to state 69
+    BITWISEAND      shift and go to state 70
+    BITWISEOR       shift and go to state 71
+    BITWISEXOR      shift and go to state 72
+    BITWISELS       shift and go to state 73
+    BITWISERS       shift and go to state 74
+    STEP            shift and go to state 130
+    STEPIN          reduce using rule 73 (empty -> .)
+    NEWLINE         reduce using rule 73 (empty -> .)
+
+    optstep                        shift and go to state 131
+    empty                          shift and go to state 128
+
+state 126
+
+    (7) command -> FOR ID ASSIGN expr TO expr optstep . optlvlinc
+    (34) optlvlinc -> . STEPIN
+    (35) optlvlinc -> . empty
+    (73) empty -> .
+
+    STEPIN          shift and go to state 61
+    NEWLINE         reduce using rule 73 (empty -> .)
+
+    optlvlinc                      shift and go to state 132
+    empty                          shift and go to state 62
+
+state 127
+
+    (10) command -> FOR ID ASSIGN expr TO expr STEP . error
+    (32) optstep -> STEP . expr
+    (48) expr -> . expr PLUS expr
+    (49) expr -> . expr MINUS expr
+    (50) expr -> . expr MUL expr
+    (51) expr -> . expr DIV expr
+    (52) expr -> . expr MOD expr
+    (53) expr -> . expr POWER expr
+    (54) expr -> . expr BITWISEAND expr
+    (55) expr -> . expr BITWISEOR expr
+    (56) expr -> . expr BITWISEXOR expr
+    (57) expr -> . expr BITWISELS INT
+    (58) expr -> . expr BITWISERS INT
+    (59) expr -> . BITWISENOT expr
+    (60) expr -> . INT
+    (61) expr -> . FLOAT
+    (62) expr -> . STR
+    (63) expr -> . ID
+    (64) expr -> . bool
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (67) bool -> . TRUE
+    (68) bool -> . FALSE
+
+    error           shift and go to state 134
+    BITWISENOT      shift and go to state 32
+    INT             shift and go to state 31
+    FLOAT           shift and go to state 33
+    STR             shift and go to state 34
+    ID              shift and go to state 35
+    LPAREN          shift and go to state 37
+    MINUS           shift and go to state 30
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    expr                           shift and go to state 133
+    bool                           shift and go to state 36
+
+state 128
+
+    (33) optstep -> empty .
+
+    STEPIN          reduce using rule 33 (optstep -> empty .)
+    NEWLINE         reduce using rule 33 (optstep -> empty .)
+
+
+state 129
+
+    (9) command -> FOR ID ASSIGN expr TO error optstep . optlvlinc
+    (34) optlvlinc -> . STEPIN
+    (35) optlvlinc -> . empty
+    (73) empty -> .
+
+    STEPIN          shift and go to state 61
+    NEWLINE         reduce using rule 73 (empty -> .)
+
+    optlvlinc                      shift and go to state 135
+    empty                          shift and go to state 62
+
+state 130
+
+    (32) optstep -> STEP . expr
+    (48) expr -> . expr PLUS expr
+    (49) expr -> . expr MINUS expr
+    (50) expr -> . expr MUL expr
+    (51) expr -> . expr DIV expr
+    (52) expr -> . expr MOD expr
+    (53) expr -> . expr POWER expr
+    (54) expr -> . expr BITWISEAND expr
+    (55) expr -> . expr BITWISEOR expr
+    (56) expr -> . expr BITWISEXOR expr
+    (57) expr -> . expr BITWISELS INT
+    (58) expr -> . expr BITWISERS INT
+    (59) expr -> . BITWISENOT expr
+    (60) expr -> . INT
+    (61) expr -> . FLOAT
+    (62) expr -> . STR
+    (63) expr -> . ID
+    (64) expr -> . bool
+    (65) expr -> . LPAREN expr RPAREN
+    (66) expr -> . MINUS expr
+    (67) bool -> . TRUE
+    (68) bool -> . FALSE
+
+    BITWISENOT      shift and go to state 32
+    INT             shift and go to state 31
+    FLOAT           shift and go to state 33
+    STR             shift and go to state 34
+    ID              shift and go to state 35
+    LPAREN          shift and go to state 37
+    MINUS           shift and go to state 30
+    TRUE            shift and go to state 38
+    FALSE           shift and go to state 39
+
+    expr                           shift and go to state 133
+    bool                           shift and go to state 36
+
+state 131
+
+    (8) command -> FOR ID ASSIGN error TO expr optstep . optlvlinc
+    (34) optlvlinc -> . STEPIN
+    (35) optlvlinc -> . empty
+    (73) empty -> .
+
+    STEPIN          shift and go to state 61
+    NEWLINE         reduce using rule 73 (empty -> .)
+
+    optlvlinc                      shift and go to state 136
+    empty                          shift and go to state 62
+
+state 132
+
+    (7) command -> FOR ID ASSIGN expr TO expr optstep optlvlinc .
+
+    NEWLINE         reduce using rule 7 (command -> FOR ID ASSIGN expr TO expr optstep optlvlinc .)
+
+
+state 133
+
+    (32) optstep -> STEP expr .
+    (48) expr -> expr . PLUS expr
+    (49) expr -> expr . MINUS expr
+    (50) expr -> expr . MUL expr
+    (51) expr -> expr . DIV expr
+    (52) expr -> expr . MOD expr
+    (53) expr -> expr . POWER expr
+    (54) expr -> expr . BITWISEAND expr
+    (55) expr -> expr . BITWISEOR expr
+    (56) expr -> expr . BITWISEXOR expr
+    (57) expr -> expr . BITWISELS INT
+    (58) expr -> expr . BITWISERS INT
+
+    STEPIN          reduce using rule 32 (optstep -> STEP expr .)
+    NEWLINE         reduce using rule 32 (optstep -> STEP expr .)
+    PLUS            shift and go to state 64
+    MINUS           shift and go to state 65
+    MUL             shift and go to state 66
+    DIV             shift and go to state 67
+    MOD             shift and go to state 68
+    POWER           shift and go to state 69
+    BITWISEAND      shift and go to state 70
+    BITWISEOR       shift and go to state 71
+    BITWISEXOR      shift and go to state 72
+    BITWISELS       shift and go to state 73
+    BITWISERS       shift and go to state 74
+
+
+state 134
+
+    (10) command -> FOR ID ASSIGN expr TO expr STEP error .
+
+    NEWLINE         reduce using rule 10 (command -> FOR ID ASSIGN expr TO expr STEP error .)
+
+
+state 135
+
+    (9) command -> FOR ID ASSIGN expr TO error optstep optlvlinc .
+
+    NEWLINE         reduce using rule 9 (command -> FOR ID ASSIGN expr TO error optstep optlvlinc .)
+
+
+state 136
+
+    (8) command -> FOR ID ASSIGN error TO expr optstep optlvlinc .
+
+    NEWLINE         reduce using rule 8 (command -> FOR ID ASSIGN error TO expr optstep optlvlinc .)
+

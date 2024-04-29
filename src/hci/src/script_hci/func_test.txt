@@ -1,0 +1,5 @@
+WAIT 5
+PRINT 'WAITed 5 seconds'
+
+WAIT 7 + 6 - 10
+PRINT 'WAITed 7+6-10 seconds'

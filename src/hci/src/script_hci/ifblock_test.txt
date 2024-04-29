@@ -1,0 +1,49 @@
+// x = 6
+x = 2*(3-1) + 2
+IF x < 8 {
+    PRINT "Value is less than 8"
+}
+
+// y = 6
+y = 2*(3+1) - 2
+IF y > 10 {
+    PRINT "Value is greater than 10"
+} 
+ELSE {
+    PRINT "Value is wrong"
+}
+
+// z = 10
+z = 2*(3+1) + 1
+IF z > 10 {
+    PRINT "Value is greater than 10"
+}
+ELSE IF z < 10 {
+    PRINT "Value is less than 10"
+}
+ELSE IF z == 1{
+    PRINT "Value is 1"
+}
+ELSE {
+    PRINT "Value is 10"
+}
+
+IF 0 {
+    PRINT "We should not be here"
+}
+
+IF 1 {
+    PRINT "We should be here"
+}
+
+IF 3 + 2 - 4 {
+    PRINT "Math is one"
+}
+
+IF 3 + 3 + 4 {
+    PRINT "Math is mathing"
+}
+
+IF 3 - 3 {
+    PRINT "How did we get here?"
+}

@@ -1,0 +1,74 @@
+{
+    "SECTION_NAME" : "HCIScript Syntax",
+    "Loops" : {
+        "FOR_Loop" : {
+            "SYNTAX" : "FOR [var name] = [start] TO [stop] STEP [step] { ... }",
+            "Example" : "FOR x = 0 TO 10 STEP 2 {\n\r\tPRINT x\n\r}"
+        },
+        "WHILE_Loop" : {
+            "SYNTAX" : "WHILE [boolean] { ... }",
+            "Example" : "x = 0\n\tWHILE x < 10 {\n\r\tx = x + 1\n\r\tPRINT x\n\r}"
+        }
+    },
+    "Conditionals" : {
+        "IF_Statement" : {
+            "SYNTAX" : "IF [boolean] { ... }",
+            "Example" : "printHello = TRUE\n\rIF printHello {\n\r\tPRINT \"Hello!\"\n\r}"
+        },
+        "IF/ELSE_Statement" : {
+            "SYNTAX" : "IF [boolean] { ... } ELSE { ... }",
+            "Example" : "x = 15\n\rIF x < 10 {\n\r\tPRINT \"x is less than 10\"\n\r} ELSE {\n\r\tPRINT \"x is greater than 10\"\n\r}"
+        },
+        "IF/ELSEIF/ELSE_Statement" : {
+            "SYNTAX" : "IF [boolean] { ... } ELSE IF [boolean] { ... } ELSE { ... }",
+            "Example" : "x = 0\n\rIF x > 0 {\n\r\tPRINT \"x is positive\"\n\r} ELSE IF x < 0 {\n\r\tPRINT \"x is negative\"\n\r} ELSE {\n\r\tPRINT \"x is 0\"\n\r}"
+        }
+    },
+    "Built-In_Functions" : {
+        "ADD_DEV" : {
+            "SYNTAX" : "ADD_DEV [device name] [serial port]",
+            "Example" : "ADD_DEV hci1 \"COM1\""
+        },
+        "PRINT" : {
+            "SYNTAX" : "PRINT [string]",
+            "Example" : "PRINT \"Hello World!\""
+        },
+        "WAIT" : {
+            "SYNTAX" : "WAIT [seconds]",
+            "Example" : "WAIT 5"
+        },
+        "HCI-Commands" : {
+            "SYNTAX" : "All command parameters must be separated by a comma.\n\rCommand returns can be retrieved with the \"->\" operator.\n\rSee individual commands for parameter details.",
+            "Example" : "LE_TRANSMITTER_TEST 0x0000, 0x00FF, 0x0003"
+        }
+    },
+    "Mathematical_Operators" : {
+        "Addition" : "+",
+        "Assignment" : "=",
+        "Division" : "/",
+        "Exponential" : "**",
+        "Modulus" : "%",
+        "Multiplication" : "*",
+        "Return Assignment" : "->",
+        "Subtraction" : "-"
+    },
+    "Bitwise_Operators" : {
+        "Bitwise_And" : "&",
+        "Bitwise_Not" : "~",
+        "Bitwise_Or" : "|",
+        "Bitwise_XOr" : "^",
+        "Left_Shift" : "<<",
+        "Right_Shift" : ">>"
+    },
+    "Logical_Operators" : {
+        "Equivalent" : "==",
+        "Greater_Than" : ">",
+        "Greater_Than_Equal" : ">=",
+        "Logical_And" : "AND or &&",
+        "Logical_Not" : "NOT or !",
+        "Logical_Or" : "OR or ||",
+        "Less_Than" : "<",
+        "Less_Than_Equal" : "<=",
+        "Not_Equivalent" : "!="
+    }
+}

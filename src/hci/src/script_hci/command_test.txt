@@ -1,0 +1,2 @@
+chan = 0
+VS_RX_TEST chan, 1, 0x0, 10000

@@ -1,0 +1,43 @@
+// HCI Lang Stress Test
+
+x = "HELLO WORLD"
+PRINT x
+z = 33
+
+WHILE z != 1 {
+    PRINT z
+    IF z % 2 {
+        z = (3*z) + 1
+    } else {
+        z = z/2
+    }
+}
+
+/*
+x = 3 // set x to 3
+x = 3+2/1 // reset x
+
+VS_RX_TEST 0, 0x1, 0, 10000 // Should fail
+
+ADD_DEV hci1 'COM2'
+
+VS_RX_TEST 0, 0x1, 0, 10000
+
+ADD_DEV hci2 'COM3'
+
+hci1: VS_RX_TEST 0, 0x1, 0, 10000
+hci2: VS_RX_TEST 0, 0x1, 0, 10000
+
+for chan = 0 to 40 step 5 {
+    hci1: VS_TX_TEST chan, 0xFF, 0x0, 0x1, 10000
+    hci2: LE_ENHANCED_RECEIVER_TEST chan, 0x1, 0x0
+    WAIT 2
+    hci1: LE_TEST_END
+    hci2: LE_TEST_END
+    hci2: VS_GET_TEST_STATS
+    hci2: VS_RESET_TEST_STATS
+
+    hci1: RESET
+    hci2: RESET
+}
+*/

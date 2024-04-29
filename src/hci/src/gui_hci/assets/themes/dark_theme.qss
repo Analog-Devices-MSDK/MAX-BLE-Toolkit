@@ -1,0 +1,390 @@
+/***********************| Common button style for all buttons |***********************/
+QFrame{
+    border: 0px;
+    background-color: transparent;
+}
+QLabel{
+    background-color: rgb(33, 37, 43);
+}
+QPushButton{
+    background-color: rgb(33, 37, 43);
+    border: 1px solid rgb(30, 70, 78);
+    color: rgb(255, 255, 255);
+    border-radius: 5px;	
+    text-align: center;
+    padding: 3px;
+    margin: 0px;
+}
+QPushButton:hover{
+    color: rgb(255, 255, 255);
+    background-color: rgb(153, 193, 241);
+}
+QPushButton:pressed{
+    color: rgb(255, 255, 255);
+    background-color: #262E49;
+}
+
+/***********************| Common button style for all lists |***********************/
+QListWidget {
+    border: 2px solid rgb(20, 60, 68);
+    border-radius: 5px;
+    color: rgb(222, 221, 218);
+}
+QChartView{
+    border: 2px solid rgb(53, 93, 101);
+    border-radius: 5px;
+}
+QTreeWidget {
+    border: 0px;
+    background-color: transparent;
+}
+
+/***********************| Common button style for all edit |***********************/
+QLineEdit {
+    color: rgb(222, 221, 218);
+    background-color: rgb(33, 37, 43);
+}
+
+QTextEdit {
+    background-color: rgb(40, 44, 52);
+    color: rgb(222, 221, 218);
+}
+
+QCodeEditor {
+    background-color: rgb(40, 44, 52);
+    color: rgb(222, 221, 218);
+}
+/***********************| Common button style for all labels |***********************/
+QLabel{
+    color: rgb(222, 221, 218);
+    background: transparent;
+
+}
+
+/***********************| Common button style for all radio button |***********************/
+QRadioButton{
+    color: rgb(222, 221, 218);
+}
+QRadioButton::indicator {
+    border: 3px solid rgb(52, 59, 72);
+	width: 15px;
+	height: 15px;
+	border-radius: 10px;
+    background: rgb(44, 49, 60);
+    
+}
+QRadioButton::indicator:hover {
+    border: 3px solid rgb(58, 66, 81);
+}
+QRadioButton::indicator:checked {
+    background: 3px solid rgb(94, 106, 130);
+	border: 3px solid rgb(52, 59, 72);	
+}
+
+
+/***********************| Common button style for all check boxes |***********************/
+QCheckBox{
+    color: rgb(222, 221, 218);
+}
+QCheckBox::indicator {
+    border: 3px solid rgb(52, 59, 72);
+	width: 15px;
+	height: 15px;
+	border-radius: 10px;
+    background: rgb(52, 59, 72);
+}
+QCheckBox::indicator:hover {
+    border: 3px solid rgb(119, 136, 187);
+}
+QCheckBox::indicator:checked {
+    background: 3px solid #bd93f9;
+	border: 3px solid #bd93f9;	
+}
+/***********************| custom style for lines |***********************/
+
+#line, #line_2, #line_3, #line_4, #line_5 {
+    background-color: rgb(52, 59, 72);
+    width: 1;
+}
+
+#explorer_ind, #reference_ind, #settings_ind {
+    background-color: rgb(153, 193, 241);
+}
+
+/***********************| custom style for console |***********************/
+#console_out {
+    background-color: rgb(33, 37, 43);
+    color: rgb(222, 221, 218);
+
+}
+
+/***********************| custom style for side frames |***********************/
+#context_menu {
+    background-color: rgb(33, 37, 43);
+}
+#console_win {
+    background-color: rgb(33, 37, 43);
+}
+
+#editor_win {
+    background-color: rgb(40, 44, 52);
+}
+
+/***********************| custom style for logging frame |***********************/
+#frame_logging{
+    background-color: rgb(40, 44, 52);
+}
+
+/***********************| custom style stacked widget |***********************/
+#stackedWidget .QStackedWidget{
+    background: transparent;
+}
+
+/***********************| custom style main window middle frame  |***********************/
+
+/***********************| custom style main middle frame  |***********************/
+
+#centralwidget {
+    background-color: rgb(33, 37, 43);
+}
+
+#MainWindow {
+    background-color: rgb(33, 37, 43);
+}
+
+#main_frame {
+    background: rgb(33, 37, 43);
+}
+
+/***********************| custom style for scroll bar |***********************/
+
+QScrollBar:horizontal {
+    border: none;
+    background: #6272a4;
+    height: 8px;
+    margin: 0px 21px 0 21px;
+	border-radius: 0px;
+}
+QScrollBar::handle:horizontal {
+    background: rgb(189, 147, 249);
+    min-width: 25px;
+	border-radius: 4px
+}
+QScrollBar::add-line:horizontal {
+    border: none;
+    background: #6272a4;
+    width: 20px;
+	border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    subcontrol-position: right;
+    subcontrol-origin: margin;
+}
+QScrollBar::sub-line:horizontal {
+    border: none;
+    background: #6272a4;
+    width: 20px;
+	border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    subcontrol-position: left;
+    subcontrol-origin: margin;
+}
+QScrollBar::up-arrow:horizontal, QScrollBar::down-arrow:horizontal
+{
+     background: none;
+}
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal
+{
+    background: none;
+}
+QScrollBar:vertical {
+border: none;
+background-color: #6272a4;
+width: 8px;
+margin: 21px 0 21px 0;
+border-radius: 0px;
+}
+QScrollBar::handle:vertical {	
+background: rgb(189, 147, 249);
+min-height: 25px;
+border-radius: 4px
+}
+QScrollBar::add-line:vertical {
+    border: none;
+background: #6272a4;
+    height: 20px;
+border-bottom-left-radius: 4px;
+border-bottom-right-radius: 4px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+QScrollBar::sub-line:vertical {
+border: none;
+background: #6272a4;
+    height: 20px;
+border-top-left-radius: 4px;
+border-top-right-radius: 4px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
+    background: none;
+}
+
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    background: none;
+}
+
+/***********************| custom style for tab view |***********************/
+
+QTabWidget::pane {
+    border: 1px solid rgb(52, 59, 72);
+    border-left: 0px;
+    top: -1px;
+}
+QTabWidget::right-corner {
+    subcontrol-origin: padding;
+    right: 10px;
+    bottom: 2px;
+}
+QTabBar::tab {
+    background-color: rgb(33, 37, 43);
+    border: 1px solid rgb(52, 59, 72);
+    color: rgb(222, 221, 218);
+    border-bottom: 0px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    min-width: 15ex;
+    max-width: 20ex;
+    min-height: 3ex;
+    max-height: 3ex;
+    padding: 1px 0px 1px 5px;
+    margin-right: -1px
+}
+
+QTabBar::tab:last {
+    margin-right: 0px;
+    min-width: 4ex;
+    max-width: 4ex;
+}
+
+QTabBar::tab:first {
+    border-left: 0px;
+}
+
+QTabBar::tab:only-one {
+    margin: 0px;
+    border-left: 0px;
+}
+
+QTabBar::tab:selected, QTabBar::tab:hover {
+    background-color: rgb(40, 44, 52);
+}
+
+QTabBar::tab:selected {
+    border-top: 2px solid rgb(153, 193, 241);
+}
+
+QTabBar::tab:!selected {
+    bottom: 1px;
+}
+
+QTabBar::close-button {
+    image: url(assets/images/icons/cil-x.png);
+    border-radius: 4px;
+    top: 1px;
+}
+QTabBar::close-button:hover {
+    background:rgb(52, 59, 72);
+}
+
+/***********************| custom style for menu bar |***********************/
+QMenuBar {
+    background-color: rgb(20, 22, 26);
+    color: rgb(222, 221, 218);
+    spacing: 1.25ex;
+}
+
+QMenuBar::item {
+    background: transparent;
+    border-radius: 4px;
+    padding: 1px, 4px;
+}
+
+QMenuBar::item:pressed {
+    background: rgb(52, 59, 72);
+}
+
+QMenu {
+    background-color: rgb(40, 44, 52);
+    color: rgb(222, 221, 218);
+    border: 1px solid rgb(52, 59, 72);
+}
+
+QMenu::item {
+    background-color: transparent;
+}
+
+QMenu::item:selected {
+    background-color: rgb(52, 59, 72);
+}
+
+/***********************| custom style for combo box |***********************/
+
+#select_themeMode {
+    background-color: rgb(52, 59, 72);
+    color: rgb(222, 221, 218);
+    border: 3px solid rgb(52, 59, 72);
+    border-radius: 4px;
+    padding: 1px 18px 1px 3px;
+}
+
+#select_themeMode:hover {
+    border: 3px solid rgb(119, 136, 187);
+}
+
+#select_themeMode::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position:  top right;
+    width: 15px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+#select_themeMode::down-arrow {
+    image: url(assets/images/icons/cil-arrow-bottom.png);
+}
+
+#select_themeMode QListView {
+    border: 3px solid rgb(40, 44, 52);
+    background-color: rgb(40, 44, 52);
+    color: rgb(222, 221, 218);
+    /* padding: 5px; */
+    outline: 0px;
+}
+
+
+/***********************| custom style for tree view |***********************/
+QTreeView {
+    background-color: transparent;
+    color: rgb(222, 221, 218);
+    show-decoration-selected: 0;
+}
+
+QTreeView::item {
+    background: transparent;
+    color: rgb(222, 221, 218);
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+}
+
+QTreeView::item:hover {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(52, 59, 72), stop: 1 rgb(40, 44, 52));
+}
+
+QTreeView::item:selected:active {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #6ea1f1, stop: 1 #567dbc);
+}
+
+QTreeView::item:selected:!active {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(52, 59, 72), stop: 1 rgb(40, 44, 52));
+}
