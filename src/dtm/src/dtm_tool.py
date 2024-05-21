@@ -7,13 +7,14 @@ import subprocess
 import sys
 import time
 import webbrowser
+import serial
 
 import max_ble_hci
 from max_ble_hci import utils as hci_utils
 from max_ble_hci.data_params import DataPktStats
 
 # pylint: disable=no-name-in-module,c-extension-no-member
-from PySide6.QtCore import QThread, Signal
+from PySide6.QtCore import QThread, Signal, QMutex
 from PySide6.QtWidgets import (
     QApplication,
     QComboBox,
@@ -33,7 +34,7 @@ from ui_mainwindow import Ui_MainWindow
 TAB_TX = 0
 TAB_RX = 1
 
-
+rx_mutex = QMutex()
 class RxStatsThread(QThread):
     """RX Stats worker thread"""
 
@@ -50,7 +51,9 @@ class RxStatsThread(QThread):
         self.early_exit = False
 
         while not self.early_exit:
+            rx_mutex.lock()
             stats, code = self.hci.get_test_stats()
+            rx_mutex.unlock()
 
             self.data_ready.emit([stats, code])
             time.sleep(self.update_rate)
@@ -264,7 +267,8 @@ class MainWindow(QMainWindow):
         self.win.rx_ok_label.setText(f"RX OK - {stats.rx_data}")
         self.win.rx_crc_label.setText(f"RX CRC - {stats.rx_data_crc}")
         self.win.rx_timeout_label.setText(f"RX Timeout - {stats.rx_data_timeout}")
-        self.win.rx_per_label.setText(f"PER  - {stats.per() : .2f}")
+        self.win.rx_per_label.setText(f"PER  - {stats.per(): .2f}")
+
 
     def _set_packet_len_label(self, packet_len):
         """
@@ -292,7 +296,11 @@ class MainWindow(QMainWindow):
         port = self.common[tab].port_select.currentText()
         baud_rate = self.common[tab].baud_rate_select.value()
 
-        hci = max_ble_hci.BleHci(port_id=port, baud=baud_rate)
+        try:
+            hci = max_ble_hci.BleHci(port_id=port, baud=baud_rate)
+        except:
+            self._show_basic_msg_box(f"Failed to create HCI. Please try resetting the board")
+            return
 
         try:
             hci.reset()
@@ -303,7 +311,7 @@ class MainWindow(QMainWindow):
         """
         Starts or Stops DTM test
         """
-
+        
         port = self.common[TAB_RX].selected_port()
         baud_rate = self.common[TAB_RX].selected_baud()
 
@@ -311,7 +319,16 @@ class MainWindow(QMainWindow):
             self._show_basic_msg_box("Cannot use the same port for both TX and RX")
             return
 
-        hci = max_ble_hci.BleHci(port_id=port, baud=baud_rate)
+        try:
+            rx_mutex.lock()
+            hci = max_ble_hci.BleHci(port_id=port, baud=baud_rate)
+        except :
+            rx_mutex.unlock()
+            self._show_basic_msg_box(f"Failed to create HCI. Please try resetting the board")
+            return
+       
+
+        
         self.rx_stats_thread.hci = hci
 
         try:
@@ -345,6 +362,7 @@ class MainWindow(QMainWindow):
                 hci.reset_test_stats()
             except TimeoutError:
                 self._show_basic_msg_box("Failed to end test!")
+        rx_mutex.unlock()
 
     def tx_dtm_btn_click(self):
         """
@@ -357,8 +375,11 @@ class MainWindow(QMainWindow):
         if self.rx_test_started and port == self.common[TAB_RX].selected_port():
             self._show_basic_msg_box("Cannot use the same port for both TX and RX")
             return
-
-        hci = max_ble_hci.BleHci(port_id=port, baud=baud_rate)
+        try:
+            hci = max_ble_hci.BleHci(port_id=port, baud=baud_rate)
+        except:
+            self._show_basic_msg_box(f"Failed to create HCI. Please try resetting the board")
+            return
 
         try:
             hci.reset()
