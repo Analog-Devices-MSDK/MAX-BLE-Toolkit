@@ -451,7 +451,7 @@ class MainWindow(QMainWindow):
 
         try:
             rx_mutex.lock()
-            hci = max_ble_hci.BleHci(port_id=port, baud=baud_rate)
+            hci = max_ble_hci.BleHci(port_id=port, baud=baud_rate, id_tag="RX")
         except:
             rx_mutex.unlock()
             self._show_basic_msg_box(
@@ -512,7 +512,7 @@ class MainWindow(QMainWindow):
             self._show_basic_msg_box("Cannot use the same port for both TX and RX")
             return
 
-        hci = max_ble_hci.BleHci(port_id=port, baud=baud_rate)
+        hci = max_ble_hci.BleHci(port_id=port, baud=baud_rate, id_tag="TX")
 
         try:
             hci.reset()
