@@ -174,12 +174,13 @@ class MainWindow(QMainWindow):
         self.rx_is_init = False
         self.win = Ui_MainWindow()
         self.win.setupUi(self)
+        
+        self.rx_stats_thread = None
 
         self.win.action_about.triggered.connect(self._show_about)
         self.win.action_report_issue.triggered.connect(self._open_issues)
 
-        self.rx_stats_thread = RxStatsThread()
-        self.rx_stats_thread.data_ready.connect(self._update_rx_stats)
+
 
         self.common = [
             CommonInputGroup(
@@ -238,7 +239,20 @@ class MainWindow(QMainWindow):
         self.rx_test_started = False
 
         self.version = "1.0.0"
+    
+    def _clean_stats_thread(self):
+        if self.rx_test_started:
+            self.common[TAB_RX].enable_serial_inputs()
+            self.win.start_stop_btn_rx.setText("START RX")
+            self.rx_stats_thread.stop()
+            self.rx_stats_thread.wait()
+            self.rx_stats_thread = None
 
+    def closeEvent(self, event) -> None:
+        self._clean_stats_thread()
+    
+        return super().closeEvent(event)
+    
     def _show_about(self):
         msg = f"""DTM Tool\nVersion {self.version}\nAnalog Devices, Inc.
         """
@@ -254,7 +268,8 @@ class MainWindow(QMainWindow):
 
     def _refresh_rx_update_rate(self):
         actual_rate: float = self.win.update_rate_slider.value() / 10
-        self.rx_stats_thread.update_rate = actual_rate
+        if self.rx_stats_thread:
+            self.rx_stats_thread.update_rate = actual_rate
         self._set_rx_update_rate_label(actual_rate)
 
     def _set_rx_update_rate_label(self, update_rate):
@@ -289,7 +304,7 @@ class MainWindow(QMainWindow):
     def _reset_hci(self):
         tab = self.win.tab_mode.currentIndex()
 
-        if tab == TAB_RX and self.rx_stats_thread.isRunning():
+        if tab == TAB_RX and self.rx_stats_thread and self.rx_stats_thread.isRunning():
             self.rx_stats_thread.hci.reset()
             return
 
@@ -318,6 +333,10 @@ class MainWindow(QMainWindow):
         if self.tx_test_started and port == self.common[TAB_TX].selected_port():
             self._show_basic_msg_box("Cannot use the same port for both TX and RX")
             return
+        
+        #kill the stats thread before accessing HCI
+        self._clean_stats_thread()
+
 
         try:
             rx_mutex.lock()
@@ -328,8 +347,6 @@ class MainWindow(QMainWindow):
             return
        
 
-        
-        self.rx_stats_thread.hci = hci
 
         try:
             hci.reset()
@@ -338,30 +355,31 @@ class MainWindow(QMainWindow):
             self._show_basic_msg_box("Timeout occured: Failed to reset devices!")
 
         if not self.rx_test_started:
+            self.rx_stats_thread = RxStatsThread()
+            self.rx_stats_thread.data_ready.connect(self._update_rx_stats)
+            self.rx_stats_thread.hci = hci
+            self._refresh_rx_update_rate()
             channel = int(self.common[TAB_RX].selected_channel())
             phy = ble_util.TX_PHY_TYPES[self.common[TAB_RX].selected_phy()]
 
             try:
                 hci.rx_test(channel=channel, phy=phy)
-
                 self.common[TAB_RX].enable_serial_inputs(False)
-
                 self.win.start_stop_btn_rx.setText("STOP RX")
-                self.rx_stats_thread.start()
                 self.rx_test_started = True
+                self.rx_stats_thread.start()
             except TimeoutError:
                 self._show_basic_msg_box("Failed to start test")
 
         else:
-            self.common[TAB_RX].enable_serial_inputs()
-            self.win.start_stop_btn_rx.setText("START RX")
-            self.rx_stats_thread.stop()
             self.rx_test_started = False
             try:
                 hci.end_test()
                 hci.reset_test_stats()
             except TimeoutError:
                 self._show_basic_msg_box("Failed to end test!")
+        
+        
         rx_mutex.unlock()
 
     def tx_dtm_btn_click(self):
