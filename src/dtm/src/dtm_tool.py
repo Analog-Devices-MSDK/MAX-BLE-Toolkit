@@ -12,6 +12,7 @@ import serial
 import max_ble_hci
 from max_ble_hci import utils as hci_utils
 from max_ble_hci.data_params import DataPktStats
+from max_ble_hci.packet_codes import StatusCode
 
 # pylint: disable=no-name-in-module,c-extension-no-member
 from PySide6.QtCore import QThread, Signal, QMutex
@@ -23,6 +24,7 @@ from PySide6.QtWidgets import (
     QMessageBox,
     QSlider,
     QSpinBox,
+    QDialogButtonBox,
 )
 
 import ble_util
@@ -35,6 +37,8 @@ TAB_TX = 0
 TAB_RX = 1
 
 rx_mutex = QMutex()
+
+
 class RxStatsThread(QThread):
     """RX Stats worker thread"""
 
@@ -174,13 +178,13 @@ class MainWindow(QMainWindow):
         self.rx_is_init = False
         self.win = Ui_MainWindow()
         self.win.setupUi(self)
-        
+
         self.rx_stats_thread = None
 
         self.win.action_about.triggered.connect(self._show_about)
         self.win.action_report_issue.triggered.connect(self._open_issues)
 
-
+        self.show_warnings = True
 
         self.common = [
             CommonInputGroup(
@@ -239,7 +243,7 @@ class MainWindow(QMainWindow):
         self.rx_test_started = False
 
         self.version = "1.0.0"
-    
+
     def _clean_stats_thread(self):
         if self.rx_test_started:
             self.common[TAB_RX].enable_serial_inputs()
@@ -250,9 +254,9 @@ class MainWindow(QMainWindow):
 
     def closeEvent(self, event) -> None:
         self._clean_stats_thread()
-    
+
         return super().closeEvent(event)
-    
+
     def _show_about(self):
         msg = f"""DTM Tool\nVersion {self.version}\nAnalog Devices, Inc.
         """
@@ -286,9 +290,8 @@ class MainWindow(QMainWindow):
         try:
             per = stats.per()
         except ZeroDivisionError:
-            per = 'NAN'
+            per = "NAN"
         self.win.rx_per_label.setText(f"PER  - {per : .2f}")
-
 
     def _set_packet_len_label(self, packet_len):
         """
@@ -319,7 +322,9 @@ class MainWindow(QMainWindow):
         try:
             hci = max_ble_hci.BleHci(port_id=port, baud=baud_rate)
         except:
-            self._show_basic_msg_box(f"Failed to create HCI. Please try resetting the board")
+            self._show_basic_msg_box(
+                f"Failed to create HCI. Please try resetting the board"
+            )
             return
 
         try:
@@ -331,31 +336,34 @@ class MainWindow(QMainWindow):
         """
         Starts or Stops DTM test
         """
-        
+
         port = self.common[TAB_RX].selected_port()
         baud_rate = self.common[TAB_RX].selected_baud()
 
         if self.tx_test_started and port == self.common[TAB_TX].selected_port():
             self._show_basic_msg_box("Cannot use the same port for both TX and RX")
             return
-        
-        #kill the stats thread before accessing HCI
-        self._clean_stats_thread()
 
+        # kill the stats thread before accessing HCI
+        self._clean_stats_thread()
 
         try:
             rx_mutex.lock()
             hci = max_ble_hci.BleHci(port_id=port, baud=baud_rate)
-        except :
+        except:
             rx_mutex.unlock()
-            self._show_basic_msg_box(f"Failed to create HCI. Please try resetting the board")
+            self._show_basic_msg_box(
+                f"Failed to create HCI. Please try resetting the board"
+            )
             return
-       
-
 
         try:
             hci.reset()
-            hci.reset_test_stats()
+            status = hci.reset_test_stats()
+            if status != StatusCode.SUCCESS:
+                # self._show_basic_msg_box(f"Failed to create HCI. Please try resetting the board")
+                self.msg_box_accept()
+
         except TimeoutError:
             self._show_basic_msg_box("Timeout occured: Failed to reset devices!")
 
@@ -380,11 +388,15 @@ class MainWindow(QMainWindow):
             self.rx_test_started = False
             try:
                 hci.end_test()
-                hci.reset_test_stats()
+
+                status = hci.reset_test_stats()
+                if status != StatusCode.SUCCESS:
+                    self._show_basic_msg_box(
+                        "Failed to reset test stats. This command is vendor specific towards MAX32 chips"
+                    )
             except TimeoutError:
                 self._show_basic_msg_box("Failed to end test!")
-        
-        
+
         rx_mutex.unlock()
 
     def tx_dtm_btn_click(self):
@@ -398,7 +410,7 @@ class MainWindow(QMainWindow):
         if self.rx_test_started and port == self.common[TAB_RX].selected_port():
             self._show_basic_msg_box("Cannot use the same port for both TX and RX")
             return
-    
+
         hci = max_ble_hci.BleHci(port_id=port, baud=baud_rate)
 
         try:
