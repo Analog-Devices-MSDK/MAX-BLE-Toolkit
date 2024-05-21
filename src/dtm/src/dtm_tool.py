@@ -282,7 +282,12 @@ class MainWindow(QMainWindow):
         self.win.rx_ok_label.setText(f"RX OK - {stats.rx_data}")
         self.win.rx_crc_label.setText(f"RX CRC - {stats.rx_data_crc}")
         self.win.rx_timeout_label.setText(f"RX Timeout - {stats.rx_data_timeout}")
-        self.win.rx_per_label.setText(f"PER  - {stats.per(): .2f}")
+
+        try:
+            per = stats.per()
+        except ZeroDivisionError:
+            per = 'NAN'
+        self.win.rx_per_label.setText(f"PER  - {per : .2f}")
 
 
     def _set_packet_len_label(self, packet_len):
@@ -393,11 +398,8 @@ class MainWindow(QMainWindow):
         if self.rx_test_started and port == self.common[TAB_RX].selected_port():
             self._show_basic_msg_box("Cannot use the same port for both TX and RX")
             return
-        try:
-            hci = max_ble_hci.BleHci(port_id=port, baud=baud_rate)
-        except:
-            self._show_basic_msg_box(f"Failed to create HCI. Please try resetting the board")
-            return
+    
+        hci = max_ble_hci.BleHci(port_id=port, baud=baud_rate)
 
         try:
             hci.reset()
