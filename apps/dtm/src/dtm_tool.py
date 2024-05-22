@@ -345,7 +345,7 @@ class MainWindow(QMainWindow):
                 self.logger.warning(
                     """Status returned %d. """
                     """Command is vendor specific and may not work on targeted device""",
-                    status,
+                    status.name,
                 )
 
         except TimeoutError:
