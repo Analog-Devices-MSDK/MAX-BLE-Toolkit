@@ -353,7 +353,7 @@ class TextEdit(QPlainTextEdit):
             for i, info in enumerate(data.parentheses):
                 curpos = abspos - pos
                 if info.position == curpos - 1 and info.character == "(":
-                    if self.matchLeftPar(block, i+1):
+                    if self.matchLeftPar(block, i + 1):
                         self.createParSelection(pos + info.position)
                 if info.position == curpos - 1 and info.character == ")":
                     if self.matchRightPar(block, i):
@@ -406,7 +406,7 @@ class TextEdit(QPlainTextEdit):
 
     def keyPressEvent(self, event) -> None:
         super().keyPressEvent(event)
-        options = {'{' : '}', '(' : ')'}
+        options = {"{": "}", "(": ")"}
         option = options.get(event.text())
         if option is not None:
             tc = self.textCursor()
@@ -416,10 +416,10 @@ class TextEdit(QPlainTextEdit):
             self.setTextCursor(tc)
 
 
-
 if __name__ == "__main__":
     import sys
     from PySide6.QtWidgets import QApplication
+
     app = QApplication(sys.argv)
     editor = TextEdit()
     editor.show()

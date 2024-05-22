@@ -11,7 +11,7 @@ from PySide6.QtCore import (
     QTextStream,
     QIODevice,
     QFileInfo,
-    QDir
+    QDir,
 )
 from PySide6.QtWidgets import QWidget, QPlainTextEdit, QTextEdit, QMenu, QFileDialog
 from PySide6.QtGui import (
@@ -31,12 +31,14 @@ from PySide6.QtGui import (
     QTextBlock,
     QAction,
     QShortcut,
-    QIcon
+    QIcon,
 )
 from .syntax_patterns import *
 from .constants import LIGHT_THEME, DARK_THEME
 from . import Icons
+
 # from .tabs import tab_updateSaveState
+
 
 class EditorContextMenu:
     def __init__(self, parent: QCodeEditor):
@@ -46,7 +48,7 @@ class EditorContextMenu:
 
     def toggleUndo(self, undoAvailable):
         self.undoAvailable = undoAvailable
-    
+
     def toggleRedo(self, redoAvailable):
         self.redoAvailable = redoAvailable
 
@@ -83,13 +85,12 @@ class EditorContextMenu:
 
         context.exec(self.parent.mapToGlobal(pos))
 
-        
-        
 
 class TextBlockData(QTextBlockUserData):
     def __init__(self, *args: Any, **kwargs: Any):
         super().__init__(*args, **kwargs)
         self.nextBlockStartLevel: int = 0
+
 
 class QLineNumberArea(QWidget):
     def __init__(self, editor: QCodeEditor, theme: Optional[int]):
@@ -114,9 +115,10 @@ class QLineNumberArea(QWidget):
 
     def sizeHint(self):
         return QSize(self.codeEditor.lineNumberAreaWidth(), 0)
-    
+
     def paintEvent(self, event: QPaintEvent):
         self.codeEditor.lineNumberAreaPaintEvent(event)
+
 
 class QCustomHighlighter(QSyntaxHighlighter):
     def __init__(self, parent: Optional[Union[QObject, QTextDocument]] = None) -> None:
@@ -139,16 +141,14 @@ class QCustomHighlighter(QSyntaxHighlighter):
         self,
         patternStart: QRegularExpression,
         patternEnd: QRegularExpression,
-        fmt: QTextCharFormat
+        fmt: QTextCharFormat,
     ) -> None:
         self.multilineStartRule = patternStart
         self.multilineEndRule = patternEnd
         self.multilineFmt = fmt
 
     def addGroupingSet(
-        self,
-        startChars: Union[List[str], str],
-        endChars: Union[List[str], str]
+        self, startChars: Union[List[str], str], endChars: Union[List[str], str]
     ) -> None:
         if isinstance(startChars, list):
             self.groupStartChars.extend(startChars)
@@ -161,9 +161,12 @@ class QCustomHighlighter(QSyntaxHighlighter):
             self.groupEndChars.append(endChars)
 
         self.groupRule = QRegularExpression(
-            '|'.join([f'\\{x}' for x in self.groupStartChars + self.groupEndChars]))
-        
-    def addGroupingFormat(self, fmts: Union[List[QTextCharFormat], QTextCharFormat]) -> None:
+            "|".join([f"\\{x}" for x in self.groupStartChars + self.groupEndChars])
+        )
+
+    def addGroupingFormat(
+        self, fmts: Union[List[QTextCharFormat], QTextCharFormat]
+    ) -> None:
         if isinstance(fmts, list):
             self.groupFmts.extend(fmts)
         else:
@@ -184,7 +187,7 @@ class QCustomHighlighter(QSyntaxHighlighter):
                     pos = patMatch.capturedStart()
                     length = patMatch.capturedLength()
                     self.setFormat(pos, length, fmt)
-                    patMatch = pattern.match(text, pos+length)
+                    patMatch = pattern.match(text, pos + length)
 
             patMatch = self.groupRule.match(text)
             while patMatch.hasMatch():
@@ -193,16 +196,19 @@ class QCustomHighlighter(QSyntaxHighlighter):
                 pos = patMatch.capturedStart()
                 length = patMatch.capturedLength()
 
-                self.setFormat(pos, length, self.groupFmts[level%len(self.groupFmts)])
+                self.setFormat(pos, length, self.groupFmts[level % len(self.groupFmts)])
                 if patMatch.captured() in self.groupStartChars:
                     level += 1
 
-                patMatch = self.groupRule.match(text, pos+length)
+                patMatch = self.groupRule.match(text, pos + length)
 
         blockData.nextBlockStartLevel = level
         self.setCurrentBlockUserData(blockData)
 
-        if self.multilineStartRule.match(text).hasMatch() or self.previousBlockState() == 1:
+        if (
+            self.multilineStartRule.match(text).hasMatch()
+            or self.previousBlockState() == 1
+        ):
             self.highlightMultiline(text)
 
     def highlightMultiline(self, text: str) -> None:
@@ -220,7 +226,10 @@ class QCustomHighlighter(QSyntaxHighlighter):
                 length = endPos - startPos + endMatch.capturedLength()
 
             self.setFormat(startPos, length, self.multilineFmt)
-            startPos = self.multilineStartRule.match(text, startPos+length).capturedStart()
+            startPos = self.multilineStartRule.match(
+                text, startPos + length
+            ).capturedStart()
+
 
 class QCodeEditor(QPlainTextEdit):
     def __init__(
@@ -229,14 +238,16 @@ class QCodeEditor(QPlainTextEdit):
         parent: Optional[QWidget] = None,
         filePath: str = None,
         useSyntaxHighlighting: bool = True,
-        autoCompleteBrackets: bool = True
+        autoCompleteBrackets: bool = True,
     ) -> None:
         super().__init__(parent)
-        self.theme : int = theme
+        self.theme: int = theme
         self.lineNumberArea: QLineNumberArea = QLineNumberArea(self, theme)
-        self.highlighter: QCustomHighlighter = QCustomHighlighter() if useSyntaxHighlighting else None
-        self.groupOpeners = ['(', '{']
-        self.groupClosers = [')', '}']
+        self.highlighter: QCustomHighlighter = (
+            QCustomHighlighter() if useSyntaxHighlighting else None
+        )
+        self.groupOpeners = ["(", "{"]
+        self.groupClosers = [")", "}"]
         self.saveNeeded = False
         self.filePath = filePath
         self.contextMenuGenerator = EditorContextMenu(self)
@@ -247,7 +258,7 @@ class QCodeEditor(QPlainTextEdit):
         self.setLineWrapMode(QPlainTextEdit.NoWrap)
         self.setTabStopDistance(40)
         self.updateLineNumberAreaWidth(0)
-        
+
         font = QFontDatabase.systemFont(QFontDatabase.FixedFont)
         self.setFont(font)
 
@@ -285,12 +296,17 @@ class QCodeEditor(QPlainTextEdit):
         self.blockCountChanged.connect(self.updateLineNumberAreaWidth)
         self.updateRequest.connect(self.updateLineNumberArea)
         self.cursorPositionChanged.connect(
-            lambda: self.updateLineNumberArea(self.lineNumberArea.contentsRect(), 0))
-        self.customContextMenuRequested.connect(self.contextMenuGenerator.createContextMenu)
+            lambda: self.updateLineNumberArea(self.lineNumberArea.contentsRect(), 0)
+        )
+        self.customContextMenuRequested.connect(
+            self.contextMenuGenerator.createContextMenu
+        )
         self.redoAvailable.connect(self.contextMenuGenerator.toggleRedo)
         self.undoAvailable.connect(self.contextMenuGenerator.toggleUndo)
         self.undoAvailable.connect(lambda available: self.updateSaveState(available))
-        self.modificationChanged.connect(lambda changed: self.saveStateChange(parent, changed))
+        self.modificationChanged.connect(
+            lambda changed: self.saveStateChange(parent, changed)
+        )
 
     def setupSyntaxPatterns(self) -> None:
         if self.theme == LIGHT_THEME:
@@ -298,31 +314,33 @@ class QCodeEditor(QPlainTextEdit):
         else:
             textFmts = DARK_THEME_TEXTFORMATS
 
-        self.highlighter.addGroupingSet('(', ')')
-        self.highlighter.addGroupingSet('{', '}')
+        self.highlighter.addGroupingSet("(", ")")
+        self.highlighter.addGroupingSet("{", "}")
         self.highlighter.addGroupingFormat(
-            [textFmts['GROUP_1'], textFmts['GROUP_2'], textFmts['GROUP_3']])
-        
-        self.highlighter.addRule(ID_PATTERN, textFmts['ID'])
-        self.highlighter.addRule(DEV_PATTERN, textFmts['DEV'])
-        self.highlighter.addRule(STR_PATTERN, textFmts['STR'])
-        self.highlighter.addRule(CMD_PATTERN, textFmts['CMD'])
-        self.highlighter.addRule(FUNC_PATTERN, textFmts['FUNC'])
-        self.highlighter.addRule(LOGIC_PATTERN, textFmts['LOGIC'])
-        self.highlighter.addRule(CBLOCK_PATTERN, textFmts['CBLOCK'])
-        self.highlighter.addRule(BOOL_PATTERN, textFmts['BOOL'])
-        self.highlighter.addRule(NUM_PATTERN, textFmts['NUM'])
-        self.highlighter.addRule(HEX_PATTERN, textFmts['HEX'])
-        self.highlighter.addRule(COMMENT_PATTERN, textFmts['COMMENT'])
-        
+            [textFmts["GROUP_1"], textFmts["GROUP_2"], textFmts["GROUP_3"]]
+        )
+
+        self.highlighter.addRule(ID_PATTERN, textFmts["ID"])
+        self.highlighter.addRule(DEV_PATTERN, textFmts["DEV"])
+        self.highlighter.addRule(STR_PATTERN, textFmts["STR"])
+        self.highlighter.addRule(CMD_PATTERN, textFmts["CMD"])
+        self.highlighter.addRule(FUNC_PATTERN, textFmts["FUNC"])
+        self.highlighter.addRule(LOGIC_PATTERN, textFmts["LOGIC"])
+        self.highlighter.addRule(CBLOCK_PATTERN, textFmts["CBLOCK"])
+        self.highlighter.addRule(BOOL_PATTERN, textFmts["BOOL"])
+        self.highlighter.addRule(NUM_PATTERN, textFmts["NUM"])
+        self.highlighter.addRule(HEX_PATTERN, textFmts["HEX"])
+        self.highlighter.addRule(COMMENT_PATTERN, textFmts["COMMENT"])
+
         self.highlighter.addMultilineRule(
-            MULTILINE_PATTERN_START, MULTILINE_PATTERN_END, textFmts['COMMENT'])
-        
+            MULTILINE_PATTERN_START, MULTILINE_PATTERN_END, textFmts["COMMENT"]
+        )
+
         self.highlighter.setDocument(self.document())
 
     def lineNumberAreaWidth(self):
-        return 3 + self.fontMetrics().averageCharWidth()*4
-    
+        return 3 + self.fontMetrics().averageCharWidth() * 4
+
     def saveStateChange(self, parent, changed):
         idx = parent.indexOf(self)
         if changed:
@@ -344,12 +362,14 @@ class QCodeEditor(QPlainTextEdit):
 
     def updateLineNumberAreaWidth(self, _):
         self.setViewportMargins(self.lineNumberAreaWidth(), 0, 0, 0)
-    
+
     def updateLineNumberArea(self, rect: QRect, dy: int) -> None:
         if dy:
             self.lineNumberArea.scroll(0, dy)
         else:
-            self.lineNumberArea.update(0, rect.y(), self.lineNumberArea.width(), rect.height())
+            self.lineNumberArea.update(
+                0, rect.y(), self.lineNumberArea.width(), rect.height()
+            )
 
         if rect.contains(self.viewport().rect()):
             self.updateLineNumberAreaWidth(0)
@@ -364,18 +384,19 @@ class QCodeEditor(QPlainTextEdit):
         bottom = top + self.blockBoundingRect(block).height()
 
         height = self.fontMetrics().height()
-        
+
         while block.isValid() and top <= event.rect().bottom():
             if block.isVisible() and bottom >= event.rect().top():
-                number = f'{blockNumber + 1}'
+                number = f"{blockNumber + 1}"
                 if self.textCursor().blockNumber() == blockNumber:
                     painter.setPen(self.lineNumberArea.selectColor)
                 else:
                     painter.setPen(self.lineNumberArea.deselectColor)
 
                 painter.drawText(
-                    0, top, self.lineNumberArea.width(), height, Qt.AlignRight, number)
-                
+                    0, top, self.lineNumberArea.width(), height, Qt.AlignRight, number
+                )
+
             block = block.next()
             top = bottom
             bottom = top + self.blockBoundingRect(block).height()
@@ -385,37 +406,32 @@ class QCodeEditor(QPlainTextEdit):
         super().resizeEvent(event)
         cr = self.contentsRect()
         self.lineNumberArea.setGeometry(
-            QRect(cr.left(), cr.top(), self.lineNumberAreaWidth(), cr.height()))
+            QRect(cr.left(), cr.top(), self.lineNumberAreaWidth(), cr.height())
+        )
 
     def keyPressEvent(self, event: QKeyEvent) -> None:
         if self.autoCompleteBrackets:
-            options = {
-                '{'  : '}',
-                '('  : ')',
-                '\r' : '\r'
-            }
+            options = {"{": "}", "(": ")", "\r": "\r"}
         else:
-            options = {
-                '\r' : '\r'
-            }
+            options = {"\r": "\r"}
         option = options.get(event.text())
 
         if option is None:
             super().keyPressEvent(event)
             return
 
-        if option == '\r':
+        if option == "\r":
             tc = self.textCursor()
             p = tc.position()
             tc.movePosition(QTextCursor.PreviousCharacter, QTextCursor.KeepAnchor)
-            leftOk = tc.selectedText() in ['(', '{']
+            leftOk = tc.selectedText() in ["(", "{"]
             tc.setPosition(p, QTextCursor.MoveAnchor)
             tc.movePosition(QTextCursor.NextCharacter, QTextCursor.KeepAnchor)
-            rightOk = tc.selectedText() in [')', '}']
-            
+            rightOk = tc.selectedText() in [")", "}"]
+
             tabCount = 0
             for idx in range(len(self.textCursor().block().text())):
-                if self.textCursor().block().text()[idx] == '\t':
+                if self.textCursor().block().text()[idx] == "\t":
                     tabCount += 1
 
             super().keyPressEvent(event)
@@ -426,10 +442,10 @@ class QCodeEditor(QPlainTextEdit):
                 tc.setPosition(p)
                 tabCount += 1
 
-            tc.insertText('\t'*tabCount)
+            tc.insertText("\t" * tabCount)
             self.setTextCursor(tc)
             return
-        
+
         super().keyPressEvent(event)
         tc = self.textCursor()
         p = tc.position()

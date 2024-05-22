@@ -25,16 +25,15 @@ class RssiWorkerThread(QThread):
     early_exit = False
     data_ready = Signal(list)
 
-    def __init__(self, hci:BleHci = None, update_rate = 0.1):
+    def __init__(self, hci: BleHci = None, update_rate=0.1):
         super().__init__()
         self.hci = hci
         self.update_rate = update_rate
 
     def get_rssi(self, channel):
-
         rssi, code = self.hci.get_rssi_vs(channel)
         if code != StatusCode.SUCCESS:
-            print(f'Error {code}')
+            print(f"Error {code}")
 
         return abs(rssi)
         _ = channel
@@ -103,9 +102,8 @@ class MainWindow(QMainWindow):
         self.rssi_capture.data_ready.connect(self.update_rssis)
 
     def _run_button_clicked(self):
-
         if self.ui.run_button.text() == "Run":
-            self.rssi_capture.hci  = BleHci(self.ui.port_selector.currentText())
+            self.rssi_capture.hci = BleHci(self.ui.port_selector.currentText())
             self.rssi_capture.start()
             self.ui.run_button.setText("Stop")
         else:

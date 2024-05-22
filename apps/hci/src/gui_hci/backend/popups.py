@@ -1,14 +1,25 @@
 from PySide6.QtWidgets import QMainWindow, QApplication, QTabBar, QToolButton, QWidget
 from PySide6.QtGui import QIcon, QPixmap, QColor, QShowEvent, QResizeEvent
 from PySide6.QtCore import QSize, QRect
-from PySide6.QtCore import Qt, QObject, Signal, QThread, Slot, QEventLoop, QEvent, QPoint
+from PySide6.QtCore import (
+    Qt,
+    QObject,
+    Signal,
+    QThread,
+    Slot,
+    QEventLoop,
+    QEvent,
+    QPoint,
+)
 from .areYouSure_popup import Ui_areYouSure_popup
+
 
 class PopupSignals(QObject):
     closeAnyways = Signal()
     saveWork = Signal()
     cancelOperation = Signal()
     closeApp = Signal()
+
 
 class AreYouSurePopUp(QWidget):
     LIGHT = 0
@@ -27,9 +38,10 @@ class AreYouSurePopUp(QWidget):
 
     CONFIRMMOVE_MOVE = 5
     CONFIRMMOVE_CANCEL = 6
+
     def __init__(self, parent: QMainWindow, mode=LIGHT, fname=None):
         super().__init__()
-        self.ui =  Ui_areYouSure_popup()
+        self.ui = Ui_areYouSure_popup()
         self.ui.setupUi(self)
         self.fname = fname
         self.theme = None
@@ -50,71 +62,83 @@ class AreYouSurePopUp(QWidget):
             self.setup_saveNeededIcons()
             self.registerCallbacks(self.SAVE_NEEDED)
             return
-        
+
         if viewType == self.CONFIRM_DELETE:
             self.ui.popupView.setCurrentIndex(self.CONFIRM_DELETE)
             self.setup_confirmDeleteIcons()
             self.registerCallbacks(self.CONFIRM_DELETE)
             return
-        
+
         if viewType == self.CONFIRM_MOVE:
             self.ui.popupView.setCurrentIndex(self.CONFIRM_MOVE)
             self.setup_confirmMoveIcons()
             self.registerCallbacks(self.CONFIRM_MOVE)
             return
-        
+
         raise ValueError(f"Invalid view selection: {viewType}")
 
     def setup_saveNeededIcons(self):
         if self.fname is not None:
-            self.ui.saveNeeded_msg1.setText(f"Close {self.fname} without saving changes?")
+            self.ui.saveNeeded_msg1.setText(
+                f"Close {self.fname} without saving changes?"
+            )
         else:
             self.ui.saveNeeded_msg1.setText(f"Close window without saving?")
 
         if self.theme == self.DARK:
-            warningIcon = QPixmap('assets/images/icons/warning-icon.png')
+            warningIcon = QPixmap("assets/images/icons/warning-icon.png")
         elif self.theme == self.LIGHT:
-            warningIcon = QPixmap('assets/images/icons/warning-icon-inv.png')
+            warningIcon = QPixmap("assets/images/icons/warning-icon-inv.png")
 
         warningIcon = warningIcon.scaledToHeight(60, Qt.SmoothTransformation)
         self.ui.saveNeeded_warningIcon.setPixmap(warningIcon)
         self.ui.saveNeeded_warningIcon.setAlignment(Qt.AlignCenter)
-        self.ui.saveNeeded_warningIcon.setStyleSheet("QLabel {background-color: transparent;}")
+        self.ui.saveNeeded_warningIcon.setStyleSheet(
+            "QLabel {background-color: transparent;}"
+        )
 
     def setup_confirmDeleteIcons(self):
         self.ui.confirmDelete_msg1.setText(f"Delete {self.fname}?")
 
         if self.theme == self.DARK:
-            warningIcon = QPixmap('assets/images/icons/warning-icon.png')
+            warningIcon = QPixmap("assets/images/icons/warning-icon.png")
         elif self.theme == self.LIGHT:
-            warningIcon = QPixmap('assets/images/icons/warning-icon-inv.png')
+            warningIcon = QPixmap("assets/images/icons/warning-icon-inv.png")
 
         warningIcon = warningIcon.scaledToHeight(60, Qt.SmoothTransformation)
         self.ui.confirmDelete_warningIcon.setPixmap(warningIcon)
         self.ui.confirmDelete_warningIcon.setAlignment(Qt.AlignCenter)
-        self.ui.confirmDelete_warningIcon.setStyleSheet("QLabel {background-color: transparent;}")
+        self.ui.confirmDelete_warningIcon.setStyleSheet(
+            "QLabel {background-color: transparent;}"
+        )
 
     def setup_confirmMoveIcons(self):
         self.ui.confirmMove_msg1.setText(f"Move {self.fname[0]} into {self.fname[1]}?")
 
         if self.theme == self.DARK:
-            warningIcon = QPixmap('assets/images/icons/warning-icon.png')
+            warningIcon = QPixmap("assets/images/icons/warning-icon.png")
         elif self.theme == self.LIGHT:
-            warningIcon = QPixmap('assets/images/icons/warning-icon-inv.png')
+            warningIcon = QPixmap("assets/images/icons/warning-icon-inv.png")
 
         warningIcon = warningIcon.scaledToHeight(60, Qt.SmoothTransformation)
         self.ui.confirmMove_warningIcon.setPixmap(warningIcon)
         self.ui.confirmMove_warningIcon.setAlignment(Qt.AlignCenter)
-        self.ui.confirmMove_warningIcon.setStyleSheet("QLabel {background-color: transparent;}")
+        self.ui.confirmMove_warningIcon.setStyleSheet(
+            "QLabel {background-color: transparent;}"
+        )
 
     def set_theme(self, mode):
         if mode == self.LIGHT:
-            with open('assets/themes/light_theme.qss', 'r', encoding='utf-8') as ss_sheet:
+            with open(
+                "assets/themes/light_theme.qss", "r", encoding="utf-8"
+            ) as ss_sheet:
                 ss_str = ss_sheet.read()
         else:
-            with open('assets/themes/light_theme.qss', 'r', encoding='utf-8') as ss_sheet:
+            with open(
+                "assets/themes/light_theme.qss", "r", encoding="utf-8"
+            ) as ss_sheet:
                 ss_str = ss_sheet.read()
-        
+
         self.setStyleSheet(ss_str)
         self.theme = mode
 
@@ -125,8 +149,12 @@ class AreYouSurePopUp(QWidget):
             self.ui.saveNeeded_cancel.clicked.connect(self.close_saveNeeded_cancel)
             return
         if popupType == self.CONFIRM_DELETE:
-            self.ui.confirmDelete_delete.clicked.connect(self.close_confirmDelete_delete)
-            self.ui.confirmDelete_cancel.clicked.connect(self.close_confirmDelete_cancel)
+            self.ui.confirmDelete_delete.clicked.connect(
+                self.close_confirmDelete_delete
+            )
+            self.ui.confirmDelete_cancel.clicked.connect(
+                self.close_confirmDelete_cancel
+            )
             return
 
         self.ui.confirmMove_move.clicked.connect(self.close_confirmMove_move)
@@ -134,7 +162,7 @@ class AreYouSurePopUp(QWidget):
 
     def close_saveNeeded_noSave(self):
         self.loop.exit(self.SAVENEEDED_NOSAVE)
-    
+
     def close_saveNeeded_save(self):
         self.loop.exit(self.SAVENEEDED_SAVE)
 
@@ -149,7 +177,7 @@ class AreYouSurePopUp(QWidget):
 
     def close_confirmMove_cancel(self):
         self.loop.exit(self.CONFIRMMOVE_CANCEL)
-    
+
     def close_confirmMove_move(self):
         self.loop.exit(self.CONFIRMMOVE_MOVE)
 
@@ -159,7 +187,7 @@ class AreYouSurePopUp(QWidget):
                 self.basePos.x() + self.xOffset,
                 self.basePos.y() + self.yOffset,
                 self.width(),
-                self.height()
+                self.height(),
             )
         )
 
@@ -170,7 +198,8 @@ class AreYouSurePopUp(QWidget):
                 QRect(
                     self.basePos.x() + self.xOffset,
                     self.basePos.y() + self.yOffset,
-                    self.width(), self.height()
+                    self.width(),
+                    self.height(),
                 )
             )
         if event.type() == event.Resize:
@@ -181,12 +210,12 @@ class AreYouSurePopUp(QWidget):
                     self.basePos.x() + self.xOffset,
                     self.basePos.y() + self.yOffset,
                     self.width(),
-                    self.height()
+                    self.height(),
                 )
             )
 
         return super().eventFilter(watched, event)
-    
+
     def exec(self):
         self.show()
         self.raise_()

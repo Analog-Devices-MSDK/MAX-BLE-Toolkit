@@ -2,10 +2,17 @@ from typing import Dict, Any
 import logging
 import sys
 from PySide6.QtWidgets import QMainWindow, QApplication, QTabBar, QToolButton, QFrame
-from PySide6.QtGui import QShortcut, QKeySequence, QCloseEvent, QTextCursor, QTextCharFormat
+from PySide6.QtGui import (
+    QShortcut,
+    QKeySequence,
+    QCloseEvent,
+    QTextCursor,
+    QTextCharFormat,
+)
 from PySide6.QtCore import QSize, QSettings, QFile, QIODevice, QTextStream
 from PySide6.QtCore import Qt, QCoreApplication, QFileInfo, QByteArray, QThread
 from backend import *
+
 
 class MainWindow(QMainWindow):
     LIGHT = 0
@@ -22,10 +29,18 @@ class MainWindow(QMainWindow):
         self.syntaxHighlighting = None
         self.ui = None
         self.script_running = False
-        openFolder, openTabs, currentTabIdx, consoleVisible, navVisible = self.readSettings()
+        (
+            openFolder,
+            openTabs,
+            currentTabIdx,
+            consoleVisible,
+            navVisible,
+        ) = self.readSettings()
         self.saveRequested = QShortcut(QKeySequence(QKeySequence.Save), self)
         self.saveAsRequested = QShortcut(QKeySequence(QKeySequence.SaveAs), self)
-        self.setupWindow(openFolder, openTabs, currentTabIdx, consoleVisible, navVisible)
+        self.setupWindow(
+            openFolder, openTabs, currentTabIdx, consoleVisible, navVisible
+        )
         self.logger_name = setup_guiLogger(self, log_level)
         self.logger = logging.getLogger(self.logger_name)
         # self.runner = ScriptRunner(self.logger_name)
@@ -36,13 +51,15 @@ class MainWindow(QMainWindow):
         event.accept()
         # return super().closeEvent(event)
 
-    def setupWindow(self, openFolder, openTabs, currentTabIdx, consoleVisible, navVisible):
+    def setupWindow(
+        self, openFolder, openTabs, currentTabIdx, consoleVisible, navVisible
+    ):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.ui.newTab_btn = QToolButton()
-        self.ui.newTab_btn.setObjectName(u"newTab_btn")
+        self.ui.newTab_btn.setObjectName("newTab_btn")
         self.ui.runCode_btn = QToolButton()
-        self.ui.runCode_btn.setObjectName(u"runCode_btn")
+        self.ui.runCode_btn.setObjectName("runCode_btn")
         self.setTheme(self.theme)
         self.setupIcons()
         self.ui.delete_btn.hide()
@@ -59,7 +76,7 @@ class MainWindow(QMainWindow):
         self.ui.console_win.setVisible(consoleVisible)
         self.ui.context_menu.setVisible(navVisible)
 
-        if openFolder != '':
+        if openFolder != "":
             self.ui.filetree.setRootDir(openFolder)
 
         if openTabs == {}:
@@ -67,26 +84,30 @@ class MainWindow(QMainWindow):
         else:
             setup_tabs(self, createStarter=False)
             for idx, (filePath, contents) in enumerate(openTabs.items()):
-                if contents == '':
+                if contents == "":
                     newTab = QCodeEditor(
                         theme=self.theme,
                         parent=self.ui.editor_win,
                         filePath=filePath,
                         useSyntaxHighlighting=self.syntaxHighlighting,
-                        autoCompleteBrackets=self.autoCompleteBrackets
+                        autoCompleteBrackets=self.autoCompleteBrackets,
                     )
                     newTab.setFrameShape(QFrame.NoFrame)
                     readFile = QFile(filePath)
-                    readFile.open(QIODevice.ReadOnly | QIODevice.ExistingOnly | QIODevice.Text)
+                    readFile.open(
+                        QIODevice.ReadOnly | QIODevice.ExistingOnly | QIODevice.Text
+                    )
                     readStr = QTextStream(readFile).readAll()
                     newTab.setPlainText(readStr)
-                    self.ui.editor_win.insertTab(idx, newTab, QFileInfo(filePath).fileName())
+                    self.ui.editor_win.insertTab(
+                        idx, newTab, QFileInfo(filePath).fileName()
+                    )
                 else:
                     newTab = QCodeEditor(
                         theme=self.theme,
                         parent=self.ui.editor_win,
                         useSyntaxHighlighting=self.syntaxHighlighting,
-                        autoCompleteBrackets=self.autoCompleteBrackets
+                        autoCompleteBrackets=self.autoCompleteBrackets,
                     )
                     newTab.setFrameShape(QFrame.NoFrame)
                     newTab.setPlainText(contents)
@@ -103,7 +124,6 @@ class MainWindow(QMainWindow):
         self.ui.enable_notifyCloseWithoutSave.setChecked(self.notifyOnClose)
         self.ui.select_themeMode.setCurrentIndex(self.theme)
         self.setWindowIcon(Icons.WindowIcon)
-        
 
     def write_settings(self):
         settings = QSettings()
@@ -138,15 +158,15 @@ class MainWindow(QMainWindow):
             tabTitle = self.ui.editor_win.tabText(idx)
             settings.setArrayIndex(idx)
             if tab.filePath is None:
-                if tab.toPlainText() == '':
-                    settings.setValue('filePath', '')
-                    settings.setValue('contents', '')
+                if tab.toPlainText() == "":
+                    settings.setValue("filePath", "")
+                    settings.setValue("contents", "")
                 else:
-                    settings.setValue('filePath', tabTitle.replace('*', ''))
-                    settings.setValue('contents', tab.toPlainText())
+                    settings.setValue("filePath", tabTitle.replace("*", ""))
+                    settings.setValue("contents", tab.toPlainText())
             else:
-                settings.setValue('filePath', tab.filePath)
-                settings.setValue('contents', '')
+                settings.setValue("filePath", tab.filePath)
+                settings.setValue("contents", "")
         settings.endArray()
         settings.endGroup()
 
@@ -163,7 +183,7 @@ class MainWindow(QMainWindow):
         consoleVisible = settings.value("console/visible", True, bool)
         settings.beginGroup("navPanel")
         navVisible = settings.value("visible", True, bool)
-        openFolder = settings.value("openFolder", '', str)
+        openFolder = settings.value("openFolder", "", str)
         settings.endGroup()
         settings.beginGroup("editor")
         syntaxHighlighting = settings.value("syntaxHighlighting", True, bool)
@@ -173,9 +193,9 @@ class MainWindow(QMainWindow):
         openTabs = {}
         for idx in range(size):
             settings.setArrayIndex(idx)
-            filePath = settings.value("filePath", '', str)
-            contents = settings.value("contents", '', str)
-            if filePath == '':
+            filePath = settings.value("filePath", "", str)
+            contents = settings.value("contents", "", str)
+            if filePath == "":
                 continue
             openTabs[filePath] = contents
         settings.endArray()
@@ -186,11 +206,11 @@ class MainWindow(QMainWindow):
         else:
             self.restoreGeometry(geometry)
 
-        if winState == 'MINIMIZED':
+        if winState == "MINIMIZED":
             self.setWindowState(Qt.WindowMinimized)
-        elif winState == 'MAXIMIZED':
+        elif winState == "MAXIMIZED":
             self.setWindowState(Qt.WindowMaximized)
-        elif winState == 'FULLSCREEN':
+        elif winState == "FULLSCREEN":
             self.setWindowState(Qt.WindowFullScreen)
         else:
             self.setWindowState(Qt.WindowNoState)
@@ -204,36 +224,42 @@ class MainWindow(QMainWindow):
         return openFolder, openTabs, currentTabIdx, consoleVisible, navVisible
 
     def applyNewSettings(self, newSettings: Dict[str, Any]):
-        if newSettings['theme'] != self.theme:
-            self.setTheme(newSettings['theme'])
+        if newSettings["theme"] != self.theme:
+            self.setTheme(newSettings["theme"])
             self.setupIcons()
             self.recolorConsole()
             for idx in range(self.ui.editor_win.count() - 1):
-                self.ui.editor_win.widget(idx).setTheme(newSettings['theme'])
+                self.ui.editor_win.widget(idx).setTheme(newSettings["theme"])
                 if self.ui.editor_win.widget(idx).saveNeeded:
-                    self.ui.editor_win.setTabIcon(idx, Icons[newSettings['theme']].SaveNeeded)
-            self.ui.actionLight.setChecked(newSettings['theme'] == self.LIGHT)
-            self.ui.actionDark.setChecked(newSettings['theme'] == self.DARK)
+                    self.ui.editor_win.setTabIcon(
+                        idx, Icons[newSettings["theme"]].SaveNeeded
+                    )
+            self.ui.actionLight.setChecked(newSettings["theme"] == self.LIGHT)
+            self.ui.actionDark.setChecked(newSettings["theme"] == self.DARK)
 
-        if newSettings['syntaxHighlighting'] != self.syntaxHighlighting:
-            self.syntaxHighlighting = newSettings['syntaxHighlighting']
+        if newSettings["syntaxHighlighting"] != self.syntaxHighlighting:
+            self.syntaxHighlighting = newSettings["syntaxHighlighting"]
             for idx in range(self.ui.editor_win.count() - 1):
-                self.ui.editor_win.widget(idx).setSyntaxHighlighting(self.syntaxHighlighting)
+                self.ui.editor_win.widget(idx).setSyntaxHighlighting(
+                    self.syntaxHighlighting
+                )
 
-        if newSettings['autoCompleteBrackets'] != self.autoCompleteBrackets:
-            self.autoCompleteBrackets = newSettings['autoCompleteBrackets']
+        if newSettings["autoCompleteBrackets"] != self.autoCompleteBrackets:
+            self.autoCompleteBrackets = newSettings["autoCompleteBrackets"]
             for idx in range(self.ui.editor_win.count() - 1):
-                self.ui.editor_win.widget(idx).setAutoCompleteBrackets(self.autoCompleteBrackets)
+                self.ui.editor_win.widget(idx).setAutoCompleteBrackets(
+                    self.autoCompleteBrackets
+                )
 
-        self.ui.console_win.setVisible(newSettings['showConsoleWindow'])
-        self.ui.actionShow_console.setChecked(newSettings['showConsoleWindow'])
+        self.ui.console_win.setVisible(newSettings["showConsoleWindow"])
+        self.ui.actionShow_console.setChecked(newSettings["showConsoleWindow"])
 
-        self.ui.context_menu.setVisible(newSettings['showNavigationSidebar'])
-        self.ui.actionShow_navbar.setChecked(newSettings['showNavigationSidebar'])
+        self.ui.context_menu.setVisible(newSettings["showNavigationSidebar"])
+        self.ui.actionShow_navbar.setChecked(newSettings["showNavigationSidebar"])
 
-        self.notifyOnMove = newSettings['notifyOnMove']
-        self.notifyOnDelete = newSettings['notifyOnDelete']
-        self.notifyOnClose = newSettings['notifyOnClose']
+        self.notifyOnMove = newSettings["notifyOnMove"]
+        self.notifyOnDelete = newSettings["notifyOnDelete"]
+        self.notifyOnClose = newSettings["notifyOnClose"]
 
     def recolorConsole(self):
         newColor = QTextCharFormat()
@@ -241,27 +267,34 @@ class MainWindow(QMainWindow):
         oldColor = CustomFormatter.getThemeColor(not self.theme)
         self.ui.console_out.moveCursor(QTextCursor.Start, QTextCursor.MoveAnchor)
         while not self.ui.console_out.textCursor().atEnd():
-            self.ui.console_out.moveCursor(QTextCursor.StartOfLine, QTextCursor.MoveAnchor)
-            self.ui.console_out.moveCursor(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
+            self.ui.console_out.moveCursor(
+                QTextCursor.StartOfLine, QTextCursor.MoveAnchor
+            )
+            self.ui.console_out.moveCursor(
+                QTextCursor.EndOfLine, QTextCursor.KeepAnchor
+            )
             if self.ui.console_out.currentCharFormat().foreground() == oldColor:
                 self.ui.console_out.setCurrentCharFormat(newColor)
             self.ui.console_out.moveCursor(QTextCursor.Down, QTextCursor.MoveAnchor)
 
         self.ui.console_out.update()
         self.ui.console_out.viewport().update()
-        
 
     def setTheme(self, mode):
         if mode == self.LIGHT:
-            with open('assets/themes/light_theme.qss', 'r', encoding='utf-8') as ss_sheet:
+            with open(
+                "assets/themes/light_theme.qss", "r", encoding="utf-8"
+            ) as ss_sheet:
                 ss_str = ss_sheet.read()
         else:
-            with open('assets/themes/dark_theme.qss', 'r', encoding='utf-8') as ss_sheet:
+            with open(
+                "assets/themes/dark_theme.qss", "r", encoding="utf-8"
+            ) as ss_sheet:
                 ss_str = ss_sheet.read()
 
         self.theme = mode
         self.setStyleSheet(ss_str)
-    
+
     def setupIcons(self):
         if self.theme == self.DARK:
             self.ui.explorer_btn.setIcon(Icons.Dark.Explorer)
@@ -272,21 +305,21 @@ class MainWindow(QMainWindow):
             self.ui.newTab_btn.setIcon(Icons.Dark.NewTab)
             self.ui.runCode_btn.setIcon(Icons.Dark.RunCode)
 
-            btn_ss = '''
+            btn_ss = """
             QPushButton {background-color: transparent; border: none;}
             QPushButton:hover {
             color: rgb(255, 255, 255);
             background-color: #464E69;
             padding: 3px;
-            }'''
-            newTabBtn_ss = '''
+            }"""
+            newTabBtn_ss = """
             QToolButton {background-color: transparent; border: none; border-radius: 4px;}
             QToolButton:hover {background-color: rgb(52, 59, 72);}
-            '''
-            runCodeBtn_ss = '''
+            """
+            runCodeBtn_ss = """
             QToolButton {background-color: transparent; border: none; border-radius: 4px;}
             QToolButton:hover {background-color: #464E69}
-            '''
+            """
 
         else:
             self.ui.explorer_btn.setIcon(Icons.Light.Explorer)
@@ -297,21 +330,21 @@ class MainWindow(QMainWindow):
             self.ui.newTab_btn.setIcon(Icons.Light.NewTab)
             self.ui.runCode_btn.setIcon(Icons.Light.RunCode)
 
-            btn_ss = '''
+            btn_ss = """
             QPushButton {background-color: transparent; border: none;}
             QPushButton:hover {
             color: rgb(255, 255, 255);
             background-color: #EBEBEF;
             padding: 3px;
-            }'''
-            newTabBtn_ss = '''
+            }"""
+            newTabBtn_ss = """
             QToolButton {background-color: transparent; border: none; border-radius: 4px;}
             QToolButton:hover {background-color: #EBEBEF;}
-            '''
-            runCodeBtn_ss = '''
+            """
+            runCodeBtn_ss = """
             QToolButton {background-color: transparent; border: none; border-radius: 4px;}
             QToolButton:hover {background-color: #EBEBEF}
-            '''
+            """
 
         self.ui.explorer_btn.setIconSize(QSize(40, 40))
         self.ui.explorer_btn.setText("")
@@ -329,7 +362,7 @@ class MainWindow(QMainWindow):
 
         self.ui.adi_logo.setAlignment(Qt.AlignCenter)
         self.ui.adi_logo.setStyleSheet("QLabel {background-color: transparent;}")
-        
+
         self.ui.newTab_btn.setIconSize(QSize(20, 20))
         self.ui.newTab_btn.setText("")
         self.ui.newTab_btn.setStyleSheet(newTabBtn_ss)
@@ -345,15 +378,17 @@ class MainWindow(QMainWindow):
             res = dialog.exec()
             return res
         return AreYouSurePopUp.SAVENEEDED_NOSAVE
-    
+
     def showConfirmMoveDialog(self, source_fname, target_name):
         if self.notifyOnMove:
-            dialog = AreYouSurePopUp(self, mode=self.theme, fname=(source_fname, target_name))
+            dialog = AreYouSurePopUp(
+                self, mode=self.theme, fname=(source_fname, target_name)
+            )
             dialog.setView(AreYouSurePopUp.CONFIRM_MOVE)
             res = dialog.exec()
             return res
         return AreYouSurePopUp.CONFIRM_MOVE
-    
+
     def showConfirmDeleteDialog(self, source_fname):
         if self.notifyOnDelete:
             dialog = AreYouSurePopUp(self, mode=self.theme, fname=source_fname)
@@ -361,7 +396,7 @@ class MainWindow(QMainWindow):
             res = dialog.exec()
             return res
         return AreYouSurePopUp.CONFIRM_DELETE
-    
+
     def runCode(self, codeTxt):
         self.runner = create_runner(codeTxt, self.logger_name)
         self.codeThread = QThread()
@@ -378,7 +413,6 @@ class MainWindow(QMainWindow):
             self.ui.runCode_btn.setIcon(Icons.Dark.StopCode)
         self.codeThread.start()
 
-
     def codeFinished(self):
         self.codeThread.deleteLater()
         self.script_running = False
@@ -389,7 +423,7 @@ class MainWindow(QMainWindow):
             self.ui.runCode_btn.setIcon(Icons.Dark.RunCode)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app = QApplication(sys.argv)
     QCoreApplication.setOrganizationName("AnalogDevices")
     QCoreApplication.setApplicationName("MAX-BLE-HCI-GUI")

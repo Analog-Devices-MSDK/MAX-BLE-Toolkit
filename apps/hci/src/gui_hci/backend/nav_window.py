@@ -12,7 +12,7 @@ from PySide6.QtWidgets import (
     QApplication,
     QAbstractItemView,
     QStyledItemDelegate,
-    QWidget
+    QWidget,
 )
 from PySide6.QtCore import (
     Qt,
@@ -25,60 +25,64 @@ from PySide6.QtCore import (
     QAbstractItemModel,
     QModelIndex,
     QPersistentModelIndex,
-    Signal
+    Signal,
 )
 from .actions import file_openFile
 from .constants import CONFIRMMOVE_MOVE, CONFIRMDELETE_DELETE
 
+
 class QEditorDelegate(QStyledItemDelegate):
     editingFinished = Signal(QModelIndex)
-    
+
     def __init__(self, parent):
         super().__init__(parent)
-        
+
     def setModelData(
         self,
         editor: QWidget,
         model: QAbstractItemModel,
-        index: Union[QModelIndex, QPersistentModelIndex]
+        index: Union[QModelIndex, QPersistentModelIndex],
     ) -> None:
         super().setModelData(editor, model, index)
         if index.column() == 0:
             self.editingFinished.emit(index)
 
+
 class QCustomIconProvider:
     def __init__(self):
         iconPath = QFileInfo(__file__).absoluteDir()
         iconPath.cdUp()
-        iconPath.cd('assets/images/icons/file-icons')
+        iconPath.cd("assets/images/icons/file-icons")
         self.iconPath = iconPath
         self.iconSize = 13
 
     def icon(self, fileInfo: QFileInfo):
         if fileInfo.isDir():
-            pMap = QPixmap(self.iconPath.filePath('folder-neon.svg'))
+            pMap = QPixmap(self.iconPath.filePath("folder-neon.svg"))
             pMap = pMap.scaledToHeight(self.iconSize, Qt.SmoothTransformation)
         else:
-            if QFileInfo(self.iconPath.filePath(f'{fileInfo.suffix()}.svg')).exists():
-                pMap = QPixmap(self.iconPath.filePath(f'{fileInfo.suffix()}.svg'))
+            if QFileInfo(self.iconPath.filePath(f"{fileInfo.suffix()}.svg")).exists():
+                pMap = QPixmap(self.iconPath.filePath(f"{fileInfo.suffix()}.svg"))
             else:
-                pMap = QPixmap(self.iconPath.filePath('default.svg'))
+                pMap = QPixmap(self.iconPath.filePath("default.svg"))
             pMap = pMap.scaledToHeight(self.iconSize, Qt.SmoothTransformation)
-            
+
         return QIcon(pMap)
+
 
 class QDirectoryTreeItem(QTreeWidgetItem):
     DISPLAY = 0
     RENAME = 1
     NEW_FILE = 2
     NEW_FOLDER = 3
+
     def __init__(
         self,
-        text: Optional[List[str]]=None,
+        text: Optional[List[str]] = None,
         parent: Optional[QTreeWidgetItem] = None,
         flags: Optional[List[Qt.ItemFlags]] = None,
         indicatorPolicy: Optional[QTreeWidgetItem.ChildIndicatorPolicy] = None,
-        nodeState: int = DISPLAY
+        nodeState: int = DISPLAY,
     ):
         if parent is not None:
             super().__init__(parent)
@@ -116,7 +120,9 @@ class QDirectoryTree(QTreeWidget):
         self.setDragDropMode(QTreeWidget.InternalMove)
         self.setFocusPolicy(Qt.ClickFocus)
         self.setHeaderHidden(True)
-        self.itemDoubleClicked.connect(lambda clickedItem, _: self.openSelectedItem(clickedItem))
+        self.itemDoubleClicked.connect(
+            lambda clickedItem, _: self.openSelectedItem(clickedItem)
+        )
         # self.itemChanged.connect(self._itemNameChange)
         self.watcher: QFileSystemWatcher = QFileSystemWatcher()
         self.editDelegate: QEditorDelegate = QEditorDelegate(parent)
@@ -131,7 +137,7 @@ class QDirectoryTree(QTreeWidget):
         self.dirs = {}
         self.rootDir = rootDir
         if self.watcher.directories() or self.watcher.files():
-            self.watcher.removePaths(self.watcher.directories()+self.watcher.files())
+            self.watcher.removePaths(self.watcher.directories() + self.watcher.files())
         self.watcher.addPath(rootDir)
         self.watcher.directoryChanged.connect(self._compileStructure)
         self.itemExpanded.connect(lambda item: self._itemStateChange(item, True))
@@ -151,16 +157,20 @@ class QDirectoryTree(QTreeWidget):
         currItem: QTreeWidgetItem = event.source().currentItem()
         newPosItem = self.itemAt(event.position().toPoint())
         if newPosItem.text(1) in self.watcher.directories():
-            res = main_window.showConfirmMoveDialog(currItem.text(0), newPosItem.text(0))
+            res = main_window.showConfirmMoveDialog(
+                currItem.text(0), newPosItem.text(0)
+            )
             newPath = newPosItem.text(1)
         elif newPosItem.parent().text(0) != currItem.parent().text(0):
-            res = main_window.showConfirmMoveDialog(currItem.text(0), newPosItem.parent().text(0))
+            res = main_window.showConfirmMoveDialog(
+                currItem.text(0), newPosItem.parent().text(0)
+            )
             newPath = newPosItem.parent().text(1)
 
         if res == CONFIRMMOVE_MOVE:
-            QFile.copy(currItem.text(1), f'{newPath}/{currItem.text(0)}')
+            QFile.copy(currItem.text(1), f"{newPath}/{currItem.text(0)}")
             QFile.remove(currItem.text(1))
-            currItem.setText(1, f'{newPath}/{currItem.text(0)}')
+            currItem.setText(1, f"{newPath}/{currItem.text(0)}")
 
         event.setDropAction(Qt.IgnoreAction)
         super().dropEvent(event)
@@ -175,9 +185,9 @@ class QDirectoryTree(QTreeWidget):
 
         fPath = QFileInfo(clickedItem.text(1))
         cNode = QDirectoryTreeItem(
-            text=['', fPath.filePath()],
+            text=["", fPath.filePath()],
             flags=Qt.ItemIsEditable,
-            nodeState=QDirectoryTreeItem.NEW_FOLDER
+            nodeState=QDirectoryTreeItem.NEW_FOLDER,
         )
         clickedItem.insertChild(0, cNode)
         if not clickedItem.isExpanded():
@@ -191,9 +201,9 @@ class QDirectoryTree(QTreeWidget):
 
         fPath = QFileInfo(clickedItem.text(1))
         cNode = QDirectoryTreeItem(
-            text=['', fPath.filePath()],
+            text=["", fPath.filePath()],
             flags=Qt.ItemIsEditable,
-            nodeState=QDirectoryTreeItem.NEW_FILE
+            nodeState=QDirectoryTreeItem.NEW_FILE,
         )
         clickedItem.insertChild(0, cNode)
         if not clickedItem.isExpanded():
@@ -216,7 +226,9 @@ class QDirectoryTree(QTreeWidget):
             main_window = self._getTopLevelParent()
 
         if QFileInfo(clickedItem.text(1)).isDir():
-            res = main_window.showConfirmDeleteDialog(f'{clickedItem.text(0)} and its contents')
+            res = main_window.showConfirmDeleteDialog(
+                f"{clickedItem.text(0)} and its contents"
+            )
             if res == CONFIRMDELETE_DELETE:
                 self.watcher.removePath(clickedItem.text(1))
                 self.dirs.pop(clickedItem.text(1), None)
@@ -235,11 +247,13 @@ class QDirectoryTree(QTreeWidget):
                 cNode.setCurrentNodeState(QDirectoryTreeItem.DISPLAY)
                 return
             if oldPath.isDir():
-                QDir(oldPath.filePath()).rename(oldPath.filePath(), f'{oldPath.path()}/{newFName}')
+                QDir(oldPath.filePath()).rename(
+                    oldPath.filePath(), f"{oldPath.path()}/{newFName}"
+                )
             else:
-                QFile.rename(oldPath.filePath(), f'{oldPath.path()}/{newFName}')
+                QFile.rename(oldPath.filePath(), f"{oldPath.path()}/{newFName}")
         elif cNode.currentNodeState() == QDirectoryTreeItem.NEW_FILE:
-            if cNode.text(0) == '':
+            if cNode.text(0) == "":
                 cNode.parent().removeChild(cNode)
                 return
             fPath = cNode.text(1)
@@ -248,16 +262,16 @@ class QDirectoryTree(QTreeWidget):
             newFile = QFile(f"{fPath}/{fName}")
             newFile.open(QIODevice.WriteOnly | QIODevice.Text | QIODevice.NewOnly)
             out = QTextStream(newFile)
-            out << ''
+            out << ""
             newFile.close()
         elif cNode.currentNodeState() == QDirectoryTreeItem.NEW_FOLDER:
-            if cNode.text(0) == '':
+            if cNode.text(0) == "":
                 cNode.parent().removeChild(cNode)
                 return
             fPath = QDir(cNode.text(1))
             fName = cNode.text(0)
             fPath.mkdir(fName)
-            self.watcher.addPath(f'{fPath}/{fName}')
+            self.watcher.addPath(f"{fPath}/{fName}")
 
     def _itemStateChange(self, item: QTreeWidgetItem, itemExpanded: bool):
         self.dirs[item.text(1)] = itemExpanded
@@ -281,11 +295,11 @@ class QDirectoryTree(QTreeWidget):
         headNode = QDirectoryTreeItem(
             text=[rDir.dirName(), rDir.path()],
             flags=Qt.ItemIsEditable,
-            indicatorPolicy=QTreeWidgetItem.ShowIndicator
+            indicatorPolicy=QTreeWidgetItem.ShowIndicator,
         )
         headNode.setIcon(0, self.iconProvider.icon(QFileInfo(rDir.path())))
         for entry in rDir.entryInfoList():
-            if entry.fileName() in ['.', '..'] and entry.isDir():
+            if entry.fileName() in [".", ".."] and entry.isDir():
                 continue
             if entry.isDir():
                 if addWatcherDirs:
@@ -295,13 +309,16 @@ class QDirectoryTree(QTreeWidget):
                     if not QFileInfo(headNode.child(idx).text(1)).isDir():
                         break
                     idx += 1
-                headNode.insertChild(idx, self._unpackDirectory(QDir(entry.filePath()), addWatcherDirs))
+                headNode.insertChild(
+                    idx, self._unpackDirectory(QDir(entry.filePath()), addWatcherDirs)
+                )
                 # headNode.addChild(self._unpackDirectory(QDir(entry.filePath()), addWatcherDirs))
                 continue
 
             childNode = QDirectoryTreeItem(
-                text=[entry.fileName(), entry.filePath()], flags=Qt.ItemIsEditable)
-            childNode.setIcon(0, self.iconProvider.icon(entry))            
+                text=[entry.fileName(), entry.filePath()], flags=Qt.ItemIsEditable
+            )
+            childNode.setIcon(0, self.iconProvider.icon(entry))
             headNode.addChild(childNode)
 
         self.dirs[rDir.path()] = self.dirs.get(rDir.path(), False)

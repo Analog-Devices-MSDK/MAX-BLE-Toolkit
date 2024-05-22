@@ -8,28 +8,19 @@ import subprocess
 import sys
 import time
 import webbrowser
-from typing import Dict
+
 
 import max_ble_hci
 from max_ble_hci import utils as hci_utils
 from max_ble_hci.data_params import DataPktStats
 from max_ble_hci.packet_codes import StatusCode
-
-import gui_logger
-
 # pylint: disable=no-name-in-module,c-extension-no-member
-from PySide6.QtCore import QMutex, QThread, Signal, QSettings
-from PySide6.QtWidgets import (
-    QApplication,
-    QComboBox,
-    QLabel,
-    QMainWindow,
-    QMessageBox,
-    QSlider,
-    QSpinBox,
-)
+from PySide6.QtCore import QMutex, QSettings, QThread, Signal
+from PySide6.QtWidgets import (QApplication, QComboBox, QLabel, QMainWindow,
+                               QMessageBox, QSlider, QSpinBox)
 
 import ble_util
+import gui_logger
 from ui_mainwindow import Ui_MainWindow
 
 # pylint: enable=no-name-in-module,c-extension-no-member
@@ -86,9 +77,17 @@ class CommonInputGroup:
         self.channel_select: QSlider = channel_select
         self.phy_select: QComboBox = phy_select
 
-    def set_channel(self, channel:int):
+    def set_channel(self, channel: int):
+        """Set channel in input group
+
+        Parameters
+        ----------
+        channel : int
+            0 - 39
+        """
         self.channel_select.setValue(channel)
         self.set_channel_label(channel)
+
     def set_channel_label(self, channel: int):
         """Set channel label
 
@@ -118,10 +117,17 @@ class CommonInputGroup:
             Serial port string
         """
         return self.port_select.currentText()
-    def set_port(self, port):
+
+    def set_port(self, port:str):
+        """Set the serial port in the input group
+
+        Parameters
+        ----------
+        port : str
+            Serial port
+        """
         idx = self.port_select.findText(port)
         self.port_select.setCurrentIndex(idx)
-        
 
     def selected_baud(self) -> int:
         """Get current selected baud rate
@@ -153,7 +159,14 @@ class CommonInputGroup:
         """
         return self.phy_select.currentText()
 
-    def set_phy(self, phy:str):
+    def set_phy(self, phy: str):
+        """Set phy in input group
+
+        Parameters
+        ----------
+        phy : str
+            phy
+        """
         self.phy_select.setCurrentText(phy)
 
     def selected_channel(self) -> int:
@@ -179,6 +192,7 @@ class CommonInputGroup:
 
 
 class MainWindow(QMainWindow):
+    #pylint: disable=too-many-instance-attributes
     """
     App Main Window
     """
@@ -189,7 +203,6 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        
         self.rx_is_init = False
         self.win = Ui_MainWindow()
         self.win.setupUi(self)
@@ -220,8 +233,6 @@ class MainWindow(QMainWindow):
 
         self.win.tab_mode.setCurrentIndex(TAB_TX)
 
-
-
         self._load_settings()
 
         self.win.packet_type_select_tx.insertItems(0, ble_util.TX_PACKET_TYPE_OPTIONS)
@@ -238,7 +249,6 @@ class MainWindow(QMainWindow):
         self.win.update_rate_slider.valueChanged.connect(self._refresh_rx_update_rate)
 
         self.win.reset_hci.clicked.connect(self._reset_hci)
-        
 
         self._set_packet_len_label(0)
 
@@ -252,14 +262,16 @@ class MainWindow(QMainWindow):
             self.rx_stats_thread.stop()
             self.rx_stats_thread.wait()
             self.rx_stats_thread = None
-    def _load_tx_rx_settings(self, settings:QSettings, tab):
-        
-        prefix = 'tx' if tab == TAB_TX else 'rx'
 
-        hci= settings.value(f'{prefix}-hci')
-        baud = settings.value(f'{prefix}-baud')
-        channel = settings.value(f'{prefix}-channel')
-        phy = settings.value(f'{prefix}-phy')
+    def _load_tx_rx_settings(self, settings: QSettings, tab):
+        assert tab in (TAB_TX, TAB_RX)
+
+        prefix = "tx" if tab == TAB_TX else "rx"
+
+        hci = settings.value(f"{prefix}-hci")
+        baud = settings.value(f"{prefix}-baud")
+        channel = settings.value(f"{prefix}-channel")
+        phy = settings.value(f"{prefix}-phy")
 
         if hci is not None:
             self.common[tab].set_port(hci)
@@ -270,19 +282,32 @@ class MainWindow(QMainWindow):
 
         if channel is not None:
             self.common[tab].set_channel(int(channel))
-            
+
         else:
             self.common[tab].set_channel(0)
 
         if phy is not None:
             self.common[tab].set_phy(phy)
-            
 
+    def _load_tx_only_settings(self, settings: QSettings):
+        # TX Only
+        tx_power = settings.value("tx-power")
+        packet_type = settings.value("packet-type")
+        packet_length = settings.value("packet-length")
 
+        if tx_power is not None:
+            self.win.power_select_tx.setCurrentText(tx_power)
+        if packet_type is not None:
+            self.win.packet_type_select_tx.setCurrentText(packet_type)
+        if packet_length is not None:
+            self.win.packet_len_select_tx.setValue(int(packet_length))
+
+    def _load_rx_only_settings(self, settings: QSettings):
+        settings.setValue("per-update-rate", self.win.update_rate_slider.value())
 
     def _load_settings(self):
-        settings = QSettings('Analog Devices', 'dtm_tool')
-        
+        settings = QSettings("Analog Devices", "dtm_tool")
+
         self.common[TAB_TX].refresh_port_select()
         self.common[TAB_RX].refresh_port_select()
         self.common[TAB_TX].phy_select.insertItems(0, ble_util.AVAILABLE_PHYS)
@@ -294,57 +319,40 @@ class MainWindow(QMainWindow):
             self.slider_value_changed
         )
 
-        
         self._load_tx_rx_settings(settings, TAB_TX)
-        self._load_tx_rx_settings(settings, TAB_RX)    
+        self._load_tx_rx_settings(settings, TAB_RX)
 
+        self._load_tx_only_settings(settings)
+        self._load_rx_only_settings(settings)
 
-
-
-
-
-    def _save_common_tx_rx_settings(self, settings:QSettings, tab:int):
-        
+    def _save_common_tx_rx_settings(self, settings: QSettings, tab: int):
         assert tab in (TAB_TX, TAB_RX)
 
-        prefix = 'tx' if tab == TAB_TX else 'rx'
-        settings.setValue(f'{prefix}-hci', self.common[tab].selected_port())
-        settings.setValue(f'{prefix}-baud', self.common[tab].selected_baud())
-        settings.setValue(f'{prefix}-channel', self.common[tab].selected_channel())
-        settings.setValue(f'{prefix}-phy', self.common[tab].selected_phy())
-        
-
-
+        prefix = "tx" if tab == TAB_TX else "rx"
+        settings.setValue(f"{prefix}-hci", self.common[tab].selected_port())
+        settings.setValue(f"{prefix}-baud", self.common[tab].selected_baud())
+        settings.setValue(f"{prefix}-channel", self.common[tab].selected_channel())
+        settings.setValue(f"{prefix}-phy", self.common[tab].selected_phy())
 
     def _save_settings(self):
-        settings = QSettings('Analog Devices', 'dtm_tool')
-    
+        settings = QSettings("Analog Devices", "dtm_tool")
+
         self._save_common_tx_rx_settings(settings, TAB_TX)
         self._save_common_tx_rx_settings(settings, TAB_RX)
 
-        #TX Only
-        settings.setValue(f'packet-type', self.win.packet_type_select_tx.currentText())
-        settings.setValue(f'packet-length', self.win.packet_len_select_tx.value())
-        settings.setValue(f'tx-power', self.win.power_select_tx.currentText())
+        # TX Only
+        settings.setValue("packet-type", self.win.packet_type_select_tx.currentText())
+        settings.setValue("packet-length", self.win.packet_len_select_tx.value())
+        settings.setValue("tx-power", self.win.power_select_tx.currentText())
 
-
-        #RX Only 
-        settings.setValue('per-update-rate', self.win.update_rate_slider.value())
-
-
-
-
-            
-
-        
+        # RX Only
+        settings.setValue("per-update-rate", self.win.update_rate_slider.value())
 
     # pylint: disable=invalid-name
     def closeEvent(self, event) -> None:
         """Window close override"""
         self._clean_stats_thread()
         self._save_settings()
-
-
 
         return super().closeEvent(event)
 

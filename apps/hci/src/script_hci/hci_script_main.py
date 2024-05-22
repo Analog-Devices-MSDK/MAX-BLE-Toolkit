@@ -18,13 +18,13 @@ from cmd_structs import CMD_OPCODE, CMD_PARAM_LEN
 # progfile = 'loops_test.txt'
 # progfile = 'command_test.txt'
 # progfile = 'stress_test.txt'
-progfile = 'simple_test.txt'
+progfile = "simple_test.txt"
 
-with open(progfile, 'r') as f:
+with open(progfile, "r") as f:
     data = f.read()
 
-if not data.endswith('\n'):
-    data += '\n'
+if not data.endswith("\n"):
+    data += "\n"
 
 prog = hci_parse.parse(data, debug=1)
 # for key, val in prog.items():
