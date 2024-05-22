@@ -1,4 +1,4 @@
-#!/usr/bin/env python3 
+#!/usr/bin/env python3
 """
 Main Application for DTM Testsing
 """
@@ -15,15 +15,17 @@ import max_ble_hci
 from max_ble_hci import utils as hci_utils
 from max_ble_hci.data_params import DataPktStats
 from max_ble_hci.packet_codes import StatusCode
+
 # pylint: disable=no-name-in-module,c-extension-no-member
 from PySide6.QtCore import QMutex, QSettings, QThread, Signal
-from PySide6.QtWidgets import (QApplication, QMainWindow, QMessageBox)
+from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
 
 import ble_util
 import gui_logger
 from ui_mainwindow import Ui_MainWindow
 
 from common_input import CommonInputGroup
+
 # pylint: enable=no-name-in-module,c-extension-no-member
 
 
@@ -65,9 +67,8 @@ class RxStatsThread(QThread):
         self.early_exit = True
 
 
-
 class MainWindow(QMainWindow):
-    #pylint: disable=too-many-instance-attributes
+    # pylint: disable=too-many-instance-attributes
     """
     App Main Window
     """

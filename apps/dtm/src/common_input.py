@@ -1,6 +1,6 @@
-from PySide6.QtWidgets import ( QComboBox, QLabel,
-                                QSlider, QSpinBox)
+from PySide6.QtWidgets import QComboBox, QLabel, QSlider, QSpinBox
 from max_ble_hci import utils as hci_utils
+
 
 class CommonInputGroup:
     """Internal grouping of common inputs"""
@@ -56,7 +56,7 @@ class CommonInputGroup:
         """
         return self.port_select.currentText()
 
-    def set_port(self, port:str):
+    def set_port(self, port: str):
         """Set the serial port in the input group
 
         Parameters
