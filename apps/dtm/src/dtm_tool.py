@@ -343,7 +343,7 @@ class MainWindow(QMainWindow):
             status = hci.reset_test_stats()
             if status != StatusCode.SUCCESS:
                 self.logger.warning(
-                    """Status returned %d. """
+                    """Status returned %s. """
                     """Command is vendor specific and may not work on targeted device""",
                     status.name,
                 )
