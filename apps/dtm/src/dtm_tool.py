@@ -18,7 +18,7 @@ from max_ble_hci.packet_codes import StatusCode
 import gui_logger
 
 # pylint: disable=no-name-in-module,c-extension-no-member
-from PySide6.QtCore import QMutex, QThread, Signal
+from PySide6.QtCore import QMutex, QThread, Signal, QSettings
 from PySide6.QtWidgets import (
     QApplication,
     QComboBox,
@@ -39,107 +39,6 @@ TAB_TX = 0
 TAB_RX = 1
 
 rx_mutex = QMutex()
-
-
-class CustomFormatter(logging.Formatter):
-    """Log message formatting class.
-
-    Attributes
-    ----------
-    cyan : str
-        ANSI color code representing the color cyan.
-    white : str
-        ANSI color code representing the color white.
-    green : str
-        ANSI color code representing the color green.
-    yellow : str
-        ANSI color code representing the color yellow.
-    red : str
-        ANSI color code representing the color red.
-    bold_red : str
-        ANSI color code representing bold red.
-    reset : str
-        ANSI reset code.
-    format_str : str
-        Default logger string format.
-    format_info : str
-        Logger string format for info-level messages.
-    format_debug : str
-        Logger string format for debug-level messages.
-    FORMATS : Dict[int, str]
-        Dictionary containing logger messaging formats.
-
-    """
-
-    cyan: str = "\x1b[36;20m"
-    white: str = "\x1b[37;20m"
-    green: str = "\x1b[32;20m"
-    yellow: str = "\x1b[33;20m"
-    red: str = "\x1b[31;20m"
-    bold_red: str = "\x1b[31;1m"
-    reset: str = "\x1b[0m"
-    format_str: str = (
-        "%(asctime)s - %(name)s - %(levelname)s - %(message)s (%(filename)s:%(lineno)d)"
-    )
-    format_info: str = "%(levelname)s - %(message)s"
-    format_debug: str = "%(levelname)s - %(message)s"
-
-    FORMATS: Dict[int, str] = {
-        logging.DEBUG: white + format_debug + reset,
-        logging.INFO: green + format_info + reset,
-        logging.WARNING: yellow + format_str + reset,
-        logging.ERROR: red + format_str + reset,
-        logging.CRITICAL: bold_red + format_str + reset,
-    }
-
-    def format(self, record: logging.LogRecord) -> str:
-        """Creates and returns formatted log message.
-
-        Paremeters
-        ----------
-        record : logging.LogRecord
-            Object containing the log record to be formatted.
-
-        Returns
-        -------
-        str
-            The formatted log message.
-
-        """
-        log_fmt = self.FORMATS.get(record.levelno)
-        formatter = logging.Formatter(log_fmt)
-        return formatter.format(record)
-
-
-def get_formatted_logger(name: str = None, log_level=logging.INFO) -> logging.Logger:
-    """Gets logger with basic custom format
-
-    The custom formatted logger applies basic coloring
-    for logging of different levels
-
-
-    Parameters
-    ----------
-    log_level : int
-        Any defined logging level such as logging.INFO
-    """
-
-    if name:
-        logger = logging.getLogger(name)
-    else:
-        logger = logging.getLogger()
-
-    logger.setLevel(log_level)
-
-    custom_handler = logging.StreamHandler(sys.stdout)
-    custom_handler.setLevel(log_level)
-    custom_handler.setFormatter(CustomFormatter())
-
-    if not logger.handlers:
-        logger.addHandler(custom_handler)
-
-    return logger
-
 
 
 class RxStatsThread(QThread):
@@ -187,6 +86,9 @@ class CommonInputGroup:
         self.channel_select: QSlider = channel_select
         self.phy_select: QComboBox = phy_select
 
+    def set_channel(self, channel:int):
+        self.channel_select.setValue(channel)
+        self.set_channel_label(channel)
     def set_channel_label(self, channel: int):
         """Set channel label
 
@@ -216,6 +118,10 @@ class CommonInputGroup:
             Serial port string
         """
         return self.port_select.currentText()
+    def set_port(self, port):
+        idx = self.port_select.findText(port)
+        self.port_select.setCurrentIndex(idx)
+        
 
     def selected_baud(self) -> int:
         """Get current selected baud rate
@@ -246,6 +152,9 @@ class CommonInputGroup:
             PHY
         """
         return self.phy_select.currentText()
+
+    def set_phy(self, phy:str):
+        self.phy_select.setCurrentText(phy)
 
     def selected_channel(self) -> int:
         """Get current selected channel
@@ -279,6 +188,8 @@ class MainWindow(QMainWindow):
 
     def __init__(self):
         super().__init__()
+
+        
         self.rx_is_init = False
         self.win = Ui_MainWindow()
         self.win.setupUi(self)
@@ -286,11 +197,9 @@ class MainWindow(QMainWindow):
         self.rx_stats_thread = None
         self.win.action_about.triggered.connect(self._show_about)
         self.win.action_report_issue.triggered.connect(self._open_issues)
-        
+
         self.logger_name = gui_logger.setup_guiLogger(self, logging.DEBUG)
         self.logger = logging.getLogger(self.logger_name)
-        
-        
 
         self.common = [
             CommonInputGroup(
@@ -311,20 +220,9 @@ class MainWindow(QMainWindow):
 
         self.win.tab_mode.setCurrentIndex(TAB_TX)
 
-        self.common[TAB_TX].refresh_port_select()
-        self.common[TAB_RX].refresh_port_select()
-        self.common[TAB_TX].set_baud(hci_utils.DEFAULT_BAUDRATE)
-        self.common[TAB_RX].set_baud(hci_utils.DEFAULT_BAUDRATE)
 
-        self.common[TAB_TX].phy_select.insertItems(0, ble_util.AVAILABLE_PHYS)
-        self.common[TAB_RX].phy_select.insertItems(0, ble_util.AVAILABLE_PHYS)
 
-        self.common[TAB_TX].channel_select.valueChanged.connect(
-            self.slider_value_changed
-        )
-        self.common[TAB_RX].channel_select.valueChanged.connect(
-            self.slider_value_changed
-        )
+        self._load_settings()
 
         self.win.packet_type_select_tx.insertItems(0, ble_util.TX_PACKET_TYPE_OPTIONS)
         self.win.power_select_tx.insertItems(0, ble_util.AVAILABLE_TX_POWERS)
@@ -340,8 +238,7 @@ class MainWindow(QMainWindow):
         self.win.update_rate_slider.valueChanged.connect(self._refresh_rx_update_rate)
 
         self.win.reset_hci.clicked.connect(self._reset_hci)
-        self.common[TAB_TX].set_channel_label(0)
-        self.common[TAB_RX].set_channel_label(0)
+        
 
         self._set_packet_len_label(0)
 
@@ -355,11 +252,99 @@ class MainWindow(QMainWindow):
             self.rx_stats_thread.stop()
             self.rx_stats_thread.wait()
             self.rx_stats_thread = None
+    def _load_tx_rx_settings(self, settings:QSettings, tab):
+        
+        prefix = 'tx' if tab == TAB_TX else 'rx'
+
+        hci= settings.value(f'{prefix}-hci')
+        baud = settings.value(f'{prefix}-baud')
+        channel = settings.value(f'{prefix}-channel')
+        phy = settings.value(f'{prefix}-phy')
+
+        if hci is not None:
+            self.common[tab].set_port(hci)
+        if baud is not None:
+            self.common[tab].set_baud(int(baud))
+        else:
+            self.common[tab].set_baud(hci_utils.DEFAULT_BAUDRATE)
+
+        if channel is not None:
+            self.common[tab].set_channel(int(channel))
+            
+        else:
+            self.common[tab].set_channel(0)
+
+        if phy is not None:
+            self.common[tab].set_phy(phy)
+            
+
+
+
+    def _load_settings(self):
+        settings = QSettings('Analog Devices', 'dtm_tool')
+        
+        self.common[TAB_TX].refresh_port_select()
+        self.common[TAB_RX].refresh_port_select()
+        self.common[TAB_TX].phy_select.insertItems(0, ble_util.AVAILABLE_PHYS)
+        self.common[TAB_RX].phy_select.insertItems(0, ble_util.AVAILABLE_PHYS)
+        self.common[TAB_TX].channel_select.valueChanged.connect(
+            self.slider_value_changed
+        )
+        self.common[TAB_RX].channel_select.valueChanged.connect(
+            self.slider_value_changed
+        )
+
+        
+        self._load_tx_rx_settings(settings, TAB_TX)
+        self._load_tx_rx_settings(settings, TAB_RX)    
+
+
+
+
+
+
+    def _save_common_tx_rx_settings(self, settings:QSettings, tab:int):
+        
+        assert tab in (TAB_TX, TAB_RX)
+
+        prefix = 'tx' if tab == TAB_TX else 'rx'
+        settings.setValue(f'{prefix}-hci', self.common[tab].selected_port())
+        settings.setValue(f'{prefix}-baud', self.common[tab].selected_baud())
+        settings.setValue(f'{prefix}-channel', self.common[tab].selected_channel())
+        settings.setValue(f'{prefix}-phy', self.common[tab].selected_phy())
+        
+
+
+
+    def _save_settings(self):
+        settings = QSettings('Analog Devices', 'dtm_tool')
+    
+        self._save_common_tx_rx_settings(settings, TAB_TX)
+        self._save_common_tx_rx_settings(settings, TAB_RX)
+
+        #TX Only
+        settings.setValue(f'packet-type', self.win.packet_type_select_tx.currentText())
+        settings.setValue(f'packet-length', self.win.packet_len_select_tx.value())
+        settings.setValue(f'tx-power', self.win.power_select_tx.currentText())
+
+
+        #RX Only 
+        settings.setValue('per-update-rate', self.win.update_rate_slider.value())
+
+
+
+
+            
+
+        
 
     # pylint: disable=invalid-name
     def closeEvent(self, event) -> None:
         """Window close override"""
         self._clean_stats_thread()
+        self._save_settings()
+
+
 
         return super().closeEvent(event)
 
@@ -428,7 +413,9 @@ class MainWindow(QMainWindow):
         baud_rate = self.common[tab].baud_rate_select.value()
 
         try:
-            hci = max_ble_hci.BleHci(port_id=port, baud=baud_rate, logger_name=self.logger_name)
+            hci = max_ble_hci.BleHci(
+                port_id=port, baud=baud_rate, logger_name=self.logger_name
+            )
         except:
             self._show_basic_msg_box(
                 "Failed to create HCI. Please try resetting the board"
@@ -457,7 +444,9 @@ class MainWindow(QMainWindow):
 
         try:
             rx_mutex.lock()
-            hci = max_ble_hci.BleHci(port_id=port, baud=baud_rate, id_tag="RX", logger_name=self.logger_name)
+            hci = max_ble_hci.BleHci(
+                port_id=port, baud=baud_rate, id_tag="RX", logger_name=self.logger_name
+            )
         except:
             rx_mutex.unlock()
             self._show_basic_msg_box(
@@ -523,7 +512,9 @@ class MainWindow(QMainWindow):
             self._show_basic_msg_box("Cannot use the same port for both TX and RX")
             return
 
-        hci = max_ble_hci.BleHci(port_id=port, baud=baud_rate, id_tag="TX", logger_name=self.logger_name)
+        hci = max_ble_hci.BleHci(
+            port_id=port, baud=baud_rate, id_tag="TX", logger_name=self.logger_name
+        )
 
         try:
             hci.reset()

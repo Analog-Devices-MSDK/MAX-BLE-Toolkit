@@ -3,16 +3,14 @@ from PySide6.QtCore import Signal, QObject
 from PySide6.QtGui import QColor
 
 
-
 class CustomFormatter(logging.Formatter):
     COLORS = {
-        logging.DEBUG : QColor(),
-        logging.INFO : QColor('green'),
-        logging.WARNING : QColor('gold'),
-        logging.ERROR : QColor('red'),
-        logging.CRITICAL : QColor('firebrick')
+        logging.DEBUG: QColor(),
+        logging.INFO: QColor("green"),
+        logging.WARNING: QColor("gold"),
+        logging.ERROR: QColor("red"),
+        logging.CRITICAL: QColor("firebrick"),
     }
-
 
     format_str: str = (
         "%(asctime)s - %(name)s - %(levelname)s - %(message)s (%(filename)s:%(lineno)d)"
@@ -28,7 +26,6 @@ class CustomFormatter(logging.Formatter):
         logging.ERROR: format_str,
         logging.CRITICAL: format_str,
     }
-    
 
     def format(self, record: logging.LogRecord) -> str:
         log_fmt = self.FORMATS.get(record.levelno)
@@ -42,6 +39,7 @@ class QLogEmitter(QObject):
     def emitSignal(self, msg, color):
         self.log_message.emit(msg, color)
 
+
 class QLogHandler(logging.Handler):
     def __init__(self, widget):
         super().__init__()
@@ -51,18 +49,21 @@ class QLogHandler(logging.Handler):
     def emit(self, record):
         msg, color = self.format(record)
         self.emitter.emitSignal(msg, color)
-def setup_guiLogger(main_window, log_level, logger_name='BLE-HCI-GUI'):
-    
+
+
+def setup_guiLogger(main_window, log_level, logger_name="BLE-HCI-GUI"):
     console = logging.getLogger(logger_name)
     handler = QLogHandler(main_window.win.console_out)
     formatter = CustomFormatter()
     handler.setFormatter(formatter)
     handler.emitter.log_message.connect(
-        lambda data, msg_color: log_consoleBox(main_window, data, msg_color))
+        lambda data, msg_color: log_consoleBox(main_window, data, msg_color)
+    )
     console.addHandler(handler)
     console.setLevel(log_level)
 
     return logger_name
+
 
 def log_consoleBox(main_window, data: str, msg_color: QColor):
     current_color = main_window.win.console_out.textColor()
