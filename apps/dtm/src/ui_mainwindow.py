@@ -26,8 +26,8 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1446, 720)
-        MainWindow.setMaximumSize(QSize(16777215, 720))
+        MainWindow.resize(1446, 839)
+        MainWindow.setMaximumSize(QSize(16777215, 16777215))
         MainWindow.setLayoutDirection(Qt.LeftToRight)
         MainWindow.setAutoFillBackground(False)
         self.actionDocumentation = QAction(MainWindow)
@@ -245,11 +245,11 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_3.addWidget(self.reset_hci, 0, Qt.AlignHCenter)
 
-        self.textEdit = QTextEdit(self.centralwidget)
-        self.textEdit.setObjectName(u"textEdit")
-        self.textEdit.setReadOnly(True)
+        self.console_out = QTextEdit(self.centralwidget)
+        self.console_out.setObjectName(u"console_out")
+        self.console_out.setReadOnly(True)
 
-        self.verticalLayout_3.addWidget(self.textEdit)
+        self.verticalLayout_3.addWidget(self.console_out)
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)

@@ -3,20 +3,22 @@ Main Application for DTM Testsing
 """
 
 
+import logging
 import subprocess
 import sys
 import time
 import webbrowser
-import serial
+from typing import Dict
 
 import max_ble_hci
 from max_ble_hci import utils as hci_utils
 from max_ble_hci.data_params import DataPktStats
 from max_ble_hci.packet_codes import StatusCode
 
+import gui_logger
 
 # pylint: disable=no-name-in-module,c-extension-no-member
-from PySide6.QtCore import QThread, Signal, QMutex
+from PySide6.QtCore import QMutex, QThread, Signal
 from PySide6.QtWidgets import (
     QApplication,
     QComboBox,
@@ -25,7 +27,6 @@ from PySide6.QtWidgets import (
     QMessageBox,
     QSlider,
     QSpinBox,
-    QDialogButtonBox,
 )
 
 import ble_util
@@ -34,13 +35,11 @@ from ui_mainwindow import Ui_MainWindow
 # pylint: enable=no-name-in-module,c-extension-no-member
 
 
-
-import logging
-from typing import Dict
 TAB_TX = 0
 TAB_RX = 1
 
 rx_mutex = QMutex()
+
 
 class CustomFormatter(logging.Formatter):
     """Log message formatting class.
@@ -111,6 +110,7 @@ class CustomFormatter(logging.Formatter):
         formatter = logging.Formatter(log_fmt)
         return formatter.format(record)
 
+
 def get_formatted_logger(name: str = None, log_level=logging.INFO) -> logging.Logger:
     """Gets logger with basic custom format
 
@@ -131,7 +131,7 @@ def get_formatted_logger(name: str = None, log_level=logging.INFO) -> logging.Lo
 
     logger.setLevel(log_level)
 
-    custom_handler = logging.StreamHandler()
+    custom_handler = logging.StreamHandler(sys.stdout)
     custom_handler.setLevel(log_level)
     custom_handler.setFormatter(CustomFormatter())
 
@@ -139,6 +139,8 @@ def get_formatted_logger(name: str = None, log_level=logging.INFO) -> logging.Lo
         logger.addHandler(custom_handler)
 
     return logger
+
+
 
 class RxStatsThread(QThread):
     """RX Stats worker thread"""
@@ -273,6 +275,7 @@ class MainWindow(QMainWindow):
     """
 
     RX_DEFAULT_UPDATE_RATE = 10  # 1 second slider is only int
+    VERSION = "1.0.0"
 
     def __init__(self):
         super().__init__()
@@ -281,12 +284,13 @@ class MainWindow(QMainWindow):
         self.win.setupUi(self)
 
         self.rx_stats_thread = None
-
         self.win.action_about.triggered.connect(self._show_about)
         self.win.action_report_issue.triggered.connect(self._open_issues)
-
-        self.show_warnings = True
-        self.logger = get_formatted_logger('APP')
+        
+        self.logger_name = gui_logger.setup_guiLogger(self, logging.DEBUG)
+        self.logger = logging.getLogger(self.logger_name)
+        
+        
 
         self.common = [
             CommonInputGroup(
@@ -344,8 +348,6 @@ class MainWindow(QMainWindow):
         self.tx_test_started = False
         self.rx_test_started = False
 
-        self.version = "1.0.0"
-
     def _clean_stats_thread(self):
         if self.rx_test_started:
             self.common[TAB_RX].enable_serial_inputs()
@@ -354,13 +356,17 @@ class MainWindow(QMainWindow):
             self.rx_stats_thread.wait()
             self.rx_stats_thread = None
 
+    # pylint: disable=invalid-name
     def closeEvent(self, event) -> None:
+        """Window close override"""
         self._clean_stats_thread()
 
         return super().closeEvent(event)
 
+    # pylint: enable=invalid-name
+
     def _show_about(self):
-        msg = f"""DTM Tool\nVersion {self.version}\nAnalog Devices, Inc.
+        msg = f"""DTM Tool\nVersion {self.VERSION}\nAnalog Devices, Inc.
         """
         QMessageBox.about(self, "About", msg)
 
@@ -422,10 +428,10 @@ class MainWindow(QMainWindow):
         baud_rate = self.common[tab].baud_rate_select.value()
 
         try:
-            hci = max_ble_hci.BleHci(port_id=port, baud=baud_rate)
+            hci = max_ble_hci.BleHci(port_id=port, baud=baud_rate, logger_name=self.logger_name)
         except:
             self._show_basic_msg_box(
-                f"Failed to create HCI. Please try resetting the board"
+                "Failed to create HCI. Please try resetting the board"
             )
             return
 
@@ -451,11 +457,11 @@ class MainWindow(QMainWindow):
 
         try:
             rx_mutex.lock()
-            hci = max_ble_hci.BleHci(port_id=port, baud=baud_rate, id_tag="RX")
+            hci = max_ble_hci.BleHci(port_id=port, baud=baud_rate, id_tag="RX", logger_name=self.logger_name)
         except:
             rx_mutex.unlock()
             self._show_basic_msg_box(
-                f"Failed to create HCI. Please try resetting the board"
+                "Failed to create HCI. Please try resetting the board"
             )
             return
 
@@ -463,7 +469,11 @@ class MainWindow(QMainWindow):
             hci.reset()
             status = hci.reset_test_stats()
             if status != StatusCode.SUCCESS:
-                self.logger.warn('Status returned %d. Command is vendor specific and may not work on targeted device', status)
+                self.logger.warning(
+                    """Status returned %d. """
+                    """Command is vendor specific and may not work on targeted device""",
+                    status,
+                )
 
         except TimeoutError:
             self._show_basic_msg_box("Timeout occured: Failed to reset devices!")
@@ -493,7 +503,8 @@ class MainWindow(QMainWindow):
                 status = hci.reset_test_stats()
                 if status != StatusCode.SUCCESS:
                     self._show_basic_msg_box(
-                        "Failed to reset test stats. This command is vendor specific towards MAX32 chips"
+                        """"Failed to reset test stats."""
+                        """This command is vendor specific towards MAX32 chips"""
                     )
             except TimeoutError:
                 self._show_basic_msg_box("Failed to end test!")
@@ -512,7 +523,7 @@ class MainWindow(QMainWindow):
             self._show_basic_msg_box("Cannot use the same port for both TX and RX")
             return
 
-        hci = max_ble_hci.BleHci(port_id=port, baud=baud_rate, id_tag="TX")
+        hci = max_ble_hci.BleHci(port_id=port, baud=baud_rate, id_tag="TX", logger_name=self.logger_name)
 
         try:
             hci.reset()
