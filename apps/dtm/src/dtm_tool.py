@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#! /usr/bin/env python
 """
 Main Application for DTM Testsing
 """
@@ -230,16 +230,14 @@ class MainWindow(QMainWindow):
         self._clean_stats_thread()
         self._save_settings()
 
-        #clean up hci on exit if still valid
+        # clean up hci on exit if still valid
         try:
-            self.win.tab_mode.setCurrentIndex(TAB_TX)
-            self._reset_hci()
-            self.win.tab_mode.setCurrentIndex(TAB_RX)
-            self._reset_hci()
+                self.win.tab_mode.setCurrentIndex(TAB_TX)
+                self._reset_hci()
+                self.win.tab_mode.setCurrentIndex(TAB_RX)
+                self._reset_hci()
         except:
             pass
-
-
 
         return super().closeEvent(event)
 
@@ -373,8 +371,9 @@ class MainWindow(QMainWindow):
             try:
                 status = hci.rx_test(channel=channel, phy=phy)
                 if status != StatusCode.SUCCESS:
-                    self._show_basic_msg_box(f'Failed to start RX Test got status {status}')
-
+                    self._show_basic_msg_box(
+                        f"Failed to start RX Test got status {status}"
+                    )
 
                 self.common[TAB_RX].enable_serial_inputs(False)
                 self.win.start_stop_btn_rx.setText("STOP RX")
@@ -432,14 +431,18 @@ class MainWindow(QMainWindow):
             try:
                 status = hci.set_adv_tx_power(tx_power)
                 if status != StatusCode.SUCCESS:
-                    self._show_basic_msg_box(f'Failed to start TX Test got status {status}')
+                    self._show_basic_msg_box(
+                        f"Failed to start TX Test got status {status}"
+                    )
                     return
-                
+
                 status = hci.tx_test(
                     channel=channel, phy=phy, payload=payload, packet_len=packet_len
                 )
                 if status != StatusCode.SUCCESS:
-                    self._show_basic_msg_box(f'Failed to start TX Test got status {status}')
+                    self._show_basic_msg_box(
+                        f"Failed to start TX Test got status {status}"
+                    )
                     return
 
                 self.common[TAB_TX].enable_serial_inputs(False)
