@@ -1,0 +1,667 @@
+{
+    "SECTION_NAME" : "ADI Vendor Specific",
+    "VS_REG_WRITE" : {
+        "TOOLTIP" : "Write to an address. This function has no protections and should be used with caution.",
+        "Parameters" : {
+            "Write_Data_Len" : 1,
+            "Starting_Addr" : 4,
+            "Write_Data" : "Write_Data_Len"
+        },
+        "Returns" : {
+            "Status" : 1
+        }
+    },
+
+    "VS_REG_READ" : {
+        "TOOLTIP" : "Read from an address. This function has no protections and should be used with caution.",
+        "Parameters" : {
+            "Read_Len" : 1,
+            "Starting_Addr" : 4
+        },
+        "Returns" : {
+            "Status" : 1,
+            "Read_Data" : "Read_Len"
+        }
+    },
+
+    "VS_RESET_CONN_STATS" : {
+        "TOOLTIP" : "Clear all connection statistics counters.",
+        "Parameters" : null,
+        "Returns" : {
+            "Status" : 1
+        }
+    },
+
+    "VS_TX_TEST" : {
+        "TOOLTIP" : "Start a transmitter test.",
+        "Parameters" : {
+            "TX_Channel" : 1,
+            "Pkt_Len" : 1,
+            "Pkt_Payload" : 1,
+            "PHY" : 1,
+            "Num_Pkts" : 2
+        },
+        "Returns" : {
+            "Status" : 1
+        }
+    },
+
+    "VS_RESET_TEST_STATS" : {
+        "TOOLTIP" : "Clear all test statistics counters.",
+        "Parameters" : null,
+        "Returns" : {
+            "Status" : 1
+        }
+    },
+
+    "VS_RX_TEST" : {
+        "TOOLTIP" : "Start a receiver test.",
+        "Parameters" : {
+            "RX_Channel" : 1,
+            "PHY" : 1,
+            "Modualtion_Idx" : 1,
+            "Num_Pkts" : 2
+        },
+        "Returns" : {
+            "Status" : 1
+        }
+    },
+
+    "VS_GET_RSSI" : {
+        "TOOLTIP" : "Read the RSSI values for the indicated channel.",
+        "Parameters" : {
+            "RF_Channel" : 1
+        },
+        "Returns" : {
+            "Status" : 1,
+            "RSSI_Data" : 1
+        }
+    },
+
+    "VS_BB_EN" : {
+        "TOOLTIP" : "Enable the Baseband/PHY for the local device. Must be called before the Get RSSI command can be used.",
+        "Parameters" : null,
+        "Returns" : {
+            "Status" : 1
+        }
+    },
+
+    "VS_BB_DIS" : {
+        "TOOLTIP" : "Disable the Baseband/PHY for the local device.",
+        "Parameters" : null,
+        "Returns" : {
+            "Status" : 1
+        }
+    },
+
+    "VS_SET_SNIFFER_ENABLE" : {
+        "TOOLTIP" : "Enable or disable sniffer packet forwarding.",
+        "Parameters" : {
+            "Output_Method" : 1,
+            "Enable" : 1
+        },
+        "Returns" : {
+            "Status" : 1
+        }
+    },
+
+    "VS_SET_AUX_DELAY" : {
+        "TOOLTIP" : "Set the auxiliary packet offset delay for the indicated advertising set.",
+        "Parameters" : {
+            "Adv_Handle" : 1,
+            "Aux_Delay" : 4
+        },
+        "Returns" : {
+            "Status" : 1
+        }
+    },
+
+    "VS_SET_EXT_ADV_FRAG_LEN" : {
+        "TOOLTIP" : "Set the data fragmentation length for the indicated extended advertising set.",
+        "Parameters" : {
+            "Adv_Handle" : 1,
+            "Fragmentation_Len" : 1
+        },
+        "Returns" : {
+            "Status" : 1
+        }
+    },
+
+    "VS_SET_EXT_ADV_PHY_OPTS" : {
+        "TOOLTIP" : "Set the primary and secondary PHY options for the indicated extended advertising set.",
+        "Parameters" : {
+            "Adv_Handle" : 1,
+            "Primary_PHY_Opts" : 1,
+            "Secondary_PHY_Opts" : 1
+        },
+        "Returns" : {
+            "Status" : 1
+        }
+    },
+
+    "VS_SET_EXT_ADV_DEF_PHY_OPTS" : {
+        "TOOLTIP" : "Set the default PHY options for extended advertising.",
+        "Parameters" : {
+            "PHY_Opts" : 1
+        },
+        "Returns" : {
+            "Status" : 1
+        }
+    },
+
+    "VS_GENERATE_ISO" : {
+        "TOOLTIP" : "Request that ISO packets be generated on the indicated connection.",
+        "Parameters" : {
+            "Connection_Handle" : 2,
+            "Pkt_Len" : 2,
+            "Num_Pkts" : 1
+        },
+        "Returns" : {
+            "Status" : 1
+        }
+    },
+
+    "VS_GET_ISO_TEST_REPORT" : {
+        "TOOLTIP" : "Retrieve statistics captured in ISO test mode.",
+        "Parameters" : null,
+        "Returns" : {
+            "Status" : 1,
+            "RX_Pkt_Count" : 4,
+            "RX_Octet_Count" : 4,
+            "Gen_Pkt_Count" : 4,
+            "Gen_Octet_Count" : 4
+        }
+    },
+
+    "VS_ENA_ISO_SINK" : {
+        "TOOLTIP" : "Enable or disable ISO packet sink.",
+        "Parameters" : {
+            "Enable" : 1
+        },
+        "Returns" : {
+            "Status" : 1
+        }
+    },
+
+    "VS_ENA_AUTO_GEN_ISO" : {
+        "TOOLTIP" : "Enable or disable automatic generation of ISO packets.",
+        "Parameters" : {
+            "Pkt_Len" : 2
+        },
+        "Returns" : {
+            "Status" : 1
+        }
+    },
+
+    "VS_GET_CIS_STATS" : {
+        "TOOLTIP" : "Retrieve statistics for a CIS.",
+        "Parameters" : null,
+        "Returns" : {
+            "Status" : 1,
+            "RX_Data_OK" : 4,
+            "RX_Data_CRC" : 4,
+            "RX_Data_Timeout" : 4,
+            "TX_Data" : 4,
+            "TX_Data_Err": 4,
+            "RX_Setup_uSec" : 2,
+            "TX_Setup_uSec" : 2,
+            "RX_ISR_uSec" : 2,
+            "TX_ISR_uSec" : 2
+        }
+    },
+
+    "VS_GET_AUX_ADV_STATS" : {
+        "TOOLTIP" : "Retrieve accumulated auxiliary advertising statistics.",
+        "Parameters" : null,
+        "Returns" : {
+            "Status" : 1,
+            "TX_Adv" : 4,
+            "RX_Req" : 4,
+            "RX_Req_CRC" : 4,
+            "RX_Req_Timeout" : 4,
+            "TX_Rsp" : 4,
+            "TX_Chain" : 4,
+            "TX_Adv_Error" : 4,
+            "RX_Setup_uSec" : 2,
+            "TX_Setup_uSec" : 2,
+            "RX_ISR_uSec" : 2,
+            "TX_ISR_uSec" : 2
+        }
+    },
+
+    "VS_GET_AUX_SCAN_STATS" : {
+        "TOOLTIP" : "Retrieve accumulated auxiliary scanning statistics.",
+        "Parameters" : null,
+        "Returns" : {
+            "Status" : 1,
+            "RX_Adv" : 4,
+            "RX_Adv_CRC" : 4,
+            "RX_Adv_Timeout" : 4,
+            "TX_Req" : 4,
+            "RX_Rsp" : 4,
+            "RX_Rsp_CRC" : 4,
+            "RX_Rsp_Timeout" : 4,
+            "RX_Chain" : 4,
+            "RX_Chain_CRC" : 4,
+            "RX_Chain_Timeout" : 4,
+            "Scan_Error" : 4,
+            "RX_Setup_uSec" : 2,
+            "TX_Setup_uSec" : 2,
+            "RX_ISR_uSec" : 2,
+            "TX_ISR_uSec" : 2
+        }
+    },
+
+    "VS_GET_PER_SCAN_STATS" : {
+        "TOOLTIP" : "Retrieve accumulated periodic scanning statistics.",
+        "Parameters" : null,
+        "Returns" : {
+            "Status" : 1,
+            "RX_Adv" : 4,
+            "RX_Adv_CRC" : 4,
+            "RX_Adv_Timeout" : 4,
+            "RX_Chain" : 4,
+            "RX_Chain_CRC" : 4,
+            "RX_Chain_Timeout" : 4,
+            "Scan_Error" : 4,
+            "RX_Setup_uSec" : 2,
+            "TX_Setup_uSec" : 2,
+            "RX_ISR_uSec" : 2,
+            "TX_ISR_uSec" : 2
+        }
+    },
+
+    "VS_SET_CONN_PHY_TX_PWR" : {
+        "TOOLTIP" : "Set the TX power level for a specific PHY on the indicated connection.",
+        "Parameters" : {
+            "Connection_Handle" : 2,
+            "TX_Power_Lvl" : 1,
+            "PHY" : 1
+        },
+        "Returns" : {
+            "Status" : 1
+        }
+    },
+
+    "VS_GET_PER_CHAN_MAP" : {
+        "TOOLTIP" : "Read the channel map used during periodic scanning and/or advertising.",
+        "Parameters" : {
+            "Handle" : 2,
+            "Is_Advertising" : 1
+        },
+        "Returns" : {
+            "Status" : 1,
+            "Channel_Map" : 5
+        }
+    },
+
+    "VS_SET_SCAN_CH_MAP" : {
+        "TOOLTIP" : "Specify the channel map used for scanning.",
+        "Parameters" : {
+            "Channel_Map" : 1
+        },
+        "Returns" : {
+            "Status" : 1
+        }
+    },
+
+    "VS_SET_EVENT_MASK" : {
+        "TOOLTIP" : "Control which vendor-specific events are generated by the HCI for the host.",
+        "Parameters" : {
+            "Event_Mask" : 8,
+            "Enable" : 1
+        },
+        "Returns" : {
+            "Status" : 1
+        }
+    },
+
+    "VS_ENA_ACL_SINK" : {
+        "TOOLTIP" : "Enable or disable asynchronous connection-oriented logical transport.",
+        "Parameters" : {
+            "Enable" : 1
+        },
+        "Returns" : {
+            "Status" : 1
+        }
+    },
+
+    "VS_GENERATE_ACL" : {
+        "TOOLTIP" : "Generate ACL packets for the indicated connection.",
+        "Parameters" : {
+            "Connection_Handle" : 2,
+            "Pkt_Len" : 2,
+            "Num_Pkts" : 1
+        },
+        "Returns" : {
+            "Status" : 1
+        }
+    },
+
+    "VS_ENA_AUTO_GEN_ACL" : {
+        "TOOLTIP" : "Enable or disable automatic generation of ACL packets.",
+        "Parameters" : {
+            "Pkt_Len" : 2
+        },
+        "Returns" : {
+            "Status" : 1
+        }
+    },
+
+    "VS_SET_TX_TEST_ERR_PATT" : {
+        "TOOLTIP" : "Set the patter of errors for TX test mode.",
+        "Parameters" : {
+            "Error_Pattern" : 4
+        },
+        "Returns" : {
+            "Status" : 1
+        }
+    },
+
+    "VS_SET_CONN_OP_FLAGS" : {
+        "TOOLTIP" : "Enable or disable the operational flags for the indicated connection.",
+        "Parameters" : {
+            "Connection_Handle" : 2,
+            "Flags" : 4,
+            "Enable" : 1
+        },
+        "Returns" : {
+            "Status" : 1
+        }
+    },
+
+    "VS_SET_P256_PRIV_KEY" : {
+        "TOOLTIP" : "Set or clear the P-256 private key.",
+        "Parameters" : {
+            "Private_Key" : 32
+        },
+        "Returns" : {
+            "Status" : 1
+        }
+    },
+
+    "VS_GET_ACL_TEST_REPORT" : {
+        "TOOLTIP" : "Retrieve the values stored ACL test counters.",
+        "Parameters" : null,
+        "Returns" : {
+            "Status" : 1,
+            "RX_Pkt_Count" : 4,
+            "RX_Octet_Count" : 4,
+            "Gen_Pkt_Count" : 4,
+            "Gen_Octet_Count" : 4
+        }
+    },
+
+    "VS_SET_LOCAL_MIN_USED_CHAN" : {
+        "TOOLTIP" : "Specify the local minimum number of used channels.",
+        "Parameters" : {
+            "PHYs" : 1,
+            "Power_Thresh" : 1,
+            "Min_Used_Channels" : 1
+        },
+        "Returns" : {
+            "Status" : 1
+        }
+    },
+
+    "VS_GET_PEER_MIN_USED_CHAN" : {
+        "TOOLTIP" : "Read the peer device minimum number of used channels for the indicated connection.",
+        "Parameters" : {
+            "Connection_Handle" : 2
+        },
+        "Returns" : {
+            "Status" : 1,
+            "Peer_Min_Used_LE1M" : 1,
+            "Peer_Min_Used_LE2M" : 1,
+            "Peer_Min_Used_LECoded" : 1
+        }
+    },
+
+    "VS_VALIDATE_PUB_KEY_MODE" : {
+        "TOOLTIP" : "Specify the mode used to validate public keys.",
+        "Parameters" : {
+            "Validate_Mode" : 1
+        },
+        "Returns" : {
+            "Status" : 1
+        }
+    },
+
+    "VS_SET_BD_ADDR" : {
+        "TOOLTIP" : "Specify the local device BD_ADDR.",
+        "Parameters" : {
+            "BD_ADDR" : 6
+        },
+        "Returns" : {
+            "Status" : 1
+        }
+    },
+
+    "VS_GET_RAND_ADDR" : {
+        "TOOLTIP" : "Read the local Random Address.",
+        "Parameters" : null,
+        "Returns" : {
+            "Status" : 1,
+            "Random_Addr" : 6
+        }
+    },
+
+    "VS_SET_LOCAL_FEAT" : {
+        "TOOLTIP" : "Enable or disable local device supported features.",
+        "Parameters" : {
+            "Feature_Mask" : 8
+        },
+        "Returns" : {
+            "Status" : 1
+        }
+    },
+
+    "VS_SET_OP_FLAGS" : {
+        "TOOLTIP" : "Enable or disable operational flags.",
+        "Parameters" : {
+            "Operational_Flags" : 4,
+            "Enable" : 1
+        },
+        "Returns" : {
+            "Status" : 1
+        }
+    },
+
+    "VS_GET_PDU_FILT_STATS" : {
+        "TOOLTIP" : "Retrieve accumulated PDU filter statistics.",
+        "Parameters" : null,
+        "Returns" : {
+            "Status" : 1,
+            "Num_Fail_PDU_Type_Filt" : 2,
+            "Num_Pass_PDU_Type_Filt" : 2,
+            "Num_Fail_Whitelist_Filt" : 2,
+            "Num_Pass_Whitelist_Filt" : 2,
+            "Num_Fail_Peer_Addr_Match" : 2,
+            "Num_Pass_Peer_Addr_Match" : 2,
+            "Num_Fail_Local_Addr_Match" : 2,
+            "Num_Pass_Local_Addr_Match" : 2,
+            "Num_Fail_Peer_RPA_Verify" : 2,
+            "Num_Pass_Peer_RPA_Verify" : 2,
+            "Num_Fail_Local_RPA_Verify" : 2,
+            "Num_Pass_Local_RPA_Verify" : 2,
+            "Num_Fail_Peer_Priv_Addr_Req" : 2,
+            "Num_Fail_Local_Priv_Addr_Req" : 2,
+            "Num_Fail_Peer_Addr_Res_Req" : 2,
+            "Num_Pass_Peer_Addr_Res_Opt" : 2,
+            "Num_Pass_Local_Addr_Res_Opt" : 2,
+            "Num_Peer_Addr_Res_Pend" : 2,
+            "Num_Local_Addr_Res_Pend" : 2
+        }
+    },
+
+    "VS_SET_ADV_TX_PWR" : {
+        "TOOLTIP" : "Specify the TX power used when advertising.",
+        "Parameters" : {
+            "TX_Power_Lvl" : 1
+        },
+        "Returns" : {
+            "Status" : 1
+        }
+    },
+
+    "VS_SET_CONN_TX_PWR" : {
+        "TOOLTIP" : "Specify the TX power used in connections.",
+        "Parameters" : {
+            "Connection_Handle" : 2,
+            "TX_Power_Lvl" : 2
+        },
+        "Returns" : {
+            "Status" : 1
+        }
+    },
+
+    "VS_SET_ENC_MODE" : {
+        "TOOLTIP" : "Set the encryption mode for the indicated connection.",
+        "Parameters" : {
+            "Connection_Handle" : 2,
+            "Enable_Auth" : 1,
+            "Nonce_Mode" : 1
+        },
+        "Returns" : {
+            "Status" : 1
+        }
+    },
+
+    "VS_SET_CHAN_MAP" : {
+        "TOOLTIP" : "Set the channel map for the indicated connection.",
+        "Parameters" : {
+            "Connection_Handle" : 2,
+            "Channel_Map" : 5
+        },
+        "Returns" : {
+            "Status" : 1
+        }
+    },
+
+    "VS_SET_DIAG_MODE" : {
+        "TOOLTIP" : "Enable or disable the PAL System Assert Trap.",
+        "Parameters" : {
+            "Enable" : 1
+        },
+        "Returns" : {
+            "Status" : 1
+        }
+    },
+
+    "VS_GET_SYS_STATS" : {
+        "TOOLTIP" : "Retrieve device system and memory statistics.",
+        "Parameters" : null,
+        "Returns" : {
+            "Status" : 1,
+            "Stack_Watermark" : 2,
+            "Sys_Assert_Count" : 2,
+            "Free_Mem" : 4,
+            "Used_Mem" : 4,
+            "Max_Conns" : 2,
+            "Conn_Context_Size" : 2,
+            "CS_Watermark_uSec" : 2,
+            "LL_Handler_Watermark_uSec" : 2,
+            "Sch_Handler_Watermark_uSec" : 2,
+            "LHCI_Handler_Watermark_uSec" : 2,
+            "Max_Adv_Sets" : 2,
+            "Adv_Set_Context_Size" : 2,
+            "Max_Ext_Scanners" : 2,
+            "Ext_Scanner_Context_Size" : 2,
+            "Max_Ext_Initiators" : 2,
+            "Ext_Initiator_Context_Size" : 2,
+            "Max_Per_Scanners" : 2,
+            "Per_Scanner_Context_Size" : 2,
+            "Max_CIGs" : 2,
+            "CIG_Context_Size" : 2,
+            "Max_CISes" : 2,
+            "CIS_Context_Size" : 2
+        }
+    },
+
+    "VS_GET_ADV_STATS" : {
+        "TOOLTIP" : "Retrieve accumulated advertising statistics.",
+        "Parameters" : null,
+        "Returns" : {
+            "Status" : 1,
+            "TX_Adv" : 4,
+            "RX_Req" : 4,
+            "RX_Req_CRC" : 4,
+            "RX_Req_Timeout" : 4,
+            "TX_Rsp" : 4,
+            "TX_Adv_Error" : 4,
+            "RX_Setup_uSec" : 2,
+            "TX_Setup_uSec" : 2,
+            "RX_ISR_uSec" : 2,
+            "TX_ISR_uSec" : 2
+        }
+    },
+
+    "VS_GET_SCAN_STATS" : {
+        "TOOLTIP" : "Retrieve statistics captured during scanning.",
+        "Parameters" : null,
+        "Returns" : {
+            "Status" : 1,
+            "RX_Adv" : 4,
+            "RX_Adv_CRC" : 4,
+            "RX_Adv_Timeout" : 4,
+            "TX_Req" : 4,
+            "RX_Rsp" : 4,
+            "RX_Rsp_CRC" : 4,
+            "RX_Rsp_Timeout" : 4,
+            "Scan_Error" : 4,
+            "RX_Setup_uSec" : 2,
+            "TX_Setup_uSec" : 2,
+            "RX_ISR_uSec" : 2,
+            "TX_ISR_uSec" : 2
+        }
+    },
+
+    "VS_GET_CONN_STATS" : {
+        "TOOLTIP" : "Retrieve statistics captured during a connection.",
+        "Parameters" : null,
+        "Returns" : {
+            "Status" : 1,
+            "RX_Data_OK" : 4,
+            "RX_Data_CRC" : 4,
+            "RX_Data_Timeout" : 4,
+            "TX_Data" : 4,
+            "TX_Data_Err" : 4,
+            "RX_Setup_uSec" : 2,
+            "TX_Setup_uSec" : 2,
+            "RX_ISR_uSec" : 2,
+            "TX_ISR_uSec": 2
+        }
+    },
+
+    "VS_GET_TEST_STATS" : {
+        "TOOLTIP" : "Retrieve the statistics captured during Test Mode.",
+        "Parameters" : null,
+        "Returns" : {
+            "Status" : 1,
+            "RX_Data_OK" : 4,
+            "RX_Data_CRC" : 4,
+            "RX_Data_Timeout" : 4,
+            "TX_Data" : 4,
+            "TX_Data_Err" : 4,
+            "RX_Setup_uSec" : 2,
+            "TX_Setup_uSec" : 2,
+            "RX_ISR_uSec" : 2,
+            "TX_ISR_uSec" : 2
+        }
+    },
+
+    "VS_GET_POOL_STATS" : {
+        "TOOLTIP" : "Retrieve accumulated memory pool statistics.",
+        "Parameters" : null,
+        "Returns" : {
+            "Status" : 1,
+            "Num_Pools" : 1,
+            "Buffer_Size[i]" : 2,
+            "Num_Buffers[i]" : 1,
+            "Num_Alloc[i]" : 1,
+            "Max_Alloc[i]" : 1,
+            "Max_Req_Buffer_Size[i]" : 2
+        }
+    }
+
+}

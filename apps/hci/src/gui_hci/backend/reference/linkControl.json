@@ -1,0 +1,20 @@
+{
+    "SECTION_NAME" : "Link Control",
+    "DISCONNECT" : {
+        "TOOLTIP" : "Terminate an existing connection.",
+        "Parameters" : {
+            "Connection_Handle" : 2,
+            "Reason" : 1
+
+        },
+        "Returns" : null
+    },
+
+    "READ_REMOTE_VER_INFO" : {
+        "TOOLTIP" : "Obtain version information values from a remote device.",
+        "Parameters" : {
+            "Connection_Handle" : 2
+        },
+        "Returns" : null
+    }
+}
