@@ -1,1 +1,1 @@
-from . toggle import AnimatedToggle
+from .toggle import AnimatedToggle

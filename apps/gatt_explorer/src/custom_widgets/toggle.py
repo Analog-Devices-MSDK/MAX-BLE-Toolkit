@@ -1,24 +1,25 @@
 import sys
 
 from PySide6 import QtUiTools, QtWidgets, QtGui
-from PySide6.QtWidgets import QMessageBox, QTableWidget, QMenu, QApplication , QCheckBox
+from PySide6.QtWidgets import QMessageBox, QTableWidget, QMenu, QApplication, QCheckBox
 from PySide6.QtGui import QCursor, QAction, QClipboard
 from PySide6.QtCore import QThread, Signal, QMutex, QMutexLocker, Qt
 from PySide6.QtCore import *
 from PySide6.QtGui import *
 from PySide6.QtCore import *
 
-class Toggle(QCheckBox):
 
+class Toggle(QCheckBox):
     _transparent_pen = QPen(Qt.transparent)
     _light_grey_pen = QPen(Qt.lightGray)
 
-    def __init__(self,
+    def __init__(
+        self,
         parent=None,
         bar_color="#343b48",
         checked_color="#bd93f9",
         handle_color="#343b48",
-        ):
+    ):
         super().__init__(parent)
 
         # Save our properties on the object via self, so we can access them later
@@ -43,7 +44,6 @@ class Toggle(QCheckBox):
         return self.contentsRect().contains(pos)
 
     def paintEvent(self, e: QPaintEvent):
-
         contRect = self.contentsRect()
         handleRadius = round(0.24 * contRect.height())
 
@@ -52,8 +52,7 @@ class Toggle(QCheckBox):
 
         p.setPen(self._transparent_pen)
         barRect = QRectF(
-            0, 0,
-            contRect.width() - handleRadius, 0.40 * contRect.height()
+            0, 0, contRect.width() - handleRadius, 0.40 * contRect.height()
         )
         barRect.moveCenter(contRect.center())
         rounding = barRect.height() / 2
@@ -73,13 +72,10 @@ class Toggle(QCheckBox):
             p.setPen(self._light_grey_pen)
             p.setBrush(self._handle_brush)
 
-        p.drawEllipse(
-            QPointF(xPos, barRect.center().y()),
-            handleRadius, handleRadius)
+        p.drawEllipse(QPointF(xPos, barRect.center().y()), handleRadius, handleRadius)
 
         p.end()
 
-    
     def handle_state_change(self, value):
         self._handle_position = 1 if value else 0
 
@@ -107,15 +103,17 @@ class Toggle(QCheckBox):
         self.update()
 
 
-
 class AnimatedToggle(Toggle):
-
     _transparent_pen = QPen(Qt.transparent)
     _light_grey_pen = QPen(Qt.lightGray)
 
-    def __init__(self, *args, pulse_unchecked_color="#44999999",
-        pulse_checked_color="#4400B0EE", **kwargs):
-
+    def __init__(
+        self,
+        *args,
+        pulse_unchecked_color="#44999999",
+        pulse_checked_color="#4400B0EE",
+        **kwargs
+    ):
         self._pulse_radius = 0
 
         super().__init__(*args, **kwargs)
@@ -137,10 +135,6 @@ class AnimatedToggle(Toggle):
         # self._pulse_unchecked_animation = QBrush(QColor(pulse_unchecked_color))
         # self._pulse_checked_animation = QBrush(QColor(pulse_checked_color))
 
-
-
-    
-    
     def handle_state_change(self, value):
         self.animations_group.stop()
         if value:
@@ -150,7 +144,6 @@ class AnimatedToggle(Toggle):
         self.animations_group.start()
 
     def paintEvent(self, e: QPaintEvent):
-
         contRect = self.contentsRect()
         handleRadius = round(0.24 * contRect.height())
 
@@ -159,8 +152,7 @@ class AnimatedToggle(Toggle):
 
         p.setPen(self._transparent_pen)
         barRect = QRectF(
-            0, 0,
-            contRect.width() - handleRadius, 0.40 * contRect.height()
+            0, 0, contRect.width() - handleRadius, 0.40 * contRect.height()
         )
         barRect.moveCenter(contRect.center())
         rounding = barRect.height() / 2
@@ -172,10 +164,15 @@ class AnimatedToggle(Toggle):
 
         if self.pulse_anim.state() == QPropertyAnimation.Running:
             p.setBrush(
-                self._pulse_checked_animation if
-                self.isChecked() else self._pulse_unchecked_animation)
-            p.drawEllipse(QPointF(xPos, barRect.center().y()),
-                          self._pulse_radius, self._pulse_radius)
+                self._pulse_checked_animation
+                if self.isChecked()
+                else self._pulse_unchecked_animation
+            )
+            p.drawEllipse(
+                QPointF(xPos, barRect.center().y()),
+                self._pulse_radius,
+                self._pulse_radius,
+            )
 
         if self.isChecked():
             p.setBrush(self._bar_checked_brush)
@@ -188,8 +185,6 @@ class AnimatedToggle(Toggle):
             p.setPen(self._light_grey_pen)
             p.setBrush(self._handle_brush)
 
-        p.drawEllipse(
-            QPointF(xPos, barRect.center().y()),
-            handleRadius, handleRadius)
+        p.drawEllipse(QPointF(xPos, barRect.center().y()), handleRadius, handleRadius)
 
         p.end()

@@ -19,11 +19,13 @@ Signal/Slot mechanism, while QLogHandler handles the logging
 functionality.
 """
 
+
 class QLogEmitter(QObject):
     logMessage = Signal(str)
-    
+
     def emitSignal(self, msg):
         self.logMessage.emit(msg)
+
 
 class QLogHandler(logging.Handler):
     def __init__(self, widget):
@@ -35,11 +37,12 @@ class QLogHandler(logging.Handler):
         msg = self.format(record)
         self.emitter.emitSignal(msg)
 
+
 def init_logging(main_window):
     # Initialize logging
     console = logging.getLogger("gattLogger")
     handler = QLogHandler(main_window.ui.console)
-    handler.setFormatter(logging.Formatter('%(levelname)s - %(message)s'))
+    handler.setFormatter(logging.Formatter("%(levelname)s - %(message)s"))
     handler.emitter.logMessage.connect(main_window.logToTextbox)
     console.addHandler(handler)
     console.setLevel(logging.DEBUG)
